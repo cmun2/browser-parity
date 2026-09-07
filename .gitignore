@@ -1,2 +1,9 @@
 node_modules/
 out/
+
+# M0 artifacts: large or regenerable. The verdict, the survivor list and the
+# owner's labels ARE committed — they are the study's evidence.
+m0/results/shots/
+m0/results/smoke/
+m0/results/evidence/
+m0/results/labels.demo.jsonl

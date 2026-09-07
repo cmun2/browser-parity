@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p28-modal-command-palette</title>
+<!-- M0 corpus page. Spec: modal. See m0/corpus/SPECS.md for the brief. -->
+<link rel="stylesheet" href="../assets/util.css">
+<style>
+body{font-family:"Inter", "Inter var", system-ui, sans-serif}
+.palette-scrim{position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(4px);z-index:60;
+  display:flex;justify-content:center;align-items:flex-start;padding-top:12vh}
+.palette{width:min(560px,100%);background:#fff;border-radius:.9rem;box-shadow:0 24px 60px rgba(15,23,42,.28);
+  display:flex;flex-direction:column;overflow:hidden;max-height:60vh}
+.palette-input{display:flex;align-items:center;gap:.75rem;padding:1rem 1.25rem;border-bottom:1px solid #e2e8f0}
+.palette-input input{border:0;outline:none;flex:1;min-width:0;font-size:1rem}
+.palette-list{overflow-y:auto;padding:.5rem}
+.prow{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;border-radius:.5rem;font-size:.875rem}
+.prow.on{background:#eef2ff}
+kbd{border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:.35rem;padding:.1rem .4rem;font-size:.7rem;font-family:inherit}
+.cookie{position:fixed;left:1.5rem;bottom:1.5rem;z-index:70;max-width:420px;background:#0f172a;color:#fff;
+  border-radius:.9rem;padding:1.25rem;display:flex;flex-direction:column;gap:.9rem}
+.tip{position:absolute;top:-2.25rem;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;
+  font-size:.75rem;padding:.35rem .6rem;border-radius:.4rem;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="min-h-screen">
+  <header class="sticky top-0 z-30 bg-white border-b">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center gap-8">
+    <a class="flex items-center gap-2 font-semibold shrink-0"><svg class="w-6 h-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg><span>Lumen Docs</span></a>
+    <nav class="flex items-center gap-6 text-sm text-slate-600">
+      <a class="whitespace-nowrap">Guides</a>
+      <a class="whitespace-nowrap">API</a>
+      <a class="whitespace-nowrap">Examples</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-3">
+      <a class="text-sm text-slate-600">Docs</a>
+    </div>
+  </div>
+</header>
+  <div class="max-w-3xl mx-auto px-6 py-12 flex flex-col gap-5">
+    <h1 class="text-3xl font-bold tracking-tight">Query language reference</h1>
+    <div class="relative inline-flex" style="align-self:flex-start"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm">Copy page <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></button><span class="tip">Copied to clipboard</span></div>
+    <p>Provisioning pipeline retention pipeline orchestration retention replication pipeline orchestration forecasting attribution normalization federation reconciliation pipeline normalization ingestion. Throughput indexing throughput entitlement entitlement attribution replication observability allocation attribution latency entitlement forecasting. Retention federation orchestration observability observability ingestion indexing throughput. Orchestration replication segmentation retention normalization indexing allocation indexing.</p>
+    <p>Latency forecasting indexing entitlement orchestration federation entitlement latency replication attribution observability retention allocation federation pipeline throughput. Latency retention indexing provisioning indexing federation ingestion pipeline. Normalization forecasting retention ingestion entitlement orchestration reconciliation attribution. Observability segmentation allocation forecasting forecasting reconciliation ingestion pipeline attribution.</p>
+    <blockquote class="border-l-4 pl-5 py-1 text-lg text-slate-700 italic">Orchestration attribution allocation entitlement orchestration reconciliation normalization provisioning allocation observability throughput reconciliation federation retention attribution federation entitlement reconciliation retention normalization entitlement latency throughput.</blockquote>
+    <p>Throughput forecasting orchestration segmentation federation entitlement segmentation ingestion federation. Throughput latency entitlement orchestration throughput pipeline latency normalization orchestration attribution throughput pipeline replication forecasting. Pipeline observability pipeline indexing retention indexing retention allocation entitlement segmentation. Observability reconciliation reconciliation pipeline reconciliation allocation observability retention latency federation.</p>
+    <pre class="bg-slate-900 text-white rounded-xl p-5 overflow-x-auto text-sm font-mono"><code>export async function normalization(input: Options): Promise&lt;Result&gt; {
+  const client = await connect({ region: "eu-central-1", retries: 3 });
+  return client.submit(input).then((r) =&gt; r.records.map(normalize));
+}</code></pre>
+    <p>Attribution normalization normalization replication throughput normalization federation throughput throughput latency. Attribution allocation throughput federation throughput ingestion orchestration reconciliation retention. Replication reconciliation forecasting orchestration pipeline indexing normalization allocation normalization latency. Entitlement indexing allocation ingestion indexing orchestration reconciliation latency retention indexing ingestion federation.</p>
+    <p>Latency ingestion throughput observability segmentation retention entitlement throughput pipeline entitlement orchestration. Entitlement normalization reconciliation normalization replication indexing federation indexing attribution ingestion pipeline. Normalization observability allocation reconciliation orchestration allocation attribution segmentation attribution provisioning segmentation pipeline. Reconciliation reconciliation provisioning throughput observability latency pipeline forecasting indexing pipeline allocation attribution orchestration replication.</p>
+    <h2 class="text-2xl font-bold tracking-tight mt-4">Replication in practice</h2>
+    <p>Attribution federation segmentation reconciliation replication retention ingestion reconciliation throughput retention attribution. Orchestration orchestration replication orchestration replication latency reconciliation normalization observability latency segmentation pipeline replication orchestration provisioning indexing. Segmentation provisioning replication ingestion latency entitlement pipeline replication ingestion forecasting latency throughput indexing throughput. Forecasting throughput pipeline indexing provisioning observability replication segmentation forecasting retention indexing.</p>
+    <ul class="list-disc flex flex-col gap-2"><li>Ingestion pipeline normalization allocation attribution normalization federation reconciliation.</li><li>Attribution throughput normalization segmentation attribution orchestration allocation orchestration federation.</li><li>Ingestion indexing orchestration provisioning observability attribution forecasting forecasting retention.</li></ul>
+  </div>
+</div>
+<div class="palette-scrim"><div class="palette">
+  <div class="palette-input"><svg class="w-5 h-5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input value="depl" aria-label="Command"><kbd>ESC</kbd></div>
+  <div class="palette-list">
+    <div class="px-2 pt-3 pb-1 text-xs uppercase tracking-wide text-slate-400">Recent</div><div class="prow on"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="flex-1 truncate">Deploying to production</span><kbd>⏎</kbd></div><div class="prow "><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg><span class="flex-1 truncate">Deployment settings</span></div>
+    <div class="px-2 pt-3 pb-1 text-xs uppercase tracking-wide text-slate-400">Actions</div><div class="prow "><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg><span class="flex-1 truncate">Create deployment</span><kbd>⌘D</kbd></div><div class="prow "><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg><span class="flex-1 truncate">Roll back last deploy</span></div><div class="prow "><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2"/><path d="M17 3.5a4 4 0 010 7"/></svg><span class="flex-1 truncate">Invite teammate</span><kbd>⌘I</kbd></div>
+    <div class="px-2 pt-3 pb-1 text-xs uppercase tracking-wide text-slate-400">Documentation</div><div class="prow "><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="flex-1 truncate">Deployment targets</span></div><div class="prow "><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="flex-1 truncate">Deploy hooks and webhooks</span></div><div class="prow "><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="flex-1 truncate">Zero-downtime deploys</span></div>
+  </div>
+  <div class="px-4 py-3 border-t bg-slate-50 flex items-center gap-4 text-xs text-slate-500 flex-wrap">
+    <span class="flex items-center gap-1"><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span class="flex items-center gap-1"><kbd>⏎</kbd> select</span><span class="flex items-center gap-1"><kbd>ESC</kbd> close</span>
+  </div>
+</div></div>
+<div class="cookie">
+  <p class="text-sm leading-relaxed opacity-90">Retention indexing attribution pipeline ingestion attribution allocation latency replication retention allocation reconciliation provisioning retention replication federation indexing normalization observability orchestration indexing.</p>
+  <div class="flex gap-2 flex-wrap"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm">Accept all</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-transparent text-slate-600 text-sm text-white">Reject</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-transparent text-slate-600 text-sm text-white">Preferences</button></div>
+</div>
+</body>
+</html>

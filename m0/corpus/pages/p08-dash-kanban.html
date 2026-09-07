@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p08-dash-kanban</title>
+<!-- M0 corpus page. Spec: dashboard. See m0/corpus/SPECS.md for the brief. -->
+<link rel="stylesheet" href="../assets/util.css">
+<style>
+body{font-family:"Inter", "Inter var", system-ui, sans-serif}
+.board{display:flex;gap:1rem;overflow-x:auto;padding:1.5rem;align-items:flex-start}
+.col{flex:0 0 300px;background:#f1f5f9;border-radius:.75rem;padding:.75rem;display:flex;flex-direction:column;gap:.75rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:.5rem;padding:.75rem;display:flex;flex-direction:column;gap:.5rem}
+</style>
+</head>
+<body>
+<div class="min-h-screen flex flex-col">
+  <header class="sticky top-0 z-30 bg-white border-b">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center gap-8">
+    <a class="flex items-center gap-2 font-semibold shrink-0"><svg class="w-6 h-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg><span>Torrent</span></a>
+    <nav class="flex items-center gap-6 text-sm text-slate-600">
+      <a class="whitespace-nowrap">Boards</a>
+      <a class="whitespace-nowrap">Backlog</a>
+      <a class="whitespace-nowrap">Roadmap</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-3">
+      <a class="text-sm text-slate-600">Docs</a>
+    </div>
+  </div>
+</header>
+  <div class="px-6 pt-6 flex flex-col gap-4">
+    <nav class="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
+    <a class=" whitespace-nowrap">Workspace</a><span class="text-slate-300">/</span><a class=" whitespace-nowrap">Platform</a><span class="text-slate-300">/</span><a class="text-slate-900 font-medium whitespace-nowrap">Sprint 42</a>
+  </nav>
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <h1 class="text-2xl font-bold tracking-tight">Sprint 42</h1>
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex"><span style="margin-left:0"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#7c3aed">AO</div></span><span style="margin-left:-8px"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">JL</div></span><span style="margin-left:-8px"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">NH</div></span><span style="margin-left:-8px"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">SM</div></span></div>
+        <button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg> Filter</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white text-sm">New issue</button>
+      </div>
+    </div>
+    <div class="border-b"><div class="flex gap-6 overflow-x-auto">
+    <button type="button" class="py-3 text-sm whitespace-nowrap border-b-2 border-indigo-600 text-indigo-600 font-medium" style="">Board</button>
+    <button type="button" class="py-3 text-sm whitespace-nowrap border-b-2 border-0 text-slate-500" style="border-bottom-color:transparent">List</button>
+    <button type="button" class="py-3 text-sm whitespace-nowrap border-b-2 border-0 text-slate-500" style="border-bottom-color:transparent">Timeline <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">3</span></button>
+    <button type="button" class="py-3 text-sm whitespace-nowrap border-b-2 border-0 text-slate-500" style="border-bottom-color:transparent">Insights</button>
+  </div></div>
+  </div>
+  <div class="board">
+    <section class="col">
+      <div class="flex items-center justify-between px-1"><h2 class="text-sm font-semibold">Backlog</h2><span class="text-xs text-slate-500">4</span></div>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-100</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600">bug</span></div>
+        <p class="text-sm font-medium leading-tight">Federation pipeline indexing reconciliation observability forecasting forecasting indexing ingestion.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">AO</div><span class="text-xs text-slate-500 truncate">Amara</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 3</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-101</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600">feat</span></div>
+        <p class="text-sm font-medium leading-tight">Entitlement provisioning federation latency allocation forecasting forecasting.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#4f46e5">JL</div><span class="text-xs text-slate-500 truncate">Jonas</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 4</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-102</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">chore</span></div>
+        <p class="text-sm font-medium leading-tight">Normalization orchestration reconciliation orchestration provisioning replication.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">PR</div><span class="text-xs text-slate-500 truncate">Priya</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 5</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-103</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600">bug</span></div>
+        <p class="text-sm font-medium leading-tight">Pipeline segmentation replication allocation throughput segmentation.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">DF</div><span class="text-xs text-slate-500 truncate">Diego</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 6</span>
+        </div>
+      </article>
+      <button type="button" class="text-sm text-slate-500 px-1 py-2 text-left">+ Add card</button>
+    </section>
+    <section class="col">
+      <div class="flex items-center justify-between px-1"><h2 class="text-sm font-semibold">In progress</h2><span class="text-xs text-slate-500">3</span></div>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-110</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600">bug</span></div>
+        <p class="text-sm font-medium leading-tight">Orchestration reconciliation attribution observability attribution provisioning forecasting federation.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">DF</div><span class="text-xs text-slate-500 truncate">Diego</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 3</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-111</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600">feat</span></div>
+        <p class="text-sm font-medium leading-tight">Provisioning ingestion ingestion latency allocation allocation.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">MC</div><span class="text-xs text-slate-500 truncate">Mei-Ling</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 4</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-112</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">chore</span></div>
+        <p class="text-sm font-medium leading-tight">Throughput indexing segmentation retention forecasting replication.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">TB</div><span class="text-xs text-slate-500 truncate">Tobias</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 5</span>
+        </div>
+      </article>
+      <button type="button" class="text-sm text-slate-500 px-1 py-2 text-left">+ Add card</button>
+    </section>
+    <section class="col">
+      <div class="flex items-center justify-between px-1"><h2 class="text-sm font-semibold">In review</h2><span class="text-xs text-slate-500">2</span></div>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-120</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600">bug</span></div>
+        <p class="text-sm font-medium leading-tight">Federation segmentation replication normalization retention.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">NH</div><span class="text-xs text-slate-500 truncate">Nadia</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 3</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-121</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600">feat</span></div>
+        <p class="text-sm font-medium leading-tight">Retention attribution replication reconciliation replication replication normalization ingestion entitlement.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">RO</div><span class="text-xs text-slate-500 truncate">Ruben</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 4</span>
+        </div>
+      </article>
+      <button type="button" class="text-sm text-slate-500 px-1 py-2 text-left">+ Add card</button>
+    </section>
+    <section class="col">
+      <div class="flex items-center justify-between px-1"><h2 class="text-sm font-semibold">Done</h2><span class="text-xs text-slate-500">1</span></div>
+      <article class="card">
+        <div class="flex items-start justify-between gap-2"><span class="text-xs font-mono text-slate-400">PLT-130</span><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600">bug</span></div>
+        <p class="text-sm font-medium leading-tight">Attribution indexing retention federation observability federation normalization throughput provisioning.</p>
+        <div class="flex items-center justify-between gap-2 mt-1">
+          <div class="flex items-center gap-2 min-w-0"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">HT</div><span class="text-xs text-slate-500 truncate">Hiroshi</span></div>
+          <span class="text-xs text-slate-400 whitespace-nowrap">Mar 3</span>
+        </div>
+      </article>
+      <button type="button" class="text-sm text-slate-500 px-1 py-2 text-left">+ Add card</button>
+    </section>
+  </div>
+</div>
+</body>
+</html>

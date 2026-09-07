@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p06-dash-analytics</title>
+<!-- M0 corpus page. Spec: dashboard. See m0/corpus/SPECS.md for the brief. -->
+<link rel="stylesheet" href="../assets/util.css">
+<style>
+body{font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif}
+.shell{display:flex;min-height:100vh;background:#f8fafc}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.lower{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem}
+@media (max-width:1100px){.lower{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="w-64 shrink-0 border-r bg-white flex flex-col">
+  <div class="h-16 flex items-center gap-2 px-5 border-b font-semibold"><svg class="w-6 h-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg><span class="truncate">Meridian</span></div>
+  <nav class="flex-1 p-3 flex flex-col gap-1 overflow-y-auto">
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span class="truncate">Overview</span>
+      
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm bg-indigo-50 text-indigo-600 font-medium">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2"/><path d="M17 3.5a4 4 0 010 7"/></svg><span class="truncate">Analytics</span>
+      
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg><span class="truncate">Sources</span>
+      
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="truncate">Alerts</span>
+      <span class="ml-auto"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">12</span></span>
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg><span class="truncate">Reports</span>
+      
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="truncate">Settings</span>
+      
+    </a>
+  </nav>
+  <div class="p-3 border-t flex items-center gap-3">
+    <div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">KB</div>
+    <div class="min-w-0 flex-1"><div class="text-sm font-medium truncate">Jonas Lindqvist</div><div class="text-xs text-slate-500 truncate">Product Lead</div></div>
+    <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+</aside>
+  <div class="main">
+    <header class="h-16 bg-white border-b flex items-center gap-4 px-6">
+      <div class="flex items-center gap-2 px-3 py-2 bg-slate-100 rounded-lg w-80 max-w-full"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input class="bg-transparent border-0 text-sm w-full" placeholder="Search dashboards…" style="outline:none"></div>
+      <div class="ml-auto flex items-center gap-3"><svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white text-sm">New report</button><div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">EV</div></div>
+    </header>
+    <main class="p-6 flex flex-col gap-6">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div><h1 class="text-2xl font-bold tracking-tight">Overview</h1><p class="text-sm text-slate-500">Last 24 hours across 6 sources</p></div>
+        <div class="flex gap-2"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm">Export</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg> Filters</button></div>
+      </div>
+      <div class="grid auto-fit-240 gap-4"><div class=" bg-white border rounded-xl p-5 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-slate-500 truncate">Monthly active</span>
+        <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </div>
+      <div class="text-3xl font-bold tracking-tight">48,219</div>
+      <div class="flex items-center gap-1 text-xs text-emerald-600">
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span>+6.0% vs last week</span>
+      </div>
+    </div><div class=" bg-white border rounded-xl p-5 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-slate-500 truncate">Ingest volume</span>
+        <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg>
+      </div>
+      <div class="text-3xl font-bold tracking-tight">1.4 TB</div>
+      <div class="flex items-center gap-1 text-xs text-rose-600">
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span>−9.1% vs last week</span>
+      </div>
+    </div><div class=" bg-white border rounded-xl p-5 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-slate-500 truncate">p95 latency</span>
+        <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div class="text-3xl font-bold tracking-tight">182 ms</div>
+      <div class="flex items-center gap-1 text-xs text-emerald-600">
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span>+12.2% vs last week</span>
+      </div>
+    </div><div class=" bg-white border rounded-xl p-5 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-slate-500 truncate">Error budget</span>
+        <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+      </div>
+      <div class="text-3xl font-bold tracking-tight">96.4%</div>
+      <div class="flex items-center gap-1 text-xs text-emerald-600">
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span>+15.3% vs last week</span>
+      </div>
+    </div></div>
+      <div class="bg-white border rounded-xl p-5 flex flex-col gap-4">
+  <div class="flex items-center justify-between">
+    <div><h3 class="font-semibold">Request throughput</h3><p class="text-xs text-slate-500">Last 24 hours</p></div>
+    <div class="flex gap-2"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border px-3 py-1 text-xs">Day</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-transparent text-slate-600 px-3 py-1 text-xs">Week</button></div>
+  </div>
+  <svg viewBox="0 0 576 130" class="w-full" style="height:220px" preserveAspectRatio="none" aria-hidden="true">
+    <rect x="8" y="102" width="30" height="18" rx="3" fill="#c7d2fe"/><rect x="56" y="95" width="30" height="25" rx="3" fill="#c7d2fe"/><rect x="104" y="88" width="30" height="32" rx="3" fill="#c7d2fe"/><rect x="152" y="81" width="30" height="39" rx="3" fill="#c7d2fe"/><rect x="200" y="74" width="30" height="46" rx="3" fill="#c7d2fe"/><rect x="248" y="67" width="30" height="53" rx="3" fill="#c7d2fe"/><rect x="296" y="60" width="30" height="60" rx="3" fill="#c7d2fe"/><rect x="344" y="53" width="30" height="67" rx="3" fill="#c7d2fe"/><rect x="392" y="46" width="30" height="74" rx="3" fill="#c7d2fe"/><rect x="440" y="39" width="30" height="81" rx="3" fill="#c7d2fe"/><rect x="488" y="32" width="30" height="88" rx="3" fill="#c7d2fe"/><rect x="536" y="25" width="30" height="95" rx="3" fill="#c7d2fe"/>
+    <polyline points="0,80 24,72 48,64 72,58 96,53 120,51 144,51 168,53 192,57 216,62 240,68 264,73 288,78 312,81 336,82 360,81 384,77 408,72 432,65 456,57 480,48 504,40 528,33 552,28 576,25" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linejoin="round"/>
+  </svg>
+  <div class="flex justify-between text-xs text-slate-400"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+</div>
+      <div class="lower"><div class="border rounded-xl overflow-hidden bg-white"><div class="overflow-x-auto"><table class="w-full text-sm text-left">
+    <thead class=" bg-slate-50 border-b">
+      <tr><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Name</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Owner</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Region</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Status</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap text-right">Requests</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Updated</th></tr>
+    </thead>
+    <tbody><tr class="border-b">
+      <td class="px-4 py-3 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Northwind-orchestration</span></div></td>
+      <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">AO</div><span class="truncate">Amara Osei</span></div></td>
+      <td class="px-4 py-3 text-slate-600 whitespace-nowrap">Lisbon</td>
+      <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600">Healthy</span></td>
+      <td class="px-4 py-3 text-right font-mono text-sm">903</td>
+      <td class="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">1 day ago</td>
+    </tr><tr class="border-b">
+      <td class="px-4 py-3 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Halyard-throughput</span></div></td>
+      <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">JL</div><span class="truncate">Jonas Lindqvist</span></div></td>
+      <td class="px-4 py-3 text-slate-600 whitespace-nowrap">Toronto</td>
+      <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600">Degraded</span></td>
+      <td class="px-4 py-3 text-right font-mono text-sm">2,390</td>
+      <td class="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">2 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-4 py-3 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Cadence-latency</span></div></td>
+      <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#4f46e5">PR</div><span class="truncate">Priya Raghunathan</span></div></td>
+      <td class="px-4 py-3 text-slate-600 whitespace-nowrap">Osaka</td>
+      <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Paused</span></td>
+      <td class="px-4 py-3 text-right font-mono text-sm">3,877</td>
+      <td class="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">3 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-4 py-3 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Meridian-pipeline</span></div></td>
+      <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">DF</div><span class="truncate">Diego Fuentes</span></div></td>
+      <td class="px-4 py-3 text-slate-600 whitespace-nowrap">Nairobi</td>
+      <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600">Healthy</span></td>
+      <td class="px-4 py-3 text-right font-mono text-sm">5,364</td>
+      <td class="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">4 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-4 py-3 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Kestrel-ingestion</span></div></td>
+      <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">MC</div><span class="truncate">Mei-Ling Chen</span></div></td>
+      <td class="px-4 py-3 text-slate-600 whitespace-nowrap">Rotterdam</td>
+      <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600">Degraded</span></td>
+      <td class="px-4 py-3 text-right font-mono text-sm">6,851</td>
+      <td class="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">5 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-4 py-3 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Lumen-observability</span></div></td>
+      <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">TB</div><span class="truncate">Tobias Brandt</span></div></td>
+      <td class="px-4 py-3 text-slate-600 whitespace-nowrap">Austin</td>
+      <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Paused</span></td>
+      <td class="px-4 py-3 text-right font-mono text-sm">8,338</td>
+      <td class="px-4 py-3 text-slate-500 text-sm whitespace-nowrap">6 days ago</td>
+    </tr></tbody>
+  </table></div></div><div class="bg-white border rounded-xl overflow-y-auto" style="max-height:320px">
+  <div class="px-5 py-4 border-b flex items-center justify-between"><h3 class="font-semibold">Recent activity</h3><a class="text-sm text-indigo-600">View all</a></div>
+  <ul class="divide-y">
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">AO</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Amara Osei</span> deployed <a class="text-indigo-600">Northwind/orchestration</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Attribution federation allocation attribution reconciliation forecasting reconciliation orchestration observability retention latency.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">1h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#7c3aed">JL</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Jonas Lindqvist</span> commented on <a class="text-indigo-600">Halyard/throughput</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Provisioning throughput ingestion latency observability entitlement federation provisioning.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">2h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#7c3aed">PR</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Priya Raghunathan</span> closed <a class="text-indigo-600">Cadence/latency</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Allocation throughput allocation latency replication federation attribution orchestration entitlement pipeline replication pipeline ingestion.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">3h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">DF</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Diego Fuentes</span> reopened <a class="text-indigo-600">Meridian/pipeline</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Reconciliation orchestration forecasting reconciliation observability pipeline indexing federation.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">4h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#7c3aed">MC</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Mei-Ling Chen</span> assigned <a class="text-indigo-600">Kestrel/ingestion</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Entitlement pipeline orchestration attribution normalization provisioning provisioning pipeline allocation normalization forecasting segmentation.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">5h</span>
+    </li>
+  </ul>
+</div></div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

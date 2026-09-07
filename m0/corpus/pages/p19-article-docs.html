@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p19-article-docs</title>
+<!-- M0 corpus page. Spec: article. See m0/corpus/SPECS.md for the brief. -->
+<link rel="stylesheet" href="../assets/util.css">
+<style>
+body{font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif}
+.docs{display:grid;grid-template-columns:260px minmax(0,1fr) 220px;gap:2.5rem;max-width:88rem;margin:0 auto;padding:2rem 1.5rem}
+.docnav{position:sticky;top:5rem;align-self:start;max-height:calc(100vh - 7rem);overflow-y:auto;font-size:.875rem}
+.docnav ul{padding-left:.75rem;border-left:1px solid #e2e8f0;display:flex;flex-direction:column;gap:.4rem;margin:.4rem 0 1rem}
+.toc{position:sticky;top:5rem;align-self:start;font-size:.8125rem;display:flex;flex-direction:column;gap:.5rem}
+.callout{border-left:4px solid #4f46e5;background:#eef2ff;padding:1rem 1.25rem;border-radius:0 .5rem .5rem 0}
+.docmain>*+*{margin-top:1.25rem}
+@media (max-width:1150px){.docs{grid-template-columns:240px minmax(0,1fr)}.toc{display:none}}
+</style>
+</head>
+<body>
+<header class="sticky top-0 z-30 backdrop-blur border-b">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center gap-8">
+    <a class="flex items-center gap-2 font-semibold shrink-0"><svg class="w-6 h-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg><span>Torrent Docs</span></a>
+    <nav class="flex items-center gap-6 text-sm text-slate-600">
+      <a class="whitespace-nowrap">Guides</a>
+      <a class="whitespace-nowrap">API</a>
+      <a class="whitespace-nowrap">SDKs</a>
+      <a class="whitespace-nowrap">Changelog</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-3">
+      <a class="text-sm text-slate-600 whitespace-nowrap">Sign in</a><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white ">Get started</button>
+    </div>
+  </div>
+</header>
+<div class="docs">
+  <nav class="docnav flex flex-col gap-2">
+    <div><span class="font-semibold">Getting started</span><ul><li><a class="text-slate-600">Throughput</a></li><li><a class="text-slate-600">Orchestration</a></li><li><a class="text-slate-600">Retention</a></li><li><a class="text-slate-600">Allocation</a></li></ul></div>
+    <div><span class="font-semibold">Core concepts</span><ul><li><a class="text-slate-600">Provisioning</a></li><li><a class="text-slate-600">Reconciliation</a></li><li><a class="text-indigo-600 font-medium">Entitlement</a></li><li><a class="text-slate-600">Allocation</a></li></ul></div>
+    <div><span class="font-semibold">API reference</span><ul><li><a class="text-slate-600">Indexing</a></li><li><a class="text-slate-600">Provisioning</a></li><li><a class="text-slate-600">Ingestion</a></li><li><a class="text-slate-600">Replication</a></li></ul></div>
+    <div><span class="font-semibold">Deployment</span><ul><li><a class="text-slate-600">Attribution</a></li><li><a class="text-slate-600">Ingestion</a></li><li><a class="text-slate-600">Orchestration</a></li><li><a class="text-slate-600">Retention</a></li></ul></div>
+  </nav>
+  <main class="docmain">
+    <nav class="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
+    <a class=" whitespace-nowrap">Docs</a><span class="text-slate-300">/</span><a class=" whitespace-nowrap">Core concepts</a><span class="text-slate-300">/</span><a class="text-slate-900 font-medium whitespace-nowrap">Pipelines</a>
+  </nav>
+    <h1 class="text-3xl font-bold tracking-tight">Pipelines</h1>
+    <p class="text-lg text-slate-600 leading-relaxed">Latency attribution normalization federation reconciliation federation forecasting replication indexing provisioning allocation orchestration federation attribution reconciliation allocation provisioning attribution normalization latency reconciliation reconciliation.</p>
+    <div class="callout flex gap-3"><svg class="w-5 h-5 text-indigo-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg><div><strong class="block mb-1">Note</strong><span class="text-sm text-slate-700">Federation retention entitlement allocation attribution federation observability allocation federation segmentation orchestration reconciliation orchestration normalization forecasting latency attribution.</span></div></div>
+    <h2 class="text-xl font-bold mt-8">Defining a pipeline</h2>
+    <p class="text-slate-600 leading-relaxed">Attribution replication forecasting provisioning ingestion observability pipeline indexing attribution segmentation latency observability provisioning federation forecasting. Segmentation segmentation attribution federation allocation attribution retention ingestion orchestration observability throughput segmentation indexing reconciliation reconciliation entitlement federation.</p>
+    <pre class="bg-slate-900 text-white rounded-xl p-5 overflow-x-auto text-sm font-mono"><code>import { definePipeline } from "@torrent/sdk";
+
+export default definePipeline({
+  name: "events-normalize",
+  source: { kind: "kafka", topic: "raw.events", group: "normalize-v2" },
+  steps: [dedupe({ window: "5m" }), enrich({ from: "accounts" }), sink("warehouse")],
+});</code></pre>
+    <h2 class="text-xl font-bold mt-8">Parameters</h2>
+    <div class="border rounded-xl overflow-x-auto"><table class="w-full text-sm">
+      <thead class="bg-slate-50 border-b"><tr><th class="px-4 py-3 text-left font-medium text-slate-500 whitespace-nowrap">Name</th><th class="px-4 py-3 text-left font-medium text-slate-500 whitespace-nowrap">Type</th><th class="px-4 py-3 text-left font-medium text-slate-500 whitespace-nowrap">Default</th><th class="px-4 py-3 text-left font-medium text-slate-500 whitespace-nowrap">Description</th></tr></thead>
+      <tbody><tr class="border-b"><td class="px-4 py-3 font-mono whitespace-nowrap">name</td><td class="px-4 py-3 font-mono text-indigo-600 whitespace-nowrap">string</td><td class="px-4 py-3 font-mono text-slate-500">—</td><td class="px-4 py-3 text-slate-600">Orchestration reconciliation orchestration orchestration federation latency.</td></tr><tr class="border-b"><td class="px-4 py-3 font-mono whitespace-nowrap">source</td><td class="px-4 py-3 font-mono text-indigo-600 whitespace-nowrap">Source</td><td class="px-4 py-3 font-mono text-slate-500">—</td><td class="px-4 py-3 text-slate-600">Orchestration throughput forecasting normalization segmentation pipeline orchestration ingestion allocation forecasting.</td></tr><tr class="border-b"><td class="px-4 py-3 font-mono whitespace-nowrap">steps</td><td class="px-4 py-3 font-mono text-indigo-600 whitespace-nowrap">Step[]</td><td class="px-4 py-3 font-mono text-slate-500">[]</td><td class="px-4 py-3 text-slate-600">Attribution ingestion forecasting forecasting normalization entitlement allocation attribution.</td></tr><tr class="border-b"><td class="px-4 py-3 font-mono whitespace-nowrap">concurrency</td><td class="px-4 py-3 font-mono text-indigo-600 whitespace-nowrap">number</td><td class="px-4 py-3 font-mono text-slate-500">4</td><td class="px-4 py-3 text-slate-600">Pipeline throughput ingestion allocation indexing provisioning entitlement indexing observability latency throughput.</td></tr><tr class="border-b"><td class="px-4 py-3 font-mono whitespace-nowrap">retries</td><td class="px-4 py-3 font-mono text-indigo-600 whitespace-nowrap">number</td><td class="px-4 py-3 font-mono text-slate-500">3</td><td class="px-4 py-3 text-slate-600">Replication orchestration replication indexing normalization retention.</td></tr></tbody>
+    </table></div>
+    <h2 class="text-xl font-bold mt-8">Error handling</h2>
+    <p class="text-slate-600 leading-relaxed">Latency throughput latency segmentation reconciliation provisioning pipeline attribution ingestion observability throughput entitlement federation. Entitlement replication throughput throughput observability retention segmentation ingestion forecasting pipeline reconciliation. Segmentation allocation pipeline provisioning normalization allocation replication forecasting.</p>
+    <div class="flex justify-between gap-4 pt-8 mt-8 border-t">
+      <a class="flex-1 border rounded-xl p-4"><span class="text-xs text-slate-500">Previous</span><div class="font-medium">Sources</div></a>
+      <a class="flex-1 border rounded-xl p-4 text-right"><span class="text-xs text-slate-500">Next</span><div class="font-medium">Sinks</div></a>
+    </div>
+  </main>
+  <nav class="toc">
+    <span class="text-xs uppercase tracking-wide text-slate-500">On this page</span>
+    <a class="text-indigo-600">Defining a pipeline</a><a class="text-slate-500">Parameters</a><a class="text-slate-500">Error handling</a><a class="text-slate-500">Examples</a>
+  </nav>
+</div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+{
+  "corpusVersion": "m0-corpus-v1",
+  "corpusHash": "b017b928a0c2d67ea07ee7c70487935265841499af6b1403c4fa0a74990c830e",
+  "frozen": true,
+  "frozenAt": "2026-09-07T16:25:33.545Z",
+  "pageCount": 30,
+  "mix": {
+    "landing": 5,
+    "dashboard": 5,
+    "form": 4,
+    "pricing": 3,
+    "article": 4,
+    "table": 4,
+    "modal": 3,
+    "nav": 2
+  },
+  "provenance": {
+    "origin": "hand-authored",
+    "note": "Pages are hand-authored in an AI-typical idiom, NOT emitted by a model. No hosted model was called (no-paid-API constraint). Each page records the brief it implements so the study can be repeated against real model output using the same 30 prompts. This is the study's primary external-validity limitation.",
+    "generator": "m0/scripts/gen-corpus.mjs + m0/scripts/specs.mjs",
+    "deterministic": "no Math.random, no Date, no timers, no animation, no network"
+  },
+  "assets": [
+    {
+      "file": "corpus/assets/util.css",
+      "sha256": "eb57cebde25ea6ceea6f22762561d1deb06be9913a062860699f92b6894e2c5e"
+    }
+  ],
+  "pages": [
+    {
+      "id": "p01-landing-saas-hero",
+      "file": "corpus/pages/p01-landing-saas-hero.html",
+      "kind": "landing",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 21461,
+      "sha256": "f92e41f65357f4c64e68076bc1633695b80fcee15cdc8fe6220b47b8ee274fa4",
+      "prompt": "Build a landing page for an observability SaaS called Meridian. Centered hero with a headline and two CTAs, a logo cloud, a six-card feature grid, testimonials, a dark call-to-action band, and a four-column footer. Modern, clean, lots of whitespace."
+    },
+    {
+      "id": "p02-landing-split-hero",
+      "file": "corpus/pages/p02-landing-split-hero.html",
+      "kind": "landing",
+      "mode": "inline",
+      "fontStack": "\"Inter\", \"Inter var\", system-ui, sans-serif",
+      "bytes": 23950,
+      "sha256": "b9b1c7825961aef9299037c4d5a258d3e1b0db8223fd4d8e054b998cd948ae8c",
+      "prompt": "Landing page for a developer tool called Kestrel. Split hero — copy on the left, product screenshot on the right. Then a three-up feature section, a stats strip, a testimonial, and a footer. Use Inter."
+    },
+    {
+      "id": "p03-landing-feature-tour",
+      "file": "corpus/pages/p03-landing-feature-tour.html",
+      "kind": "landing",
+      "mode": "linked",
+      "fontStack": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "bytes": 17779,
+      "sha256": "09ce6d9205d6afcd3241a32feab5a476aa803d8f06a56d2c80809d98812897e5",
+      "prompt": "Marketing page with alternating feature rows — image on one side, text on the other, flipping each row. Sticky nav at the top. Four rows, then an FAQ and a footer."
+    },
+    {
+      "id": "p04-landing-changelog",
+      "file": "corpus/pages/p04-landing-changelog.html",
+      "kind": "landing",
+      "mode": "inline",
+      "fontStack": "system-ui, sans-serif",
+      "bytes": 19525,
+      "sha256": "61d00cad11a4271b9b6c2c275da058dba2bd766c7d7928f21a238f509e72addb",
+      "prompt": "Public changelog page. Left rail with a sticky version index, right column with dated release entries containing headings, prose, bullet lists and badges. Nav on top, minimal footer."
+    },
+    {
+      "id": "p05-landing-waitlist",
+      "file": "corpus/pages/p05-landing-waitlist.html",
+      "kind": "landing",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 4637,
+      "sha256": "a9311d20e94132ce5cda38fb9cd0c73a757e3a580cab68e13fb222d97ba2eb10",
+      "prompt": "Single-screen waitlist page for a product called Lumen. Full-height centered layout, big headline, email capture form, three small value props underneath, social proof avatars. Should fill the viewport."
+    },
+    {
+      "id": "p06-dash-analytics",
+      "file": "corpus/pages/p06-dash-analytics.html",
+      "kind": "dashboard",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 22955,
+      "sha256": "ccb4864b0d30e3bfa0180e9e6194aa0334bee669012a5f83fcb92ea5a48f597b",
+      "prompt": "Analytics dashboard. Fixed left sidebar with nav, top bar with search and avatar, then four KPI cards, a big chart, and a recent-activity list in a two-column layout below."
+    },
+    {
+      "id": "p07-dash-billing",
+      "file": "corpus/pages/p07-dash-billing.html",
+      "kind": "dashboard",
+      "mode": "inline",
+      "fontStack": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "bytes": 26945,
+      "sha256": "2018c44b12641b24da54c4f295660b141c8f345d856fa841715363537af9f6e2",
+      "prompt": "Billing and usage dashboard inside an app shell. Show current plan card, usage meters with progress bars, an invoice table, and a payment-method section. Sidebar navigation."
+    },
+    {
+      "id": "p08-dash-kanban",
+      "file": "corpus/pages/p08-dash-kanban.html",
+      "kind": "dashboard",
+      "mode": "linked",
+      "fontStack": "\"Inter\", \"Inter var\", system-ui, sans-serif",
+      "bytes": 14121,
+      "sha256": "612dd3b2dc72db7831c3c42cc9736d7ab5c82ba85a98d86044f95f22a2a6f357",
+      "prompt": "Project board with horizontally scrolling kanban columns. Four columns with draggable-looking cards containing avatars, labels and due dates. Toolbar above with filters and a view switcher."
+    },
+    {
+      "id": "p09-dash-infra-status",
+      "file": "corpus/pages/p09-dash-infra-status.html",
+      "kind": "dashboard",
+      "mode": "inline",
+      "fontStack": "ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, monospace",
+      "bytes": 22260,
+      "sha256": "a13960969ba58a7a88c9b67e3ecf57107c135c6480e1314feefe22b253d60b09",
+      "prompt": "Infrastructure status console with a monospace, dense feel. Region grid, service health matrix, an incident timeline, and a log tail panel with its own scrollbar. Dark header."
+    },
+    {
+      "id": "p10-dash-crm-detail",
+      "file": "corpus/pages/p10-dash-crm-detail.html",
+      "kind": "dashboard",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 14195,
+      "sha256": "2872ce2117b1c98d24a67727d95b91b725ab8705de96dc24862d87ae8fbb11b5",
+      "prompt": "CRM record detail page. Left column with the account profile and key fields, main column with tabs (activity, notes, files), right rail with related records. Sticky page header with actions."
+    },
+    {
+      "id": "p11-form-settings",
+      "file": "corpus/pages/p11-form-settings.html",
+      "kind": "form",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 7358,
+      "sha256": "c6e5bae6da718b56b26933abb2ec58bf017349328639fddf789d91c07b5cba61",
+      "prompt": "Account settings page. Left nav for settings sections, main panel with grouped form sections — profile, notifications, security — using real input types. Sticky save bar at the bottom."
+    },
+    {
+      "id": "p12-form-checkout",
+      "file": "corpus/pages/p12-form-checkout.html",
+      "kind": "form",
+      "mode": "inline",
+      "fontStack": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "bytes": 18991,
+      "sha256": "5651eac1256536c8fcf55256ba5a250ef2b3e844fdb20e654a8cb51847989466",
+      "prompt": "Two-column checkout. Left side has contact, shipping and payment fieldsets; right side is a sticky order summary with line items, discount code input and totals. Trust badges at the bottom."
+    },
+    {
+      "id": "p13-form-wizard",
+      "file": "corpus/pages/p13-form-wizard.html",
+      "kind": "form",
+      "mode": "linked",
+      "fontStack": "system-ui, sans-serif",
+      "bytes": 7823,
+      "sha256": "3d774d7babbc4ecd91f9a551e6a08de33dd6e53d03ef88df0e20113be5fa6b21",
+      "prompt": "Multi-step onboarding wizard, step 2 of 4. Progress indicator across the top, a centered card with the current step form, back/continue buttons, and a help panel to the side."
+    },
+    {
+      "id": "p14-form-auth",
+      "file": "corpus/pages/p14-form-auth.html",
+      "kind": "form",
+      "mode": "inline",
+      "fontStack": "\"Inter\", \"Inter var\", system-ui, sans-serif",
+      "bytes": 15150,
+      "sha256": "bffafb965a397c3b4d1f2ef346b90386c727e1a5710db372667f6e2f7b3faca5",
+      "prompt": "Sign-up page with a split layout: form on the left half, a testimonial and gradient panel on the right half filling the viewport height. OAuth buttons above a divider, then email and password fields."
+    },
+    {
+      "id": "p15-pricing-tiers",
+      "file": "corpus/pages/p15-pricing-tiers.html",
+      "kind": "pricing",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 21802,
+      "sha256": "c90a18942214077faea4a7b2c001a63723da56fbc0d56902d59cbd2892a104f9",
+      "prompt": "Pricing page with three tiers, the middle one highlighted with a \"most popular\" badge, a monthly/annual toggle, a full feature comparison table below, and an FAQ."
+    },
+    {
+      "id": "p16-pricing-calculator",
+      "file": "corpus/pages/p16-pricing-calculator.html",
+      "kind": "pricing",
+      "mode": "inline",
+      "fontStack": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "bytes": 28557,
+      "sha256": "ad7a634afd50a2b1a4ac81da9b244d0211f90d37bd21b398ee1cfd2e1a741053",
+      "prompt": "Usage-based pricing page with an interactive-looking calculator: sliders for volume, a live estimate card, and a breakdown table. Four plan cards laid out with flexbox below."
+    },
+    {
+      "id": "p17-pricing-compare-dense",
+      "file": "corpus/pages/p17-pricing-compare-dense.html",
+      "kind": "pricing",
+      "mode": "linked",
+      "fontStack": "system-ui, sans-serif",
+      "bytes": 15533,
+      "sha256": "a590cff5e9787b292e4d311c72324f4507534a72afb677baf825e2f70a3f49ad",
+      "prompt": "Enterprise pricing page that leads with a dense feature comparison matrix (many rows, sticky header row) and puts the plan cards below it. Include a contact-sales band."
+    },
+    {
+      "id": "p18-article-blogpost",
+      "file": "corpus/pages/p18-article-blogpost.html",
+      "kind": "article",
+      "mode": "inline",
+      "fontStack": "Georgia, Cambria, \"Times New Roman\", Times, serif",
+      "bytes": 24590,
+      "sha256": "f9bf4eba1aced59235213271d27893946249ca10ad433ca4ed101c88f5b66a6b",
+      "prompt": "Long-form blog post in a serif typeface. Centered measure of about 68 characters, author byline with avatar and date, drop-cap first paragraph, pull quote, code block, figure with caption, and related-posts cards at the end."
+    },
+    {
+      "id": "p19-article-docs",
+      "file": "corpus/pages/p19-article-docs.html",
+      "kind": "article",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 9102,
+      "sha256": "5fe9434fe4318a1edf49de14e80d564da00175a81f049e06783665ca2438a0b1",
+      "prompt": "Documentation page with three columns: left sidebar navigation tree, main content, right-hand sticky table of contents. Include code blocks, callout boxes, a parameters table and prev/next links."
+    },
+    {
+      "id": "p20-article-magazine",
+      "file": "corpus/pages/p20-article-magazine.html",
+      "kind": "article",
+      "mode": "inline",
+      "fontStack": "Georgia, Cambria, \"Times New Roman\", Times, serif",
+      "bytes": 23104,
+      "sha256": "7d65919c185dbc1a899563ea9298760f599877b102717b2bc085eb0d7945c7a7",
+      "prompt": "Editorial magazine-style index page. A large lead story with an overlaid headline on the image, then a masonry-ish grid of secondary stories in mixed sizes, and a newsletter signup band."
+    },
+    {
+      "id": "p21-article-help-center",
+      "file": "corpus/pages/p21-article-help-center.html",
+      "kind": "article",
+      "mode": "linked",
+      "fontStack": "system-ui, sans-serif",
+      "bytes": 13187,
+      "sha256": "820863e027c47718f7ae108e91ab7777dd6e6eef9376cbbd7f81a262cb704ead",
+      "prompt": "Help center landing. Big search bar in a hero, a grid of category cards with icons and article counts, a popular-articles list, and a contact-support band at the bottom."
+    },
+    {
+      "id": "p22-table-users",
+      "file": "corpus/pages/p22-table-users.html",
+      "kind": "table",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 26638,
+      "sha256": "5dbc52c74658b803b22046e04af0bde6ad5dad4baf58b4d46e11ced0ab80c665",
+      "prompt": "User management table. Toolbar with search, filter chips and bulk actions, a table with checkboxes, avatars, role badges and a row menu, then pagination. Everything inside an app shell with a sidebar."
+    },
+    {
+      "id": "p23-table-wide-scroll",
+      "file": "corpus/pages/p23-table-wide-scroll.html",
+      "kind": "table",
+      "mode": "inline",
+      "fontStack": "ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, Consolas, monospace",
+      "bytes": 16712,
+      "sha256": "abdd0e28876ee3b65b0d65fe65c520b67ee834612ca1c71d528c851ee09e8941",
+      "prompt": "Wide financial data grid with 14 columns that must scroll horizontally, a frozen first column, right-aligned numeric cells in a monospace font, and a totals footer row."
+    },
+    {
+      "id": "p24-table-inbox",
+      "file": "corpus/pages/p24-table-inbox.html",
+      "kind": "table",
+      "mode": "linked",
+      "fontStack": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "bytes": 19853,
+      "sha256": "8233e690540027f0c57eec6b160e2fe865e29be156d3b6886cac1ec14199b8fa",
+      "prompt": "Three-pane inbox layout: folder list, message list in the middle with unread indicators and truncated previews, and a reading pane on the right. Each pane scrolls independently and the whole thing fills the viewport."
+    },
+    {
+      "id": "p25-table-catalog",
+      "file": "corpus/pages/p25-table-catalog.html",
+      "kind": "table",
+      "mode": "inline",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 45307,
+      "sha256": "f34dce1bf93fd18e8ee186fc715abceebb8bf7052d1848779a465838446a3dfc",
+      "prompt": "E-commerce product catalog: filter sidebar on the left with checkboxes and a price range, product cards in a responsive grid with badges and star ratings, sort dropdown and result count above."
+    },
+    {
+      "id": "p26-modal-invite",
+      "file": "corpus/pages/p26-modal-invite.html",
+      "kind": "modal",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 21547,
+      "sha256": "13a5450194683c0230a1eab555e91305c2dd8346d0d48e1d719e2f2dc3992e7e",
+      "prompt": "Dashboard page with a modal dialog open on top of it. Dimmed backdrop, centered dialog with a header, scrollable body containing a form, and a footer with cancel/confirm. Toast notifications stacked in the bottom-right corner."
+    },
+    {
+      "id": "p27-modal-drawer",
+      "file": "corpus/pages/p27-modal-drawer.html",
+      "kind": "modal",
+      "mode": "inline",
+      "fontStack": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "bytes": 31916,
+      "sha256": "24cb150479415d748eda204ec5525a176b89b8a46de4e3d8dc1d334686686862",
+      "prompt": "Right-hand slide-over drawer open over a data table. The drawer is full height, has a header with a close button, a scrollable detail body with a definition list and an activity timeline, and a sticky action footer. Also show an open dropdown menu in the page behind it."
+    },
+    {
+      "id": "p28-modal-command-palette",
+      "file": "corpus/pages/p28-modal-command-palette.html",
+      "kind": "modal",
+      "mode": "linked",
+      "fontStack": "\"Inter\", \"Inter var\", system-ui, sans-serif",
+      "bytes": 12464,
+      "sha256": "37d1bd5d2a1874e2e37fbabaf44329c7c82e3c7739c63aac05fce8969b1ee99b",
+      "prompt": "Command palette open over a docs page. Blurred backdrop, a centered search box near the top with grouped results, keyboard-shortcut hints on the right of each row, and a footer strip with navigation hints. Also include a tooltip and a cookie banner."
+    },
+    {
+      "id": "p29-nav-megamenu",
+      "file": "corpus/pages/p29-nav-megamenu.html",
+      "kind": "nav",
+      "mode": "linked",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 12966,
+      "sha256": "ef5985b78c739b049089b1d27ee7a3cd47b3016eaa528072cb447b391cbe08fb",
+      "prompt": "Marketing site header with an open mega menu: four columns of links with icons and descriptions, a featured card on the right, and a promo strip along the bottom of the panel. Page content behind is a simple hero."
+    },
+    {
+      "id": "p30-nav-app-shell",
+      "file": "corpus/pages/p30-nav-app-shell.html",
+      "kind": "nav",
+      "mode": "inline",
+      "fontStack": "system-ui, sans-serif",
+      "bytes": 35732,
+      "sha256": "04833c715d8ac5faf9e6ea3fb4c4c8fe0291af5661b88e067a4afe9fc1025f2e",
+      "prompt": "Application shell with a collapsed icon-only rail on the far left, a secondary nav column next to it, a top bar with breadcrumbs and a workspace switcher, tabs under the top bar, and a placeholder content area. A mobile drawer overlay is also visible."
+    }
+  ]
+}
