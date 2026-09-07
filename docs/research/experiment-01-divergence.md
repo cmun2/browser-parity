@@ -77,3 +77,47 @@ Findings that any implementation must handle, discovered by accident:
 2. The hard problem is **not detection. It is suppression and root-cause collapse.** Parent-relative coordinates plus a normalization layer cut the finding count 40 → 12; nearly all of the remaining 12 are two known-expected classes.
 3. This independently corroborates XBIDetective (arXiv 2512.15804): Mozilla's own results spend most of their accuracy budget on classifying **dynamic elements (84%)** and **advertisements (85%)** versus 79% on inconsistency detection. Their hard problem was noise too.
 4. **Playwright's WebKit is not Safari.** It is a WebKit build driven by Playwright's own embedder, without Safari's UI chrome, WebKit's ITP/proprietary layers, or Apple's shipping configuration. UA reports `Version/26.6 Safari/605.1.15`, and the layout engine is genuinely WebKit — so *positive* findings (a divergence Playwright-WebKit shows) are usually credible. But *negative* findings do not clear Safari: "no divergence in Playwright WebKit" is not "works in Safari," and Safari-on-iOS — the highest-value target for most teams — is not covered at all. The tool cannot honestly market "prove it works in Safari."
+
+---
+
+# Experiment 02 — Real-world noise floor and whether it can be suppressed deterministically
+
+Synthetic fixtures could flatter the idea. So: three real production sites, all three engines, 1280x900, `networkidle` + `document.fonts.ready` + 1.2s settle. Element correspondence by structural path (`TAG[nth-of-same-tag]` chain from `<body>`), matched only where the path exists in all three engines.
+
+Reproduce: `node scripts/realworld.mjs <urls>` and `node scripts/funnel.mjs <url>`
+
+## Raw divergence is catastrophic
+
+| site | nodes matched in all 3 | absolute-coord Δ>0.5px | parent-relative Δ>0.5px | size Δ>0.5px |
+|---|---|---|---|---|
+| tailwindcss.com | 2103 | 637 (30.3%) | 515 (24.5%) | 570 (27.1%) |
+| react.dev | 1514 | 1448 (**95.6%**) | 164 (10.8%) | 573 (37.8%) |
+| playwright.dev | 233 | 48 (20.6%) | 74 (31.8%) | 56 (24.0%) |
+
+**Hundreds of diverging nodes per page.** Naive cross-engine geometry diffing is unshippable — this confirms the risk directly. Note also that parent-relative coordinates alone are *not* sufficient on real pages (react.dev 95.6% → 10.8% is a big win; playwright.dev 20.6% → 31.8% is a *regression*, because relative coords surface divergences that absolute coords happened to cancel).
+
+Diverging nodes are dominated by `SPAN` and by SVG-internal tags (`path`, `rect`, `circle`, `g`, `ellipse`, `use`).
+
+## The suppression funnel — deterministic, no ML
+
+Applying four rules in order:
+
+| stage | tailwindcss.com | react.dev | playwright.dev |
+|---|---|---|---|
+| 0. raw (parent-relative or size Δ > 0.5px) | 638 | 611 | 74 |
+| 1. drop SVG-internal nodes | 452 | 483 | 54 |
+| 2. drop `display: inline` (text-metric noise) | **36** | **80** | **1** |
+| 3. tolerance: max(2px, 1% of box) | 36 | 10 | 0 |
+| 4. collapse inherited (parent carries same Δ) | **19** | **5** | **0** |
+
+**638 → 19, 611 → 5, 74 → 0.** A 97–100% reduction with four deterministic rules and zero AI calls.
+
+Rules 1 and 2 do almost all the work: SVG interiors and inline text boxes are ~92–98% of raw signal, and both are *categorically* expected divergence (rasterizer geometry; glyph shaping). This is the tolerance model the landscape review identified as unclaimed and as "the whole product." It is buildable, cheap, and testable.
+
+## Honest caveat: the residual is still mostly noise
+
+tailwindcss.com's 19 survivors are 16 `SPAN`s inside a `<CODE>` block **all at exactly Δ36.0px** plus 3 `DIV`s. Sixteen identical deltas among siblings is one root cause, not sixteen findings — a *sibling-uniform delta collapse* rule would take 19 → ~4. That rule is validated by this data and belongs in v0.1.
+
+react.dev's survivors (Δ170.2 / 81.0 / 25.3px `DIV`s) are large enough to be real layout divergence or dynamic content; distinguishing those two is not yet solved and is the honest open risk.
+
+So: **recall is not the problem and suppression is tractable. Final-stage precision is unproven.** That is where the remaining risk lives, and it is the first thing v0.1 must measure rather than assume.
