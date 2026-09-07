@@ -1,0 +1,207 @@
+{
+  "SYNTHETIC": true,
+  "warning": "Fabricated entries for exercising the labelling UI. Never part of any real result. verdict.mjs refuses labels marked synthetic.",
+  "findings": [
+    {
+      "id": "DEMO-1",
+      "page": "DEMO-page-a",
+      "kind": "demo",
+      "path": "BODY[1]/DIV[2]/BUTTON[1]",
+      "selector": ".btn.primary",
+      "tag": "BUTTON",
+      "display": "inline-flex",
+      "text": "Save changes",
+      "selfConsistent": true,
+      "maxDeltaPx": 14,
+      "properties": [
+        {
+          "prop": "width",
+          "deltaPx": 14,
+          "values": {
+            "chromium": 140,
+            "firefox": 152,
+            "webkit": 138
+          }
+        },
+        {
+          "prop": "height",
+          "deltaPx": 2,
+          "values": {
+            "chromium": 40,
+            "firefox": 42,
+            "webkit": 40
+          }
+        }
+      ],
+      "geometry": {
+        "chromium": {
+          "w": 140,
+          "h": 40,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        },
+        "firefox": {
+          "w": 152,
+          "h": 42,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        },
+        "webkit": {
+          "w": 138,
+          "h": 40,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        }
+      },
+      "styleDiffs": {
+        "fontFamily": {
+          "chromium": "\"Segoe UI\", sans-serif",
+          "firefox": "\"Segoe UI\", sans-serif",
+          "webkit": "Segoe UI, sans-serif"
+        }
+      },
+      "shots": {
+        "chromium": "demoshots/DEMO-1.chromium.png",
+        "firefox": "demoshots/DEMO-1.firefox.png",
+        "webkit": "demoshots/DEMO-1.webkit.png"
+      }
+    },
+    {
+      "id": "DEMO-2",
+      "page": "DEMO-page-a",
+      "kind": "demo",
+      "path": "BODY[1]/FORM[1]/INPUT[3]",
+      "selector": "#date",
+      "tag": "INPUT",
+      "display": "inline-block",
+      "text": "SYNTHETIC demo entry — looks like a form control",
+      "selfConsistent": true,
+      "maxDeltaPx": 44.9,
+      "properties": [
+        {
+          "prop": "width",
+          "deltaPx": 44.9,
+          "values": {
+            "chromium": 143,
+            "firefox": 137.8,
+            "webkit": 98.1
+          }
+        },
+        {
+          "prop": "height",
+          "deltaPx": 4,
+          "values": {
+            "chromium": 38,
+            "firefox": 38,
+            "webkit": 34
+          }
+        }
+      ],
+      "geometry": {
+        "chromium": {
+          "w": 143,
+          "h": 38,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        },
+        "firefox": {
+          "w": 137.8,
+          "h": 38,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        },
+        "webkit": {
+          "w": 98.1,
+          "h": 34,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        }
+      },
+      "styleDiffs": {
+        "fontFamily": {
+          "chromium": "\"Segoe UI\", sans-serif",
+          "firefox": "\"Segoe UI\", sans-serif",
+          "webkit": "Segoe UI, sans-serif"
+        }
+      },
+      "shots": {
+        "chromium": "demoshots/DEMO-2.chromium.png",
+        "firefox": "demoshots/DEMO-2.firefox.png",
+        "webkit": "demoshots/DEMO-2.webkit.png"
+      }
+    },
+    {
+      "id": "DEMO-3",
+      "page": "DEMO-page-b",
+      "kind": "demo",
+      "path": "BODY[1]/MAIN[1]/DIV[1]/DIV[2]",
+      "selector": ".card",
+      "tag": "DIV",
+      "display": "flex",
+      "text": "Ingest volume 1.4 TB",
+      "selfConsistent": true,
+      "maxDeltaPx": 69,
+      "properties": [
+        {
+          "prop": "width",
+          "deltaPx": 69,
+          "values": {
+            "chromium": 320,
+            "firefox": 320,
+            "webkit": 251
+          }
+        }
+      ],
+      "geometry": {
+        "chromium": {
+          "w": 320,
+          "h": 128,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        },
+        "firefox": {
+          "w": 320,
+          "h": 128,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        },
+        "webkit": {
+          "w": 251,
+          "h": 128,
+          "rx": 0,
+          "ry": 0,
+          "ax": 24,
+          "ay": 24
+        }
+      },
+      "styleDiffs": {
+        "fontFamily": {
+          "chromium": "\"Segoe UI\", sans-serif",
+          "firefox": "\"Segoe UI\", sans-serif",
+          "webkit": "Segoe UI, sans-serif"
+        }
+      },
+      "shots": {
+        "chromium": "demoshots/DEMO-3.chromium.png",
+        "firefox": "demoshots/DEMO-3.firefox.png",
+        "webkit": "demoshots/DEMO-3.webkit.png"
+      }
+    }
+  ]
+}

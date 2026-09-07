@@ -33,6 +33,33 @@ if (DEMO) {
   meta = { demo: false, corpusHash: s.corpusHash, ranAt: s.ranAt, pages: s.totals.pages, engineVersions: s.environment.engineVersions };
 }
 
+// Root-cause grouping for the REVIEW pass only.
+//
+// Findings on the same page, with the same tag, carrying the same delta to a
+// quarter-pixel are one cause wearing N hats — experiment 02 saw 16 SPANs in one
+// <code> block all at exactly 36.0px. Labelling those 16 times adds friction and
+// no information, so the UI presents them as one unit and writes one label per
+// member. The survivor COUNT is untouched: this changes how long review takes,
+// not what was measured. verdict.mjs still reads per-finding labels.
+function groupKey(f) {
+  const sig = ['width', 'height', 'offset-x', 'offset-y'].map(p => {
+    const q = (f.properties || []).find(x => x.prop === p);
+    return q ? Math.round(q.deltaPx * 4) / 4 : 0;
+  }).join('/');
+  return `${f.page}|${f.tag}|${sig}`;
+}
+const byKey = new Map();
+for (const f of items) {
+  const k = groupKey(f);
+  if (!byKey.has(k)) byKey.set(k, []);
+  byKey.get(k).push(f);
+}
+const units = [...byKey.entries()].map(([key, members]) => {
+  const sorted = [...members].sort((a, b) => b.maxDeltaPx - a.maxDeltaPx);
+  return { key, rep: sorted[0], memberIds: members.map(m => m.id), count: members.length,
+    otherPaths: sorted.slice(1, 12).map(m => m.path) };
+});
+
 fs.mkdirSync(RESULTS, { recursive: true });
 const appendLabel = (rec) => fs.appendFileSync(LABELS, JSON.stringify(rec) + '\n');
 function readLabels() {
@@ -52,20 +79,26 @@ const server = http.createServer((req, res) => {
   const send = (code, type, body) => { res.writeHead(code, { 'content-type': type, 'cache-control': 'no-store' }); res.end(body); };
 
   if (u.pathname === '/') return send(200, 'text/html; charset=utf-8', HTML);
-  if (u.pathname === '/api/state') return send(200, 'application/json', JSON.stringify({ items, labels: readLabels(), meta }));
+  if (u.pathname === '/api/state') return send(200, 'application/json', JSON.stringify({ units, findingCount: items.length, labels: readLabels(), meta }));
 
   if (u.pathname === '/api/judge' && req.method === 'POST') {
     let b = ''; req.on('data', d => b += d);
     return req.on('end', () => {
       const r = JSON.parse(b);
-      appendLabel({ ...r, at: new Date().toISOString(), synthetic: DEMO || undefined });
+      const at = new Date().toISOString();
+      for (const findingId of r.findingIds)
+        appendLabel({ findingId, page: r.page, label: r.label, defectClass: r.defectClass,
+          note: r.note, groupKey: r.unitKey, groupSize: r.findingIds.length, at,
+          synthetic: DEMO || undefined });
       send(200, 'application/json', '{"ok":true}');
     });
   }
   if (u.pathname === '/api/undo' && req.method === 'POST') {
     let b = ''; req.on('data', d => b += d);
     return req.on('end', () => {
-      appendLabel({ findingId: JSON.parse(b).findingId, undo: true, at: new Date().toISOString(), synthetic: DEMO || undefined });
+      const at = new Date().toISOString();
+      for (const findingId of JSON.parse(b).findingIds)
+        appendLabel({ findingId, undo: true, at, synthetic: DEMO || undefined });
       send(200, 'application/json', '{"ok":true}');
     });
   }
@@ -129,49 +162,53 @@ a{color:#818cf8}
 </header>
 <main id="app"></main>
 <script>
-let S=null, idx=0, order=[], t0=Date.now(), sessionCount=0, pendingClass=null;
+let S=null, idx=0, t0=Date.now(), sessionCount=0, pendingClass=null, noteText='';
 const LBL={genuine:'genuine defect',expected:'expected engine difference',artifact:'tool artifact (false positive)',skip:'skipped'};
+const labelled=(u)=>u.memberIds.every(id=>S.labels[id]);
+const firstOpen=()=>{const i=S.units.findIndex(u=>!labelled(u));return i<0?S.units.length:i;};
 
 async function load(){
   S=await (await fetch('/api/state')).json();
   if(S.meta.demo) document.getElementById('demoflag').innerHTML='<div class="demo">DEMO MODE — synthetic entries, written to labels.demo.jsonl, excluded from the verdict</div>';
-  order=S.items.map((_,i)=>i);
-  idx=order.findIndex(i=>!S.labels[S.items[i].id]);
-  if(idx<0) idx=S.items.length;
+  idx=firstOpen();
   render();
 }
 function pace(){
   if(!sessionCount) return '';
   const m=(Date.now()-t0)/60000, rate=sessionCount/m;
-  const left=S.items.filter(x=>!S.labels[x.id]).length;
-  return rate>0? rate.toFixed(1)+'/min · ~'+Math.ceil(left/rate)+' min left' : '';
+  const left=S.units.filter(u=>!labelled(u)).length;
+  return rate>0? rate.toFixed(1)+' units/min · ~'+Math.ceil(left/rate)+' min left' : '';
 }
 function render(){
-  const done=S.items.filter(x=>S.labels[x.id]).length, n=S.items.length;
+  const done=S.units.filter(labelled).length, n=S.units.length;
+  const findingsDone=S.units.filter(labelled).reduce((a,u)=>a+u.count,0);
   document.getElementById('prog').style.width=(100*done/Math.max(1,n))+'%';
-  document.getElementById('count').textContent=done+' / '+n+' labelled';
+  document.getElementById('count').textContent=done+' / '+n+' units ('+findingsDone+' / '+S.findingCount+' findings)';
   document.getElementById('pace').textContent=pace();
   const app=document.getElementById('app');
-  if(idx>=S.items.length||idx<0){
+  if(idx>=S.units.length||idx<0){
     const counts={};
-    for(const it of S.items){const l=S.labels[it.id]; if(l) counts[l.label]=(counts[l.label]||0)+1;}
-    app.innerHTML='<div class="done"><h1>All '+n+' labelled.</h1><p class="dim">'+
-      Object.entries(counts).map(([k,v])=>v+' '+(LBL[k]||k)).join(' · ')+
+    for(const u of S.units){const l=S.labels[u.rep.id]; if(l) counts[l.label]=(counts[l.label]||0)+u.count;}
+    app.innerHTML='<div class="done"><h1>All '+n+' units labelled.</h1><p class="dim">'+
+      Object.entries(counts).map(([k,v])=>v+' findings '+(LBL[k]||k)).join(' · ')+
       '</p><p>Now run <code>node m0/scripts/verdict.mjs</code></p>'+
-      (counts.skip?'<p class="dim">You skipped '+counts.skip+'. Press <b>r</b> to revisit them.</p>':'')+'</div>';
+      (counts.skip?'<p class="dim">You skipped some. Press <b>r</b> to revisit them.</p>':'')+'</div>';
     return;
   }
-  const it=S.items[idx], prev=S.labels[it.id];
+  const u=S.units[idx], it=u.rep, prev=S.labels[it.id];
   const props=it.properties.map(p=>'<tr><td>'+p.prop+'</td><td class="num hot">'+p.deltaPx.toFixed(2)+'px</td>'+
     ['chromium','firefox','webkit'].map(e=>'<td class="num">'+p.values[e]+'</td>').join('')+'</tr>').join('');
   const sd=Object.entries(it.styleDiffs||{});
   app.innerHTML=
-   (it.selfConsistent===false?'<div class="warn">This page rendered differently on two loads of the same engine — treat any finding on it as uninterpretable and mark it a tool artifact.</div>':'')+
+   (it.selfConsistent===false?'<div class="warn">This page rendered differently on two loads of the same engine — any finding on it is uninterpretable. Mark it a tool artifact.</div>':'')+
    '<div class="meta"><h1>'+it.id+'</h1><span class="tag">'+(it.kind||'')+'</span>'+
      '<span class="dim">&lt;'+it.tag.toLowerCase()+'&gt; · display:'+it.display+'</span>'+
      '<span class="dim">max Δ <b class="hot">'+it.maxDeltaPx.toFixed(2)+'px</b></span>'+
      '<a href="/page/'+it.page+'.html" target="_blank">open page ↗</a></div>'+
-   '<div><code>'+it.path+'</code>'+(it.selector?' <code>'+it.selector+'</code>':'')+'</div>'+
+   (u.count>1?'<div class="panel" style="border-color:#6366f1"><b>'+u.count+' findings on this page share this exact delta and tag</b> — one cause, '+u.count+' symptoms. Your judgement applies to all '+u.count+'.'+
+      '<details style="margin-top:.4rem"><summary>show the other paths</summary><div class="dim" style="margin-top:.4rem">'+
+      u.otherPaths.map(p=>'<div><code>'+p+'</code></div>').join('')+(u.count>u.otherPaths.length+1?'<div class="dim">…and '+(u.count-u.otherPaths.length-1)+' more</div>':'')+'</div></details></div>':'')+
+   '<div style="margin-top:.6rem"><code>'+it.path+'</code>'+(it.selector?' <code>'+it.selector+'</code>':'')+'</div>'+
    (it.text?'<div class="dim" style="margin-top:.35rem">text: “'+it.text.replace(/</g,'&lt;')+'”</div>':'')+
    '<div class="shots">'+['chromium','firefox','webkit'].map(e=>
      '<div class="shot"><h3><span>'+e+'</span><span>'+it.geometry[e].w+' × '+it.geometry[e].h+'</span></h3>'+
@@ -180,7 +217,8 @@ function render(){
    (sd.length?'<details class="panel"><summary>'+sd.length+' computed style propert'+(sd.length>1?'ies':'y')+' also differ</summary><table><tbody>'+
       sd.map(([k,v])=>'<tr><td>'+k+'</td><td><code>'+String(v.chromium).slice(0,40)+'</code></td><td><code>'+String(v.firefox).slice(0,40)+'</code></td><td><code>'+String(v.webkit).slice(0,40)+'</code></td></tr>').join('')+'</tbody></table></details>':'')+
    (pendingClass?'<div class="panel"><b>Genuine defect — what kind?</b><div class="keys">'+
-      [['f','form control'],['t','text / font metric'],['l','layout'],['o','other']].map(([k,l])=>'<span class="key" onclick="cls(\''+k+'\')"><b>'+k+'</b>'+l+'</span>').join('')+'</div></div>'
+      [['f','form control'],['t','text / font metric'],['l','layout'],['o','other']].map(([k,l])=>'<span class="key" onclick="cls(\''+k+'\')"><b>'+k+'</b>'+l+'</span>').join('')+'</div>'+
+      '<div class="dim" style="margin-top:.5rem">form control / text metric point at PIVOT; layout / other are what a GO needs.</div></div>'
      :'<div class="keys">'+
       '<span class="key g" onclick="judge(\'genuine\')"><b>1</b>genuine defect</span>'+
       '<span class="key e" onclick="judge(\'expected\')"><b>2</b>expected engine difference</span>'+
@@ -189,37 +227,34 @@ function render(){
       '<span class="key" onclick="undo()"><b>u</b>undo last</span>'+
       '<span class="key" onclick="note()"><b>n</b>note</span></div>')+
    (prev?'<div class="panel dim">already labelled: <b>'+(LBL[prev.label]||prev.label)+'</b>'+(prev.defectClass?' ('+prev.defectClass+')':'')+(prev.note?' — “'+prev.note+'”':'')+'</div>':'')+
-   '<div class="panel dim" id="notebox" style="display:none">note (Enter to save)<input type="text" id="noteinput"></div>';
+   (noteText?'<div class="panel dim">note staged: “'+noteText.replace(/</g,'&lt;')+'”</div>':'')+
+   '<div class="panel dim" id="notebox" style="display:none">note (Enter to save, Esc to cancel)<input type="text" id="noteinput"></div>';
 }
 async function post(u,b){await fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)});}
-let noteText='';
-async function judge(label){
-  const it=S.items[idx];
+async function commit(label,defectClass){
+  const u=S.units[idx];
+  await post('/api/judge',{unitKey:u.key,findingIds:u.memberIds,page:u.rep.page,label,defectClass,note:noteText||undefined});
+  for(const id of u.memberIds) S.labels[id]={label,defectClass,note:noteText||undefined};
+  noteText=''; sessionCount++; pendingClass=null;
+  idx=firstOpen(); render();
+}
+function judge(label){
   if(label==='genuine'){pendingClass=true;render();return;}
-  await post('/api/judge',{findingId:it.id,page:it.page,label,note:noteText||undefined,elapsedMs:Date.now()-t0});
-  S.labels[it.id]={label,note:noteText||undefined}; noteText=''; sessionCount++;
-  idx=order.findIndex(i=>!S.labels[S.items[i].id]); if(idx<0)idx=S.items.length;
-  render();
+  commit(label);
 }
-async function cls(c){
-  const it=S.items[idx];
-  const defectClass={f:'form-control',t:'text-metric',l:'layout',o:'other'}[c];
-  await post('/api/judge',{findingId:it.id,page:it.page,label:'genuine',defectClass,note:noteText||undefined,elapsedMs:Date.now()-t0});
-  S.labels[it.id]={label:'genuine',defectClass,note:noteText||undefined}; noteText=''; sessionCount++; pendingClass=null;
-  idx=order.findIndex(i=>!S.labels[S.items[i].id]); if(idx<0)idx=S.items.length;
-  render();
-}
+function cls(c){ commit('genuine',{f:'form-control',t:'text-metric',l:'layout',o:'other'}[c]); }
 async function undo(){
-  const done=S.items.map((x,i)=>i).filter(i=>S.labels[S.items[i].id]);
+  const done=S.units.map((u,i)=>i).filter(i=>labelled(S.units[i]));
   if(!done.length)return;
-  const last=done[done.length-1], it=S.items[last];
-  await post('/api/undo',{findingId:it.id});
-  delete S.labels[it.id]; idx=last; pendingClass=null; sessionCount=Math.max(0,sessionCount-1); render();
+  const last=done[done.length-1], u=S.units[last];
+  await post('/api/undo',{findingIds:u.memberIds});
+  for(const id of u.memberIds) delete S.labels[id];
+  idx=last; pendingClass=null; sessionCount=Math.max(0,sessionCount-1); render();
 }
 function note(){
   const b=document.getElementById('notebox'),i=document.getElementById('noteinput');
   b.style.display='block'; i.value=noteText; i.focus();
-  i.onkeydown=(e)=>{if(e.key==='Enter'){noteText=i.value;b.style.display='none';i.blur();}
+  i.onkeydown=(e)=>{if(e.key==='Enter'){noteText=i.value;b.style.display='none';i.blur();render();}
                     if(e.key==='Escape'){b.style.display='none';i.blur();}};
 }
 addEventListener('keydown',e=>{
@@ -227,16 +262,16 @@ addEventListener('keydown',e=>{
   if(pendingClass){ if('ftlo'.includes(e.key))cls(e.key); if(e.key==='Escape'){pendingClass=null;render();} return; }
   if(e.key==='1')judge('genuine'); else if(e.key==='2')judge('expected'); else if(e.key==='3')judge('artifact');
   else if(e.key==='s')judge('skip'); else if(e.key==='u')undo(); else if(e.key==='n')note();
-  else if(e.key==='r'){ // revisit skipped
-    const i=S.items.findIndex(x=>S.labels[x.id]&&S.labels[x.id].label==='skip');
-    if(i>=0){delete S.labels[S.items[i].id];idx=i;post('/api/undo',{findingId:S.items[i].id});render();}
+  else if(e.key==='r'){
+    const i=S.units.findIndex(x=>S.labels[x.rep.id]&&S.labels[x.rep.id].label==='skip');
+    if(i>=0){const u=S.units[i];post('/api/undo',{findingIds:u.memberIds});for(const id of u.memberIds)delete S.labels[id];idx=i;render();}
   }
 });
 load();
 </script></body></html>`;
 
 server.listen(PORT, () => {
-  console.log(`\n${DEMO ? 'DEMO MODE — synthetic entries, writes labels.demo.jsonl' : `${items.length} survivors to label`}`);
+  console.log(`\n${DEMO ? 'DEMO MODE — synthetic entries, writes labels.demo.jsonl' : `${items.length} survivors, grouped into ${units.length} root-cause units to review`}`);
   console.log(`open  http://localhost:${PORT}`);
   console.log(`keys  1 genuine · 2 expected engine difference · 3 tool artifact · s skip · u undo · n note`);
   console.log(`saves to m0/results/${path.basename(LABELS)} after every judgement — safe to quit and resume\n`);

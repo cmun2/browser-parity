@@ -15,7 +15,11 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const RESULTS = path.join(ROOT, 'results');
 const SHOTS = path.join(RESULTS, 'shots');
 const EVIDENCE = path.join(RESULTS, 'evidence');
-const PAD = 24, MAXW = 900, MAXH = 640;
+// Crop geometry for the labelling evidence. MIN* guarantees surrounding context
+// (a 20px-tall <legend> cropped to 20px+padding is unjudgeable); MAX* keeps the
+// images small enough to flick through.
+const PAD = 24, MAXW = 900, MAXH = 640, MINW = 380, MINH = 260;
+const SHOTS_ONLY = process.argv.includes('--shots-only');
 
 const manifest = verifyCorpus(ROOT);
 fs.mkdirSync(SHOTS, { recursive: true });
@@ -38,8 +42,16 @@ const fontFingerprint = await pages.chromium.evaluate(() => {
   return ['system-ui', 'sans-serif', 'serif', 'monospace', 'Helvetica', 'Arial', 'Georgia', 'Inter'].map(f => `${f}=${probe(f)}`).join(' ');
 });
 
-const perPage = [];
-for (const p of manifest.pages) {
+let perPage = [];
+if (SHOTS_ONLY) {
+  // Re-render the crops from an existing survivors.json. Used when the crop
+  // presentation changes; it cannot change a single measured number.
+  const prev = JSON.parse(fs.readFileSync(path.join(RESULTS, 'survivors.json'), 'utf8'));
+  if (prev.corpusHash !== manifest.corpusHash) { console.error('survivors.json is from a different corpus.'); process.exit(1); }
+  perPage = prev.pages;
+  console.log(`--shots-only: re-rendering crops for ${perPage.reduce((a, p) => a + p.findings.length, 0)} findings`);
+}
+for (const p of SHOTS_ONLY ? [] : manifest.pages) {
   const url = pathToFileURL(path.join(ROOT, p.file)).href;
   const data = {};
   for (const e of E) { await settle(pages[e], url); data[e] = await collectFromPage(pages[e]); }
@@ -83,7 +95,8 @@ for (const p of manifest.pages) {
         display: data.chromium[k].disp, text: data.chromium[k].text,
         maxDeltaPx: +Math.max(x.rel, x.size).toFixed(2),
         properties: props, geometry: per, styleDiffs,
-        shots: Object.fromEntries(E.map(e => [e, `shots/${p.id}#${i + 1}`.replace('#', '_') + `.${e}.png`])),
+        // filename only; the labelling server resolves it inside results/shots/
+        shots: Object.fromEntries(E.map(e => [e, `${p.id}_${i + 1}.${e}.png`])),
       };
     });
 
@@ -112,14 +125,26 @@ for (const pg of perPage) {
     const full = await pages[e].evaluate(() => ({ w: document.documentElement.scrollWidth, h: document.documentElement.scrollHeight }));
     for (const f of pg.findings) {
       const g = f.geometry[e], all = E.map(x => f.geometry[x]);
-      const cw = Math.min(MAXW, Math.max(...all.map(a => a.w)) + PAD * 2);
-      const ch = Math.min(MAXH, Math.max(...all.map(a => a.h)) + PAD * 2);
-      const x = Math.max(0, Math.min(g.ax - PAD, full.w - cw));
-      const y = Math.max(0, Math.min(g.ay - PAD, full.h - ch));
+      const cw = Math.min(MAXW, Math.max(MINW, Math.max(...all.map(a => a.w)) + PAD * 2));
+      const ch = Math.min(MAXH, Math.max(MINH, Math.max(...all.map(a => a.h)) + PAD * 2));
+      // Centre the element in the crop box so all three engines frame it the same way.
+      const x = Math.max(0, Math.min(g.ax - (cw - Math.min(cw, g.w)) / 2, Math.max(0, full.w - cw)));
+      const y = Math.max(0, Math.min(g.ay - (ch - Math.min(ch, g.h)) / 2, Math.max(0, full.h - ch)));
       const clip = { x, y, width: Math.max(8, Math.min(cw, full.w - x)), height: Math.max(8, Math.min(ch, full.h - y)) };
       const out = path.join(SHOTS, f.shots[e]);
+      // Outline the element under review. An absolutely-positioned overlay appended
+      // to <body> does not reflow anything, and geometry was already collected.
+      await pages[e].evaluate(([bx, by, bw, bh]) => {
+        const d = document.createElement('div');
+        d.id = '__bp_hl';
+        d.style.cssText = `position:absolute;left:${bx}px;top:${by}px;width:${bw}px;height:${bh}px;` +
+          'outline:2px solid #e11d48;outline-offset:1px;box-shadow:0 0 0 9999px rgba(225,29,72,.06);' +
+          'pointer-events:none;z-index:2147483647';
+        document.body.appendChild(d);
+      }, [g.ax, g.ay, g.w, g.h]);
       try { await pages[e].screenshot({ path: out, fullPage: true, clip }); shotCount++; }
       catch (err) { console.error(`  !! shot ${f.id} ${e}: ${String(err.message).slice(0, 70)}`); }
+      await pages[e].evaluate(() => document.getElementById('__bp_hl')?.remove());
     }
   }
 }
@@ -151,6 +176,10 @@ const out = {
   timingMs: { collect: collectMs, screenshots: shotMs },
   pages: perPage,
 };
+if (SHOTS_ONLY) {
+  console.log(`\n--shots-only: ${shotCount} crops re-rendered in ${(shotMs / 1000).toFixed(0)}s. survivors.json untouched.`);
+  process.exit(0);
+}
 fs.writeFileSync(path.join(RESULTS, 'survivors.json'), JSON.stringify(out, null, 2) + '\n');
 
 console.log(`\nraw ${out.totals.rawFindings} -> survivors ${out.totals.survivors} across ${out.totals.pages} pages`);
