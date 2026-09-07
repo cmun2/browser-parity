@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+* { box-sizing:border-box; }
+html { font-family: Helvetica, Arial, sans-serif; font-size:16px; line-height:20px; }
+body { margin:0; }
+section { border-top:1px solid #ccc; padding:6px; }
+.box{background:#eef;border:1px solid #66c;}
+</style></head><body>
+
+<section><!-- anchor positioning: Chromium-only -->
+  <div style="position:relative;height:120px;">
+    <button id="anch" style="anchor-name:--a; position:absolute; left:100px; top:40px;">anchor</button>
+    <div data-probe="m-anchor" class="box" style="position:absolute; position-anchor:--a; left:anchor(right); top:anchor(bottom); width:90px;">tooltip</div>
+  </div>
+</section>
+
+<section><!-- field-sizing: content -->
+  <input data-probe="m-fieldsizing" style="field-sizing:content; min-width:2ch;" value="abc">
+</section>
+
+<section><!-- text-wrap: balance / pretty -->
+  <h3 data-probe="m-balance" style="text-wrap:balance; width:300px; margin:0; font-size:20px; line-height:24px;">A reasonably long balanced heading that spans multiple lines here</h3>
+  <p data-probe="m-pretty" style="text-wrap:pretty; width:300px; margin:0;">Paragraph text set with pretty wrapping to avoid orphans across several lines of content.</p>
+</section>
+
+<section><!-- subgrid -->
+  <div style="display:grid; grid-template-columns:120px 1fr; width:400px;">
+    <div style="display:grid; grid-template-columns:subgrid; grid-column:span 2;">
+      <div data-probe="m-subgrid-a" class="box">A</div><div data-probe="m-subgrid-b" class="box">B</div>
+    </div>
+  </div>
+</section>
+
+<section><!-- line-clamp standard vs -webkit -->
+  <div data-probe="m-clamp-std" class="box" style="line-clamp:2; width:200px;">one two three four five six seven eight nine ten eleven twelve thirteen fourteen</div>
+  <div data-probe="m-clamp-wk" class="box" style="display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; width:200px;">one two three four five six seven eight nine ten eleven twelve thirteen fourteen</div>
+</section>
+
+<section><!-- scrollbar-gutter -->
+  <div data-probe="m-gutter" style="scrollbar-gutter:stable; overflow:auto; height:50px; width:200px;" class="box"><div style="height:200px">tall</div></div>
+</section>
+
+<section><!-- aspect-ratio inside flex + min-height:0 -->
+  <div style="display:flex; height:80px; width:300px;">
+    <div data-probe="m-ar" class="box" style="aspect-ratio:16/9; height:100%;"></div>
+    <div data-probe="m-ar2" class="box" style="flex:1;">rest</div>
+  </div>
+</section>
+
+<section><!-- container query units -->
+  <div style="container-type:inline-size; width:400px;">
+    <div data-probe="m-cq" class="box" style="width:50cqw; height:20px;"></div>
+  </div>
+</section>
+
+<section><!-- text-box-trim -->
+  <div data-probe="m-textbox" class="box" style="text-box-trim:trim-both; text-box-edge:cap alphabetic; font-size:32px; width:200px;">Trim</div>
+</section>
+
+<section><!-- details/summary + popover -->
+  <details data-probe="m-details" open><summary>sum</summary><div style="height:30px">body</div></details>
+  <div style="height:40px"><button popovertarget="pv">open</button><div id="pv" popover data-probe="m-popover" class="box" style="width:100px;height:30px">pop</div></div>
+</section>
+
+<section><!-- sticky inside overflow:clip, and dvh in scroller -->
+  <div style="overflow:clip; height:60px; width:200px;">
+    <div data-probe="m-sticky-clip" style="position:sticky;top:0;background:#fdd">sticky-in-clip</div>
+    <div style="height:200px"></div>
+  </div>
+</section>
+
+</body></html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  /* Normalization layer under test: pin font metrics + neutralize UA control styling */
+  * { box-sizing: border-box; }
+  html { font-family: Helvetica, Arial, sans-serif; font-size:16px; line-height:20px; }
+  body { margin:0; }
+  input,select,textarea,button,progress { font: inherit; appearance:none; -webkit-appearance:none;
+    border:1px solid #999; padding:2px 4px; margin:0; background:#fff; border-radius:0; }
+  section { border-top:1px solid #ccc; padding:8px; }
+  h2 { font-size:12px; margin:0 0 6px; line-height:16px; font-family:Courier,monospace; }
+</style></head><body>
+<!-- C1: nested flex min-width:auto intrinsic sizing -->
+<section><h2>C1 nested-flex-min-width-auto</h2>
+  <div style="display:flex; width:400px;">
+    <div style="display:flex; flex:1; min-width:0;">
+      <div data-probe="c1-inner" style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">averyveryverylongunbreakablestringthatcannotwrap_0123456789_abcdefghij</div>
+    </div>
+    <div data-probe="c1-side" style="width:80px; background:#fcc;">side</div>
+  </div>
+</section>
+
+<!-- C2: nested flex WITHOUT min-width:0 (the classic bug) -->
+<section><h2>C2 nested-flex-no-min-width</h2>
+  <div style="display:flex; width:400px;">
+    <div style="display:flex; flex:1;">
+      <div data-probe="c2-inner" style="flex:1; white-space:nowrap;">averyveryverylongunbreakablestringthatcannotwrap_0123456789_abcdefghij</div>
+    </div>
+    <div data-probe="c2-side" style="width:80px; background:#fcc;">side</div>
+  </div>
+</section>
+
+<!-- C3: grid min-content / auto sizing -->
+<section><h2>C3 grid-minmax-auto</h2>
+  <div style="display:grid; grid-template-columns: minmax(min-content, 1fr) auto; width:420px; gap:4px;">
+    <div data-probe="c3-a" class="box">Averylongwordwithoutspaces_thatforcesmincontent</div>
+    <div data-probe="c3-b" class="box">B</div>
+  </div>
+</section>
+
+<!-- C4: form controls (UA stylesheet) -->
+<section><h2>C4 form-controls</h2>
+  <button data-probe="c4-button">Button</button>
+  <input data-probe="c4-text" type="text" value="text">
+  <select data-probe="c4-select"><option>option one</option></select>
+  <input data-probe="c4-checkbox" type="checkbox">
+  <input data-probe="c4-range" type="range">
+  <input data-probe="c4-date" type="date">
+  <textarea data-probe="c4-textarea"></textarea>
+  <progress data-probe="c4-progress" value="0.5"></progress>
+</section>
+
+<!-- C5: viewport units + scrollbar -->
+<section><h2>C5 viewport-units</h2>
+  <div data-probe="c5-vw" style="width:100vw; height:12px; background:#cfc;"></div>
+  <div data-probe="c5-pct" style="width:100%; height:12px; background:#ffc;"></div>
+  <div data-probe="c5-dvh" style="height:10dvh; width:20px; background:#ccf;"></div>
+  <div data-probe="c5-svh" style="height:10svh; width:20px; background:#cff;"></div>
+</section>
+
+<!-- C6: sticky positioning inside scroll container -->
+<section><h2>C6 sticky</h2>
+  <div id="c6scroll" style="height:100px; overflow:auto; width:300px; border:1px solid #999;">
+    <div data-probe="c6-sticky" style="position:sticky; top:0; background:#fdd;">STICKY HEADER</div>
+    <div style="height:400px;">tall content</div>
+  </div>
+</section>
+
+<!-- C7: typography / font metrics -->
+<section><h2>C7 typography</h2>
+  <span data-probe="c7-sysui" style="font-family:system-ui;">The quick brown fox jumps over the lazy dog 0123456789</span><br>
+  <span data-probe="c7-serif" style="font-family:serif;">The quick brown fox jumps over the lazy dog 0123456789</span><br>
+  <span data-probe="c7-mono" style="font-family:monospace;">The quick brown fox jumps over the lazy dog 0123456789</span><br>
+  <span data-probe="c7-missing" style="font-family:'DefinitelyNotInstalledFont ABC';">The quick brown fox jumps over the lazy dog 0123456789</span><br>
+  <div data-probe="c7-lh" style="width:260px; line-height:1.31; font-size:15px;">Wrapping paragraph that will break across several lines depending on measured glyph advance widths in this engine.</div>
+</section>
+
+<!-- C8: overflow + intrinsic table -->
+<section><h2>C8 table-overflow</h2>
+  <div style="width:300px; overflow:auto;">
+    <table data-probe="c8-table" style="border-collapse:collapse;">
+      <tr><td style="border:1px solid #999;">cell one</td><td style="border:1px solid #999;">cell two is longer</td><td style="border:1px solid #999;">three</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- C9: UA default styles -->
+<section><h2>C9 ua-defaults</h2>
+  <fieldset data-probe="c9-fieldset"><legend data-probe="c9-legend">legend</legend>content</fieldset>
+  <hr data-probe="c9-hr">
+  <ul data-probe="c9-ul"><li>item</li></ul>
+</section>
+
+<!-- C10: flex gap + wrap + percentage height -->
+<section><h2>C10 flex-wrap-pct-height</h2>
+  <div style="display:flex; flex-wrap:wrap; gap:7px; width:333px; height:60px;">
+    <div data-probe="c10-a" style="flex:1 1 120px; height:100%; background:#eef;">a</div>
+    <div data-probe="c10-b" style="flex:1 1 120px; height:100%; background:#efe;">b</div>
+    <div data-probe="c10-c" style="flex:1 1 120px; height:100%; background:#fee;">c</div>
+  </div>
+</section>
+
+<!-- C11: dynamic content noise (should be flagged as noise, not divergence) -->
+<section><h2>C11 dynamic-noise</h2>
+  <div data-probe="c11-clock" style="display:inline-block; background:#ffe;"></div>
+  <script>document.querySelector('[data-probe="c11-clock"]').textContent = new Date().toISOString();</script>
+</section>
+
+<!-- C12: subpixel accumulation -->
+<section><h2>C12 subpixel</h2>
+  <div style="display:flex; width:1000px;">
+    <div data-probe="c12-a" style="flex:1;">a</div><div data-probe="c12-b" style="flex:1;">b</div>
+    <div data-probe="c12-c" style="flex:1;">c</div><div data-probe="c12-d" style="flex:1;">d</div>
+    <div data-probe="c12-e" style="flex:1;">e</div><div data-probe="c12-f" style="flex:1;">f</div>
+    <div data-probe="c12-g" style="flex:1;">g</div>
+  </div>
+</section>
+
+</body></html>
+</html>
