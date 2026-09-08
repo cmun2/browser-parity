@@ -1,0 +1,4826 @@
+{
+  "schema": "browser-parity/m0-incidence/1",
+  "study": "M0 base-rate measurement — do modern engines still diverge on AI-generated frontends?",
+  "verdict": "GO",
+  "rationale": "16 of 30 pages produced a human-confirmed genuine defect (threshold 3), at a median of 4 survivors per page (threshold 5). Both halves of the hypothesis hold.",
+  "thresholds": {
+    "go": ">=3 of 30 pages with a genuine defect AND median survivors/page <=5",
+    "kill": "0 of 30 pages with a genuine defect",
+    "pivot": "genuine defects exist but all are form-control or text-metric"
+  },
+  "corpus": {
+    "version": "m0-corpus-v1",
+    "hash": "b017b928a0c2d67ea07ee7c70487935265841499af6b1403c4fa0a74990c830e",
+    "frozenAt": "2026-09-07T16:25:33.545Z",
+    "pages": 30,
+    "mix": {
+      "landing": 5,
+      "dashboard": 5,
+      "form": 4,
+      "pricing": 3,
+      "article": 4,
+      "table": 4,
+      "modal": 3,
+      "nav": 2
+    },
+    "provenance": {
+      "origin": "hand-authored",
+      "note": "Pages are hand-authored in an AI-typical idiom, NOT emitted by a model. No hosted model was called (no-paid-API constraint). Each page records the brief it implements so the study can be repeated against real model output using the same 30 prompts. This is the study's primary external-validity limitation.",
+      "generator": "m0/scripts/gen-corpus.mjs + m0/scripts/specs.mjs",
+      "deterministic": "no Math.random, no Date, no timers, no animation, no network"
+    }
+  },
+  "environment": {
+    "playwrightVersion": "1.63.0",
+    "engineVersions": {
+      "chromium": "153.0.8010.12",
+      "firefox": "155.0",
+      "webkit": "26.6"
+    },
+    "os": "darwin arm64",
+    "node": "v23.1.0",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "deviceScaleFactor": 1,
+    "reducedMotion": "reduce",
+    "fontFingerprint": "system-ui=244.289 sans-serif=236.609 serif=218.633 monospace=288.047 Helvetica=236.609 Arial=236.609 Georgia=236.000 Inter=218.633",
+    "normalizationPreset": "none (pages measured exactly as generated)"
+  },
+  "ranAt": "2026-09-07T16:31:50.461Z",
+  "labelledAt": "2026-09-08T15:48:47.866Z",
+  "incidence": {
+    "pagesTotal": 30,
+    "pagesWithGenuineDefect": 16,
+    "defectRatePerPage": 0.5333,
+    "confidenceInterval95": {
+      "method": "Wilson score",
+      "low": 0.3614,
+      "high": 0.6977
+    },
+    "ruleOfThreeUpperBound": null,
+    "interpretation": "16/30 pages = 53.3% (95% CI 36.1–69.8%). The interval is wide because 30 pages is a small sample; treat the point estimate as indicative, not settled.",
+    "genuineDefectsTotal": 180,
+    "defectClasses": {
+      "text-metric": 48,
+      "layout": 43,
+      "other": 81,
+      "form-control": 8
+    }
+  },
+  "precision": {
+    "rawFindingsTotal": 1722,
+    "survivorsTotal": 475,
+    "suppressionRatio": 0.7242,
+    "survivorsPerPage": {
+      "median": 4,
+      "max": 173,
+      "zeroSurvivorPages": 11,
+      "all": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        3,
+        4,
+        4,
+        4,
+        5,
+        5,
+        8,
+        9,
+        10,
+        16,
+        18,
+        22,
+        36,
+        36,
+        42,
+        77,
+        173
+      ]
+    },
+    "meetsPrecisionBound": true,
+    "note": "The <=5 findings/page half of the hypothesis was already largely de-risked by experiment 02 (638->19, 611->5, 74->0 on real sites). This run re-measures it on the corpus; it is not the gating number."
+  },
+  "labels": {
+    "counts": {
+      "genuine": 180,
+      "expected": 295,
+      "artifact": 0,
+      "skip": 0
+    },
+    "unlabelled": 0,
+    "skipped": 0,
+    "syntheticExcluded": 0
+  },
+  "suppressionRules": [
+    {
+      "id": "raw",
+      "label": "0. raw: any parent-relative or size delta >0.5px"
+    },
+    {
+      "id": "svg-interior",
+      "label": "1. + drop SVG-internal nodes"
+    },
+    {
+      "id": "inline-text",
+      "label": "2. + drop display:inline (text metrics)"
+    },
+    {
+      "id": "tolerance",
+      "label": "3. + tolerance 2px OR 1% of box"
+    },
+    {
+      "id": "inherited-delta",
+      "label": "4. + collapse inherited (parent has same delta)"
+    }
+  ],
+  "nondeterministicPages": [],
+  "perPage": [
+    {
+      "id": "p01-landing-saas-hero",
+      "kind": "landing",
+      "survivors": 0,
+      "rawFindings": 49,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p02-landing-split-hero",
+      "kind": "landing",
+      "survivors": 0,
+      "rawFindings": 28,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p03-landing-feature-tour",
+      "kind": "landing",
+      "survivors": 0,
+      "rawFindings": 31,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p04-landing-changelog",
+      "kind": "landing",
+      "survivors": 0,
+      "rawFindings": 2,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p05-landing-waitlist",
+      "kind": "landing",
+      "survivors": 0,
+      "rawFindings": 5,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p06-dash-analytics",
+      "kind": "dashboard",
+      "survivors": 36,
+      "rawFindings": 116,
+      "selfConsistent": true,
+      "labelled": 36,
+      "genuineDefects": 5,
+      "genuineDefectClasses": [
+        "text-metric"
+      ],
+      "findingLabels": [
+        {
+          "id": "p06-dash-analytics#1",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[2]",
+          "maxDeltaPx": 16.04,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#2",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#3",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#4",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#5",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#6",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#7",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#8",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[3]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#9",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[4]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#10",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#11",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#12",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#13",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#14",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#15",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#16",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#17",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#18",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#19",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#20",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#21",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#22",
+          "tag": "TABLE",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#23",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[6]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#24",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#25",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#26",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#27",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#28",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#29",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#30",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[5]",
+          "maxDeltaPx": 16.01,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#31",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#32",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#33",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#34",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#35",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p06-dash-analytics#36",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/MAIN[1]/DIV[4]/DIV[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p07-dash-billing",
+      "kind": "dashboard",
+      "survivors": 42,
+      "rawFindings": 108,
+      "selfConsistent": true,
+      "labelled": 42,
+      "genuineDefects": 36,
+      "genuineDefectClasses": [
+        "text-metric",
+        "layout"
+      ],
+      "findingLabels": [
+        {
+          "id": "p07-dash-billing#1",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[2]",
+          "maxDeltaPx": 16.04,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#2",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#3",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#4",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#5",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#6",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#7",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#8",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[2]",
+          "maxDeltaPx": 16.04,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#9",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[3]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#10",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[4]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#11",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#12",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#13",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#14",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#15",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#16",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#17",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#18",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#19",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#20",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#21",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#22",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#23",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[3]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#24",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[4]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#25",
+          "tag": "TABLE",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#26",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[6]",
+          "maxDeltaPx": 16.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#27",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#28",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#29",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#30",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#31",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#32",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#33",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[6]",
+          "maxDeltaPx": 16.02,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#34",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[5]",
+          "maxDeltaPx": 16.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#35",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#36",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#37",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#38",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#39",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#40",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#41",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[5]",
+          "maxDeltaPx": 16.01,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p07-dash-billing#42",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/DIV[2]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p08-dash-kanban",
+      "kind": "dashboard",
+      "survivors": 4,
+      "rawFindings": 18,
+      "selfConsistent": true,
+      "labelled": 4,
+      "genuineDefects": 4,
+      "genuineDefectClasses": [
+        "other",
+        "layout"
+      ],
+      "findingLabels": [
+        {
+          "id": "p08-dash-kanban#1",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[2]/DIV[1]/BUTTON[4]",
+          "maxDeltaPx": 11.87,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p08-dash-kanban#2",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[2]/DIV[1]/BUTTON[3]",
+          "maxDeltaPx": 8.02,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p08-dash-kanban#3",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[2]/DIV[1]/BUTTON[2]",
+          "maxDeltaPx": 4.02,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p08-dash-kanban#4",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[2]/DIV[1]/BUTTON[1]",
+          "maxDeltaPx": 4.02,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p09-dash-infra-status",
+      "kind": "dashboard",
+      "survivors": 9,
+      "rawFindings": 87,
+      "selfConsistent": true,
+      "labelled": 9,
+      "genuineDefects": 2,
+      "genuineDefectClasses": [
+        "text-metric"
+      ],
+      "findingLabels": [
+        {
+          "id": "p09-dash-infra-status#1",
+          "tag": "NAV",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/NAV[1]",
+          "maxDeltaPx": 6.69,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p09-dash-infra-status#2",
+          "tag": "A",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/NAV[1]/A[4]",
+          "maxDeltaPx": 5.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p09-dash-infra-status#3",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/SPAN[2]",
+          "maxDeltaPx": 3.97,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p09-dash-infra-status#4",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/SPAN[1]",
+          "maxDeltaPx": 3.35,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p09-dash-infra-status#5",
+          "tag": "A",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/NAV[1]/A[3]",
+          "maxDeltaPx": 3.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p09-dash-infra-status#6",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[5]/DIV[1]/SPAN[1]",
+          "maxDeltaPx": 2.94,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p09-dash-infra-status#7",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[1]/DIV[1]/SPAN[1]",
+          "maxDeltaPx": 2.52,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p09-dash-infra-status#8",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[6]/DIV[1]/SPAN[1]",
+          "maxDeltaPx": 2.1,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p09-dash-infra-status#9",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[8]/DIV[1]/SPAN[1]",
+          "maxDeltaPx": 2.1,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p10-dash-crm-detail",
+      "kind": "dashboard",
+      "survivors": 4,
+      "rawFindings": 27,
+      "selfConsistent": true,
+      "labelled": 4,
+      "genuineDefects": 4,
+      "genuineDefectClasses": [
+        "other"
+      ],
+      "findingLabels": [
+        {
+          "id": "p10-dash-crm-detail#1",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[2]/DIV[1]/DIV[1]/BUTTON[4]",
+          "maxDeltaPx": 11.85,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p10-dash-crm-detail#2",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[2]/DIV[1]/DIV[1]/BUTTON[3]",
+          "maxDeltaPx": 8,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p10-dash-crm-detail#3",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[2]/DIV[1]/DIV[1]/BUTTON[2]",
+          "maxDeltaPx": 4.01,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p10-dash-crm-detail#4",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[2]/DIV[1]/DIV[1]/BUTTON[1]",
+          "maxDeltaPx": 3.98,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p11-form-settings",
+      "kind": "form",
+      "survivors": 8,
+      "rawFindings": 27,
+      "selfConsistent": true,
+      "labelled": 8,
+      "genuineDefects": 5,
+      "genuineDefectClasses": [
+        "layout",
+        "form-control"
+      ],
+      "findingLabels": [
+        {
+          "id": "p11-form-settings#1",
+          "tag": "LEGEND",
+          "path": "BODY[1]/DIV[1]/DIV[1]/SECTION[2]/DIV[2]/FIELDSET[1]/LEGEND[1]",
+          "maxDeltaPx": 621.5,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p11-form-settings#2",
+          "tag": "SECTION",
+          "path": "BODY[1]/DIV[1]/DIV[1]/SECTION[3]",
+          "maxDeltaPx": 19.8,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p11-form-settings#3",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]",
+          "maxDeltaPx": 16.8,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p11-form-settings#4",
+          "tag": "SECTION",
+          "path": "BODY[1]/DIV[1]/DIV[1]/SECTION[1]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p11-form-settings#5",
+          "tag": "SECTION",
+          "path": "BODY[1]/DIV[1]/DIV[1]/SECTION[2]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "form-control",
+          "note": null
+        },
+        {
+          "id": "p11-form-settings#6",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/SECTION[2]/DIV[2]/FIELDSET[1]/LABEL[1]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p11-form-settings#7",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/SECTION[2]/DIV[2]/FIELDSET[1]/LABEL[2]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p11-form-settings#8",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/SECTION[2]/DIV[2]/FIELDSET[1]/LABEL[3]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p12-form-checkout",
+      "kind": "form",
+      "survivors": 5,
+      "rawFindings": 33,
+      "selfConsistent": true,
+      "labelled": 5,
+      "genuineDefects": 2,
+      "genuineDefectClasses": [
+        "layout",
+        "form-control"
+      ],
+      "findingLabels": [
+        {
+          "id": "p12-form-checkout#1",
+          "tag": "LEGEND",
+          "path": "BODY[1]/DIV[1]/FORM[1]/SECTION[3]/DIV[3]/FIELDSET[1]/LEGEND[1]",
+          "maxDeltaPx": 377.5,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p12-form-checkout#2",
+          "tag": "SELECT",
+          "path": "BODY[1]/DIV[1]/FORM[1]/SECTION[2]/DIV[2]/LABEL[1]/SELECT[1]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "form-control",
+          "note": null
+        },
+        {
+          "id": "p12-form-checkout#3",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/FORM[1]/SECTION[3]/DIV[3]/FIELDSET[1]/LABEL[1]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p12-form-checkout#4",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/FORM[1]/SECTION[3]/DIV[3]/FIELDSET[1]/LABEL[2]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p12-form-checkout#5",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/FORM[1]/SECTION[3]/DIV[3]/FIELDSET[1]/LABEL[3]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p13-form-wizard",
+      "kind": "form",
+      "survivors": 16,
+      "rawFindings": 42,
+      "selfConsistent": true,
+      "labelled": 16,
+      "genuineDefects": 12,
+      "genuineDefectClasses": [
+        "layout",
+        "other",
+        "text-metric"
+      ],
+      "findingLabels": [
+        {
+          "id": "p13-form-wizard#1",
+          "tag": "LEGEND",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[2]/FIELDSET[1]/LEGEND[1]",
+          "maxDeltaPx": 287.5,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#2",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#3",
+          "tag": "FIELDSET",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[2]/FIELDSET[1]",
+          "maxDeltaPx": 15,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#4",
+          "tag": "LABEL",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[2]/LABEL[3]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#5",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[3]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#6",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[4]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#7",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[2]/LABEL[3]/SPAN[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#8",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[3]/DIV[1]/DIV[2]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#9",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[3]/DIV[1]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#10",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[3]/DIV[2]/DIV[2]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#11",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[3]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#12",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[3]/DIV[3]/DIV[2]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#13",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[3]/DIV[3]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#14",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[2]/FIELDSET[1]/LABEL[1]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#15",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[2]/FIELDSET[1]/LABEL[2]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p13-form-wizard#16",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[2]/FIELDSET[1]/LABEL[3]/INPUT[1]",
+          "maxDeltaPx": 3,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p14-form-auth",
+      "kind": "form",
+      "survivors": 1,
+      "rawFindings": 16,
+      "selfConsistent": true,
+      "labelled": 1,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": [
+        {
+          "id": "p14-form-auth#1",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]/LABEL[1]/SPAN[1]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p15-pricing-tiers",
+      "kind": "pricing",
+      "survivors": 0,
+      "rawFindings": 38,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p16-pricing-calculator",
+      "kind": "pricing",
+      "survivors": 36,
+      "rawFindings": 126,
+      "selfConsistent": true,
+      "labelled": 36,
+      "genuineDefects": 12,
+      "genuineDefectClasses": [
+        "layout",
+        "form-control"
+      ],
+      "findingLabels": [
+        {
+          "id": "p16-pricing-calculator#1",
+          "tag": "UL",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/UL[1]",
+          "maxDeltaPx": 40,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#2",
+          "tag": "LI",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/UL[1]/LI[5]",
+          "maxDeltaPx": 40,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#3",
+          "tag": "BUTTON",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]/BUTTON[1]",
+          "maxDeltaPx": 38,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#4",
+          "tag": "UL",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]/UL[1]",
+          "maxDeltaPx": 38,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#5",
+          "tag": "SECTION",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]",
+          "maxDeltaPx": 24.6,
+          "label": "genuine",
+          "defectClass": "form-control",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#6",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[2]",
+          "maxDeltaPx": 24.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#7",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]",
+          "maxDeltaPx": 24.6,
+          "label": "genuine",
+          "defectClass": "form-control",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#8",
+          "tag": "MAIN",
+          "path": "BODY[1]/MAIN[1]",
+          "maxDeltaPx": 20.6,
+          "label": "genuine",
+          "defectClass": "form-control",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#9",
+          "tag": "FOOTER",
+          "path": "BODY[1]/FOOTER[1]",
+          "maxDeltaPx": 20.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#10",
+          "tag": "LI",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/UL[1]/LI[3]",
+          "maxDeltaPx": 20,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#11",
+          "tag": "LI",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/UL[1]/LI[4]",
+          "maxDeltaPx": 20,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#12",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]/DIV[1]",
+          "maxDeltaPx": 20,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#13",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]/DIV[2]",
+          "maxDeltaPx": 20,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#14",
+          "tag": "SPAN",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]/DIV[2]/SPAN[2]",
+          "maxDeltaPx": 20,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#15",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]",
+          "maxDeltaPx": 18.56,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#16",
+          "tag": "H3",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]/DIV[1]/H3[1]",
+          "maxDeltaPx": 18.56,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#17",
+          "tag": "LABEL",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[1]/LABEL[4]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "form-control",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#18",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]",
+          "maxDeltaPx": 12.37,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#19",
+          "tag": "LABEL",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[1]/LABEL[3]",
+          "maxDeltaPx": 9.6,
+          "label": "genuine",
+          "defectClass": "form-control",
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#20",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[1]/DIV[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#21",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[1]/DIV[2]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#22",
+          "tag": "BUTTON",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[1]/BUTTON[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#23",
+          "tag": "UL",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[1]/UL[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#24",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[2]/DIV[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#25",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[2]/DIV[2]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#26",
+          "tag": "BUTTON",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#27",
+          "tag": "UL",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[2]/UL[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#28",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/DIV[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#29",
+          "tag": "DIV",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/DIV[2]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#30",
+          "tag": "BUTTON",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/BUTTON[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#31",
+          "tag": "LI",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/UL[1]/LI[1]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#32",
+          "tag": "LI",
+          "path": "BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[3]/UL[1]/LI[2]",
+          "maxDeltaPx": 6.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#33",
+          "tag": "TD",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[2]",
+          "maxDeltaPx": 3.57,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#34",
+          "tag": "TD",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[2]",
+          "maxDeltaPx": 3.57,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#35",
+          "tag": "TD",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[2]",
+          "maxDeltaPx": 3.57,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p16-pricing-calculator#36",
+          "tag": "TD",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[2]",
+          "maxDeltaPx": 3.57,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p17-pricing-compare-dense",
+      "kind": "pricing",
+      "survivors": 0,
+      "rawFindings": 29,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p18-article-blogpost",
+      "kind": "article",
+      "survivors": 0,
+      "rawFindings": 27,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p19-article-docs",
+      "kind": "article",
+      "survivors": 18,
+      "rawFindings": 59,
+      "selfConsistent": true,
+      "labelled": 18,
+      "genuineDefects": 1,
+      "genuineDefectClasses": [
+        "text-metric"
+      ],
+      "findingLabels": [
+        {
+          "id": "p19-article-docs#1",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[4]",
+          "maxDeltaPx": 3.83,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#2",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[4]",
+          "maxDeltaPx": 3.83,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#3",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[4]",
+          "maxDeltaPx": 3.83,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#4",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[4]",
+          "maxDeltaPx": 3.83,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#5",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[4]",
+          "maxDeltaPx": 3.83,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#6",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[4]",
+          "maxDeltaPx": 3.83,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#7",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[1]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#8",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[2]",
+          "maxDeltaPx": 2.48,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#9",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[1]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#10",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[2]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#11",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[1]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#12",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[2]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#13",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[1]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#14",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[2]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#15",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[1]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#16",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[2]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#17",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[1]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p19-article-docs#18",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[2]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p20-article-magazine",
+      "kind": "article",
+      "survivors": 2,
+      "rawFindings": 14,
+      "selfConsistent": true,
+      "labelled": 2,
+      "genuineDefects": 1,
+      "genuineDefectClasses": [
+        "text-metric"
+      ],
+      "findingLabels": [
+        {
+          "id": "p20-article-magazine#1",
+          "tag": "BUTTON",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/FORM[1]/BUTTON[1]",
+          "maxDeltaPx": 8.67,
+          "label": "genuine",
+          "defectClass": "text-metric",
+          "note": null
+        },
+        {
+          "id": "p20-article-magazine#2",
+          "tag": "FORM",
+          "path": "BODY[1]/MAIN[1]/SECTION[1]/FORM[1]",
+          "maxDeltaPx": 8.62,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p21-article-help-center",
+      "kind": "article",
+      "survivors": 0,
+      "rawFindings": 31,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p22-table-users",
+      "kind": "table",
+      "survivors": 77,
+      "rawFindings": 200,
+      "selfConsistent": true,
+      "labelled": 77,
+      "genuineDefects": 50,
+      "genuineDefectClasses": [
+        "other"
+      ],
+      "findingLabels": [
+        {
+          "id": "p22-table-users#1",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#2",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#3",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#4",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#5",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#6",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#7",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#8",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#9",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#10",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#11",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#12",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#13",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#14",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#15",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#16",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#17",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[8]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#18",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[8]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#19",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[9]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#20",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[9]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#21",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[10]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#22",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[10]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#23",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[11]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#24",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[11]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#25",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[12]/TD[1]",
+          "maxDeltaPx": 5,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#26",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[12]/TD[2]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#27",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#28",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#29",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#30",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#31",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#32",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#33",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#34",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#35",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[8]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#36",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[9]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#37",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[10]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#38",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[11]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#39",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[12]/TD[4]",
+          "maxDeltaPx": 4.74,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#40",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[7]",
+          "maxDeltaPx": 4.7,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p22-table-users#41",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#42",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#43",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#44",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#45",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#46",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#47",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#48",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[8]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#49",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[9]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#50",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[10]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#51",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[11]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#52",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[12]/TD[7]",
+          "maxDeltaPx": 4.7,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#53",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#54",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#55",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#56",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#57",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#58",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#59",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#60",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[8]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#61",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[9]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#62",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[10]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#63",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[11]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#64",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[12]/TD[7]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#65",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[1]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#66",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[2]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#67",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#68",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[4]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#69",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[5]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#70",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[6]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#71",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[7]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#72",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[8]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#73",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[9]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#74",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[10]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#75",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[11]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#76",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/TBODY[1]/TR[12]/TD[1]/INPUT[1]",
+          "maxDeltaPx": 3.14,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p22-table-users#77",
+          "tag": "INPUT",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[3]/DIV[1]/TABLE[1]/THEAD[1]/TR[1]/TH[1]/INPUT[1]",
+          "maxDeltaPx": 2.28,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p23-table-wide-scroll",
+      "kind": "table",
+      "survivors": 173,
+      "rawFindings": 191,
+      "selfConsistent": true,
+      "labelled": 173,
+      "genuineDefects": 24,
+      "genuineDefectClasses": [
+        "layout"
+      ],
+      "findingLabels": [
+        {
+          "id": "p23-table-wide-scroll#1",
+          "tag": "TABLE",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]",
+          "maxDeltaPx": 25.29,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#2",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#3",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#4",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#5",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#6",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#7",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#8",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#9",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#10",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#11",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#12",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#13",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[14]",
+          "maxDeltaPx": 23.2,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#14",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#15",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#16",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#17",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#18",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#19",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#20",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#21",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#22",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#23",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#24",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#25",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[13]",
+          "maxDeltaPx": 21.74,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#26",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#27",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#28",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#29",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#30",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#31",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#32",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#33",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#34",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#35",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#36",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#37",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[12]",
+          "maxDeltaPx": 19.86,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#38",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#39",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#40",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#41",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#42",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#43",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#44",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#45",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#46",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#47",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#48",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#49",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[11]",
+          "maxDeltaPx": 18.39,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#50",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#51",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#52",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#53",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#54",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#55",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#56",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#57",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#58",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#59",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#60",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#61",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[10]",
+          "maxDeltaPx": 17.14,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#62",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#63",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#64",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#65",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#66",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#67",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#68",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#69",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#70",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#71",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#72",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#73",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[9]",
+          "maxDeltaPx": 15.67,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#74",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#75",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#76",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#77",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#78",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#79",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#80",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#81",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#82",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#83",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#84",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#85",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[8]",
+          "maxDeltaPx": 13.79,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#86",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#87",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#88",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#89",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#90",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#91",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#92",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#93",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#94",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#95",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#96",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#97",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[7]",
+          "maxDeltaPx": 12.55,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#98",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#99",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#100",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#101",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#102",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#103",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#104",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#105",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#106",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#107",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#108",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#109",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[6]",
+          "maxDeltaPx": 11.08,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#110",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[1]",
+          "maxDeltaPx": 9.44,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#111",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#112",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#113",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#114",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#115",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#116",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#117",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#118",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#119",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#120",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#121",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#122",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[5]",
+          "maxDeltaPx": 9.2,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#123",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#124",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#125",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#126",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#127",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#128",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#129",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#130",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#131",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#132",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#133",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#134",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[4]",
+          "maxDeltaPx": 7.95,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#135",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#136",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#137",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#138",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#139",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#140",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#141",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#142",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#143",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#144",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#145",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#146",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[3]",
+          "maxDeltaPx": 6.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#147",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[2]",
+          "maxDeltaPx": 5.19,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#148",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#149",
+          "tag": "TH",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/THEAD[1]/TR[1]/TH[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#150",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#151",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[1]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#152",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#153",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[2]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#154",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#155",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[3]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#156",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#157",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[4]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#158",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#159",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[5]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#160",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#161",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[6]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#162",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#163",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[7]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#164",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#165",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[8]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#166",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#167",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[9]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#168",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#169",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TBODY[1]/TR[10]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#170",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[1]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#171",
+          "tag": "TD",
+          "path": "BODY[1]/DIV[1]/DIV[2]/TABLE[1]/TFOOT[1]/TR[1]/TD[2]",
+          "maxDeltaPx": 4.6,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#172",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[2]/BUTTON[3]",
+          "maxDeltaPx": 4.07,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p23-table-wide-scroll#173",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[1]/DIV[2]/BUTTON[2]",
+          "maxDeltaPx": 2.48,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p24-table-inbox",
+      "kind": "table",
+      "survivors": 0,
+      "rawFindings": 29,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p25-table-catalog",
+      "kind": "table",
+      "survivors": 22,
+      "rawFindings": 136,
+      "selfConsistent": true,
+      "labelled": 22,
+      "genuineDefects": 13,
+      "genuineDefectClasses": [
+        "form-control",
+        "other"
+      ],
+      "findingLabels": [
+        {
+          "id": "p25-table-catalog#1",
+          "tag": "LABEL",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[1]/LABEL[1]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "form-control",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#2",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[1]/LABEL[1]/SPAN[1]",
+          "maxDeltaPx": 7.5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#3",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/ASIDE[1]/DIV[1]/LABEL[1]/SPAN[1]",
+          "maxDeltaPx": 5.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#4",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/ASIDE[1]/DIV[1]/LABEL[2]/SPAN[1]",
+          "maxDeltaPx": 5.01,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#5",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/ASIDE[1]/DIV[1]/LABEL[3]/SPAN[1]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#6",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/ASIDE[1]/DIV[1]/LABEL[4]/SPAN[1]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#7",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[1]/ASIDE[1]/DIV[1]/LABEL[5]/SPAN[1]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#8",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/ASIDE[1]/DIV[4]",
+          "maxDeltaPx": 4.87,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#9",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/ASIDE[1]/DIV[3]",
+          "maxDeltaPx": 4.84,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#10",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[1]/ASIDE[1]/DIV[2]/DIV[1]",
+          "maxDeltaPx": 4.81,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#11",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[1]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#12",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[2]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#13",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[3]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#14",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[4]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#15",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[5]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#16",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[6]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#17",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[7]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#18",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[8]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#19",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[9]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#20",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[10]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#21",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[11]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p25-table-catalog#22",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/MAIN[1]/DIV[2]/ARTICLE[12]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p26-modal-invite",
+      "kind": "modal",
+      "survivors": 10,
+      "rawFindings": 71,
+      "selfConsistent": true,
+      "labelled": 10,
+      "genuineDefects": 4,
+      "genuineDefectClasses": [
+        "layout",
+        "other"
+      ],
+      "findingLabels": [
+        {
+          "id": "p26-modal-invite#1",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[2]/DIV[1]",
+          "maxDeltaPx": 15,
+          "label": "genuine",
+          "defectClass": "layout",
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#2",
+          "tag": "LABEL",
+          "path": "BODY[1]/DIV[2]/DIV[1]/DIV[2]/DIV[1]/LABEL[3]",
+          "maxDeltaPx": 15,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#3",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[2]/DIV[1]/DIV[3]",
+          "maxDeltaPx": 15,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#4",
+          "tag": "SPAN",
+          "path": "BODY[1]/DIV[2]/DIV[1]/DIV[2]/DIV[1]/LABEL[3]/SPAN[1]",
+          "maxDeltaPx": 5,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#5",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[3]/DIV[1]/DIV[1]",
+          "maxDeltaPx": 4,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#6",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[3]/DIV[1]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#7",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[3]/DIV[2]/DIV[1]",
+          "maxDeltaPx": 4,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#8",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[3]/DIV[2]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#9",
+          "tag": "DIV",
+          "path": "BODY[1]/DIV[3]/DIV[3]/DIV[1]",
+          "maxDeltaPx": 4,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p26-modal-invite#10",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[3]/DIV[3]/BUTTON[1]",
+          "maxDeltaPx": 4,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p27-modal-drawer",
+      "kind": "modal",
+      "survivors": 3,
+      "rawFindings": 48,
+      "selfConsistent": true,
+      "labelled": 3,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": [
+        {
+          "id": "p27-modal-drawer#1",
+          "tag": "DD",
+          "path": "BODY[1]/ASIDE[1]/DIV[1]/DL[1]/DIV[3]/DD[1]",
+          "maxDeltaPx": 7.43,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p27-modal-drawer#2",
+          "tag": "DD",
+          "path": "BODY[1]/ASIDE[1]/DIV[1]/DL[1]/DIV[2]/DD[1]",
+          "maxDeltaPx": 2.7,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p27-modal-drawer#3",
+          "tag": "DD",
+          "path": "BODY[1]/ASIDE[1]/DIV[1]/DL[1]/DIV[1]/DD[1]",
+          "maxDeltaPx": 2.25,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p28-modal-command-palette",
+      "kind": "modal",
+      "survivors": 0,
+      "rawFindings": 31,
+      "selfConsistent": true,
+      "labelled": 0,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": []
+    },
+    {
+      "id": "p29-nav-megamenu",
+      "kind": "nav",
+      "survivors": 4,
+      "rawFindings": 36,
+      "selfConsistent": true,
+      "labelled": 4,
+      "genuineDefects": 0,
+      "genuineDefectClasses": [],
+      "findingLabels": [
+        {
+          "id": "p29-nav-megamenu#1",
+          "tag": "A",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/DIV[1]/NAV[1]/A[2]",
+          "maxDeltaPx": 4.05,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p29-nav-megamenu#2",
+          "tag": "A",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/DIV[1]/NAV[1]/A[3]",
+          "maxDeltaPx": 4.05,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p29-nav-megamenu#3",
+          "tag": "A",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/DIV[1]/NAV[1]/A[4]",
+          "maxDeltaPx": 4.03,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        },
+        {
+          "id": "p29-nav-megamenu#4",
+          "tag": "A",
+          "path": "BODY[1]/DIV[1]/HEADER[1]/DIV[1]/NAV[1]/A[1]",
+          "maxDeltaPx": 4.02,
+          "label": "expected",
+          "defectClass": null,
+          "note": null
+        }
+      ]
+    },
+    {
+      "id": "p30-nav-app-shell",
+      "kind": "nav",
+      "survivors": 5,
+      "rawFindings": 67,
+      "selfConsistent": true,
+      "labelled": 5,
+      "genuineDefects": 5,
+      "genuineDefectClasses": [
+        "other"
+      ],
+      "findingLabels": [
+        {
+          "id": "p30-nav-app-shell#1",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/BUTTON[5]",
+          "maxDeltaPx": 15.94,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p30-nav-app-shell#2",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/BUTTON[4]",
+          "maxDeltaPx": 11.94,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p30-nav-app-shell#3",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/BUTTON[3]",
+          "maxDeltaPx": 8.07,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p30-nav-app-shell#4",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/BUTTON[2]",
+          "maxDeltaPx": 4.04,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        },
+        {
+          "id": "p30-nav-app-shell#5",
+          "tag": "BUTTON",
+          "path": "BODY[1]/DIV[1]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/BUTTON[1]",
+          "maxDeltaPx": 4.03,
+          "label": "genuine",
+          "defectClass": "other",
+          "note": null
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Playwright's WebKit is not Safari. It is a real WebKit layout engine, so a POSITIVE finding here is credible evidence of a genuine cross-engine divergence. But it is not Apple's shipping configuration, and iOS Safari is not covered at all — so the ABSENCE of a finding does not clear Safari, and a KILL verdict is a statement about Chromium/Gecko/Playwright-WebKit, not about the browser most teams actually worry about.",
+    "The corpus is hand-authored in an AI-typical idiom, not emitted by a model. No hosted model was called (no-paid-API constraint). The 30 briefs are recorded in m0/corpus/SPECS.md so the study can be repeated against real model output; until it is, the corpus reflects one author's model of what AI frontends look like.",
+    "All 30 pages share one base utility-CSS vocabulary and one component library. Real AI output would draw on more varied CSS. Layout variety comes from per-page stylesheets, but the shared base narrows the corpus.",
+    "One machine, one OS, one font set. Font metrics and font availability are two of the three known noise classes, so results are conditioned on this environment (see environment.fontFingerprint).",
+    "Pages are static and local: no network, no JS-driven layout, no hydration, no web fonts. This removes DOM-level engine divergence (correspondence failures), which is a real finding class the study therefore cannot observe.",
+    "Measured with no normalization preset. Findings include the font/line-height/form-control noise classes that --normalize would suppress; that is deliberate, since it is what the tool would report on the page as written.",
+    "n=30 pages. See incidence.confidenceInterval95 — the interval is wide by construction."
+  ]
+}
