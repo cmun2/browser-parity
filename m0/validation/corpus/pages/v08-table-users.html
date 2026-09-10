@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Members — Halcyon Labs</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #fff;
+    --ink: #14161c;
+    --muted: #697084;
+    --line: #e4e6ec;
+    --brand: #4338ca;
+    --brand-soft: #eef2ff;
+    --side-w: 232px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .app { display: flex; min-height: 100vh; }
+  .side { width: var(--side-w); flex: none; background: #fff; border-right: 1px solid var(--line); display: flex; flex-direction: column; padding: 16px 12px; }
+  .side .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; padding: 6px 8px 18px; letter-spacing: -0.01em; }
+  .side .brand .mk { width: 27px; height: 27px; border-radius: 8px; background: var(--brand); color: #fff; display: grid; place-items: center; }
+  .side .grp { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #9ba2b2; padding: 12px 10px 5px; }
+  .side a.item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: #4b5262; font-weight: 500; }
+  .side a.item.on { background: var(--brand-soft); color: var(--brand); font-weight: 600; }
+  .side a.item .n { margin-left: auto; font-size: 11.5px; color: #99a0b0; }
+  .side .foot { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+
+  .avatar { border-radius: 999px; display: grid; place-items: center; font-weight: 650; flex: none; background: #e3e6f0; color: #414a63; }
+  .avatar.sm { width: 30px; height: 30px; font-size: 11.5px; }
+  .avatar.md { width: 34px; height: 34px; font-size: 12.5px; }
+  .avatar.a { background: #ddd6fe; color: #5b21b6; }
+  .avatar.b { background: #cffafe; color: #0e7490; }
+  .avatar.c { background: #fee2e2; color: #b91c1c; }
+  .avatar.d { background: #dcfce7; color: #15803d; }
+  .avatar.e { background: #fef3c7; color: #b45309; }
+
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .head { background: #fff; border-bottom: 1px solid var(--line); padding: 20px 28px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .head h1 { margin: 0; font-size: 21px; letter-spacing: -0.018em; }
+  .head .sub { color: var(--muted); font-size: 13.5px; }
+  .head .right { margin-left: auto; display: flex; gap: 10px; }
+
+  .btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px; font: inherit; font-size: 13.5px; font-weight: 550; padding: 8px 13px; cursor: pointer; white-space: nowrap; }
+  .btn-primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .btn-icon { padding: 7px; }
+
+  .body { padding: 22px 28px 40px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+
+  .toolbar { padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+  .searchbox { position: relative; flex: 1; min-width: 220px; max-width: 320px; }
+  .searchbox svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #9ba2b2; }
+  .searchbox input { width: 100%; height: 34px; border: 1px solid var(--line); border-radius: 8px; padding: 0 11px 0 32px; font: inherit; background: #fbfbfd; }
+  .chips { display: flex; gap: 7px; flex-wrap: wrap; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; font-size: 13px; color: #4b5262; background: #fff; cursor: pointer; }
+  .chip.on { background: var(--brand-soft); border-color: #c7d2fe; color: var(--brand); font-weight: 600; }
+  .chip .x { color: #9ba2b2; }
+  .toolbar .end { margin-left: auto; display: flex; gap: 8px; }
+
+  .bulkbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: var(--brand-soft); border-bottom: 1px solid #c7d2fe; font-size: 13.5px; color: #3730a3; }
+  .bulkbar strong { font-weight: 650; }
+  .bulkbar .acts { margin-left: auto; display: flex; gap: 8px; }
+  .bulkbar .btn { border-color: #c7d2fe; background: #fff; }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th { text-align: left; font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; color: #8b93a5; font-weight: 650; padding: 11px 16px; background: #fafbfc; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  thead th.sorted { color: var(--ink); }
+  tbody td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr.sel { background: #fbfaff; }
+  td.cb, th.cb { width: 44px; padding-right: 0; }
+  input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--brand); margin: 0; display: block; }
+  td.act, th.act { width: 56px; text-align: right; }
+
+  .person { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .person .who { min-width: 0; }
+  .person .who strong { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .person .who span { display: block; color: var(--muted); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .badge { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; background: #f1f2f6; color: #4b5262; white-space: nowrap; }
+  .badge.owner { background: #ede9fe; color: #5b21b6; }
+  .badge.admin { background: #dbeafe; color: #1d4ed8; }
+  .badge.dev { background: #ecfdf5; color: #047857; }
+  .badge.view { background: #f1f2f6; color: #4b5262; }
+  .badge.billing { background: #fff7ed; color: #c2410c; }
+
+  .status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+  .status i { width: 7px; height: 7px; border-radius: 999px; background: #16a34a; display: block; }
+  .status.pending i { background: #f59e0b; }
+  .status.off i { background: #cbd0da; }
+
+  .teams { display: flex; gap: 5px; flex-wrap: wrap; }
+  .team { font-size: 12px; border: 1px solid var(--line); border-radius: 6px; padding: 2px 7px; color: #4b5262; white-space: nowrap; }
+
+  td.when { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .rowmenu { border: 0; background: transparent; padding: 5px; border-radius: 6px; color: #8b93a5; cursor: pointer; line-height: 0; }
+  .rowmenu:hover { background: #f1f2f6; color: var(--ink); }
+
+  .pagination { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-top: 1px solid var(--line); background: #fafbfc; flex-wrap: wrap; }
+  .pagination .count { color: var(--muted); font-size: 13.5px; }
+  .pagination .pages { margin-left: auto; display: flex; gap: 5px; align-items: center; }
+  .pagination .pg { min-width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 7px; background: #fff; font: inherit; font-size: 13.5px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0 8px; }
+  .pagination .pg.on { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 600; }
+  .pagination .perpage { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 13.5px; }
+  .pagination select { height: 32px; border: 1px solid var(--line); border-radius: 7px; font: inherit; padding: 0 8px; background: #fff; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8v8l9 5 9-5V8z"></path></svg></span>Halcyon</div>
+    <p class="grp">Build</p>
+    <a class="item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>Dashboard</a>
+    <a class="item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"></path></svg>Pipelines<span class="n">14</span></a>
+    <a class="item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"></ellipse><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"></path></svg>Artifacts</a>
+    <p class="grp">Organisation</p>
+    <a class="item on" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.9"></path></svg>Members<span class="n">28</span></a>
+    <a class="item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>Roles</a>
+    <a class="item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>Billing</a>
+    <a class="item" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v5H4zM4 15h16v5H4z"></path></svg>Audit log</a>
+    <div class="foot">
+      <span class="avatar sm a">DK</span>
+      <span><strong style="display:block;font-size:13px">Dana Kowalski</strong><span style="color:#697084;font-size:12px">Owner</span></span>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="head">
+      <div>
+        <h1>Members</h1>
+        <p class="sub" style="margin:2px 0 0">28 members · 19 seats in use of 25</p>
+      </div>
+      <div class="right">
+        <button class="btn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M4 21h16"></path></svg>Export CSV</button>
+        <button class="btn btn-primary" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Invite people</button>
+      </div>
+    </header>
+
+    <div class="body">
+      <section class="panel">
+        <div class="toolbar">
+          <label class="searchbox">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            <input type="search" placeholder="Search by name or email">
+          </label>
+          <div class="chips">
+            <button class="chip on" type="button">Role: Developer <span class="x">×</span></button>
+            <button class="chip on" type="button">Status: Active <span class="x">×</span></button>
+            <button class="chip" type="button">+ Team</button>
+            <button class="chip" type="button">+ Last active</button>
+          </div>
+          <div class="end">
+            <button class="btn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8z"></path></svg>Filters</button>
+            <button class="btn btn-icon" type="button" aria-label="Column settings"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+          </div>
+        </div>
+
+        <div class="bulkbar">
+          <strong>3 selected</strong>
+          <span>on this page</span>
+          <span class="acts">
+            <button class="btn" type="button">Change role</button>
+            <button class="btn" type="button">Add to team</button>
+            <button class="btn" type="button">Resend invite</button>
+            <button class="btn" type="button">Deactivate</button>
+          </span>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th class="cb"><input type="checkbox" aria-label="Select all"></th>
+              <th class="sorted">Member ↑</th>
+              <th>Role</th>
+              <th>Teams</th>
+              <th>Status</th>
+              <th>Last active</th>
+              <th>Joined</th>
+              <th class="act"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="sel">
+              <td class="cb"><input type="checkbox" checked aria-label="Select Amara Boateng"></td>
+              <td><span class="person"><span class="avatar md b">AB</span><span class="who"><strong>Amara Boateng</strong><span>amara@halcyon.dev</span></span></span></td>
+              <td><span class="badge admin">Admin</span></td>
+              <td><span class="teams"><span class="team">Platform</span><span class="team">Security</span></span></td>
+              <td><span class="status"><i></i>Active</span></td>
+              <td class="when">12 minutes ago</td>
+              <td class="when">4 Feb 2024</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr>
+              <td class="cb"><input type="checkbox" aria-label="Select Dana Kowalski"></td>
+              <td><span class="person"><span class="avatar md a">DK</span><span class="who"><strong>Dana Kowalski</strong><span>dana@halcyon.dev</span></span></span></td>
+              <td><span class="badge owner">Owner</span></td>
+              <td><span class="teams"><span class="team">Platform</span><span class="team">Leadership</span><span class="team">Billing</span></span></td>
+              <td><span class="status"><i></i>Active</span></td>
+              <td class="when">Just now</td>
+              <td class="when">2 Nov 2022</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr class="sel">
+              <td class="cb"><input type="checkbox" checked aria-label="Select Ewan Fairbairn"></td>
+              <td><span class="person"><span class="avatar md c">EF</span><span class="who"><strong>Ewan Fairbairn</strong><span>ewan.fairbairn@halcyon.dev</span></span></span></td>
+              <td><span class="badge dev">Developer</span></td>
+              <td><span class="teams"><span class="team">Runtime</span></span></td>
+              <td><span class="status"><i></i>Active</span></td>
+              <td class="when">2 hours ago</td>
+              <td class="when">17 Jun 2024</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr>
+              <td class="cb"><input type="checkbox" aria-label="Select Hitomi Sasaki"></td>
+              <td><span class="person"><span class="avatar md d">HS</span><span class="who"><strong>Hitomi Sasaki</strong><span>hitomi@halcyon.dev</span></span></span></td>
+              <td><span class="badge dev">Developer</span></td>
+              <td><span class="teams"><span class="team">Runtime</span><span class="team">Docs</span></span></td>
+              <td><span class="status"><i></i>Active</span></td>
+              <td class="when">Yesterday</td>
+              <td class="when">3 Sep 2024</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr class="sel">
+              <td class="cb"><input type="checkbox" checked aria-label="Select Ismael Duarte"></td>
+              <td><span class="person"><span class="avatar md e">ID</span><span class="who"><strong>Ismael Duarte</strong><span>ismael.duarte@contractor.halcyon.dev</span></span></span></td>
+              <td><span class="badge view">Viewer</span></td>
+              <td><span class="teams"><span class="team">Contractors</span></span></td>
+              <td><span class="status pending"><i></i>Invite pending</span></td>
+              <td class="when">Never</td>
+              <td class="when">Invited 19 Mar 2026</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr>
+              <td class="cb"><input type="checkbox" aria-label="Select Lena Fischer"></td>
+              <td><span class="person"><span class="avatar md b">LF</span><span class="who"><strong>Lena Fischer</strong><span>lena@halcyon.dev</span></span></span></td>
+              <td><span class="badge billing">Billing</span></td>
+              <td><span class="teams"><span class="team">Finance</span></span></td>
+              <td><span class="status"><i></i>Active</span></td>
+              <td class="when">3 days ago</td>
+              <td class="when">22 Jan 2025</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr>
+              <td class="cb"><input type="checkbox" aria-label="Select Marcus Oyelaran"></td>
+              <td><span class="person"><span class="avatar md a">MO</span><span class="who"><strong>Marcus Oyelaran</strong><span>marcus@halcyon.dev</span></span></span></td>
+              <td><span class="badge dev">Developer</span></td>
+              <td><span class="teams"><span class="team">Platform</span><span class="team">Runtime</span><span class="team">On-call</span></span></td>
+              <td><span class="status"><i></i>Active</span></td>
+              <td class="when">6 hours ago</td>
+              <td class="when">8 Aug 2023</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr>
+              <td class="cb"><input type="checkbox" aria-label="Select Priya Raman"></td>
+              <td><span class="person"><span class="avatar md d">PR</span><span class="who"><strong>Priya Raman</strong><span>priya@halcyon.dev</span></span></span></td>
+              <td><span class="badge admin">Admin</span></td>
+              <td><span class="teams"><span class="team">Growth</span><span class="team">Analytics</span></span></td>
+              <td><span class="status"><i></i>Active</span></td>
+              <td class="when">41 minutes ago</td>
+              <td class="when">15 May 2024</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr>
+              <td class="cb"><input type="checkbox" aria-label="Select Tomás Vidal"></td>
+              <td><span class="person"><span class="avatar md c">TV</span><span class="who"><strong>Tomás Vidal</strong><span>tomas@halcyon.dev</span></span></span></td>
+              <td><span class="badge dev">Developer</span></td>
+              <td><span class="teams"><span class="team">Data</span></span></td>
+              <td><span class="status off"><i></i>Deactivated</span></td>
+              <td class="when">2 months ago</td>
+              <td class="when">30 Oct 2023</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+            <tr>
+              <td class="cb"><input type="checkbox" aria-label="Select Wren Halloway"></td>
+              <td><span class="person"><span class="avatar md e">WH</span><span class="who"><strong>Wren Halloway</strong><span>wren@halcyon.dev</span></span></span></td>
+              <td><span class="badge view">Viewer</span></td>
+              <td><span class="teams"><span class="team">Design</span><span class="team">Docs</span></span></td>
+              <td><span class="status"><i></i>Active</span></td>
+              <td class="when">5 days ago</td>
+              <td class="when">11 Feb 2026</td>
+              <td class="act"><button class="rowmenu" type="button" aria-label="Row actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg></button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <span class="count">Showing 1–10 of 28 members</span>
+          <span class="pages">
+            <button class="pg" type="button">Previous</button>
+            <button class="pg on" type="button">1</button>
+            <button class="pg" type="button">2</button>
+            <button class="pg" type="button">3</button>
+            <button class="pg" type="button">Next</button>
+          </span>
+          <span class="perpage">
+            <label for="pp">Rows</label>
+            <select id="pp"><option>10</option><option>25</option><option>50</option></select>
+          </span>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

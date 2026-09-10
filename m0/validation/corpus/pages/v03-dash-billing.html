@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Billing & usage — Halcyon</title>
+<style>
+  :root {
+    --page: #fbfbfd;
+    --card: #fff;
+    --ink: #1b1c21;
+    --muted: #71727d;
+    --line: #e4e4ea;
+    --brand: #6d28d9;
+    --brand-soft: #f5f3ff;
+    --warn: #b45309;
+    --ok: #047857;
+    --danger: #b91c1c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  a { color: inherit; text-decoration: none; }
+  .app { display: flex; min-height: 100vh; }
+
+  .side { width: 236px; flex: none; background: #fff; border-right: 1px solid var(--line); padding: 18px 14px; display: flex; flex-direction: column; }
+  .org { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 20px; }
+  .org-mark { width: 30px; height: 30px; border-radius: 8px; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; flex: none; }
+  .org-name { min-width: 0; flex: 1; }
+  .org-name strong { display: block; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .org-name span { font-size: 12px; color: var(--muted); }
+  .menu { display: flex; flex-direction: column; gap: 2px; }
+  .menu-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: #a1a1ad; padding: 14px 10px 6px; }
+  .menu a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: #55565f; font-weight: 500; }
+  .menu a.on { background: var(--brand-soft); color: var(--brand); font-weight: 600; }
+  .side-cta { margin-top: auto; background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 10px; padding: 14px; }
+  .side-cta p { margin: 0 0 10px; font-size: 12.5px; color: #4c1d95; }
+
+  .body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .head { background: #fff; border-bottom: 1px solid var(--line); padding: 18px 28px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .head h1 { margin: 0; font-size: 20px; letter-spacing: -0.015em; }
+  .crumbs { font-size: 12.5px; color: var(--muted); width: 100%; margin-bottom: 2px; }
+  .crumbs span { margin: 0 6px; color: #c4c4cc; }
+  .head-actions { margin-left: auto; display: flex; gap: 10px; }
+
+  .btn { display: inline-flex; align-items: center; gap: 7px; border-radius: 8px; border: 1px solid var(--line); background: #fff; color: var(--ink); font: inherit; font-size: 13.5px; font-weight: 550; padding: 8px 14px; cursor: pointer; }
+  .btn-primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .btn-danger { color: var(--danger); border-color: #fecaca; }
+
+  .wrap { padding: 24px 28px 48px; display: flex; flex-direction: column; gap: 22px; max-width: 1100px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  .card > header { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; }
+  .card > header h2 { margin: 0; font-size: 15px; }
+  .card > header .hint { font-size: 12.5px; color: var(--muted); }
+  .card > header .right { margin-left: auto; }
+
+  .plan { display: flex; gap: 28px; padding: 20px; align-items: flex-start; flex-wrap: wrap; }
+  .plan-main { flex: 1; min-width: 260px; }
+  .plan-name { display: flex; align-items: center; gap: 10px; }
+  .plan-name h3 { margin: 0; font-size: 19px; letter-spacing: -0.015em; }
+  .pill { font-size: 11.5px; font-weight: 650; border-radius: 999px; padding: 3px 9px; background: var(--brand-soft); color: var(--brand); }
+  .pill.ok { background: #ecfdf5; color: var(--ok); }
+  .pill.warn { background: #fffbeb; color: var(--warn); }
+  .plan p { margin: 8px 0 0; color: var(--muted); }
+  .plan-price { text-align: right; }
+  .plan-price .amount { font-size: 30px; font-weight: 650; letter-spacing: -0.03em; }
+  .plan-price .per { color: var(--muted); font-size: 13px; }
+  .plan-facts { display: flex; gap: 26px; margin-top: 18px; flex-wrap: wrap; }
+  .fact { display: flex; flex-direction: column; }
+  .fact dt { font-size: 12px; color: var(--muted); }
+  .fact dd { margin: 2px 0 0; font-weight: 600; }
+
+  .meters { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+  .meter-row { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: baseline; }
+  .meter-row .name { font-weight: 550; }
+  .meter-row .figures { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; }
+  .track { grid-column: 1 / -1; height: 8px; border-radius: 999px; background: #f1f1f5; overflow: hidden; }
+  .track i { display: block; height: 100%; border-radius: 999px; background: var(--brand); }
+  .track i.hot { background: #d97706; }
+  .track i.over { background: #dc2626; }
+  .meter-note { grid-column: 1 / -1; font-size: 12.5px; color: var(--muted); }
+
+  table.invoices { width: 100%; border-collapse: collapse; }
+  table.invoices th { text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #8a8b95; font-weight: 600; padding: 12px 20px; background: #fafafc; border-bottom: 1px solid var(--line); }
+  table.invoices td { padding: 13px 20px; border-bottom: 1px solid var(--line); }
+  table.invoices tr:last-child td { border-bottom: 0; }
+  table.invoices td.num, table.invoices th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.invoices td.act { text-align: right; white-space: nowrap; }
+  .linky { color: var(--brand); font-weight: 550; }
+
+  .pay { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .method { display: flex; align-items: center; gap: 14px; border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+  .method.is-default { border-color: #ddd6fe; background: #fbfaff; }
+  .brandmark { width: 46px; height: 30px; border-radius: 6px; background: #1b1c21; color: #fff; display: grid; place-items: center; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; flex: none; }
+  .brandmark.amex { background: #1d4ed8; }
+  .method-info { flex: 1; min-width: 0; }
+  .method-info strong { font-weight: 600; }
+  .method-info span { display: block; color: var(--muted); font-size: 12.5px; }
+  .method-actions { display: flex; gap: 8px; }
+  .billing-contact { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+  .field label { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 5px; }
+  .field input, .field select { width: 100%; height: 36px; border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; font: inherit; background: #fff; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="side">
+    <div class="org">
+      <span class="org-mark">HC</span>
+      <span class="org-name"><strong>Halcyon Labs</strong><span>Business plan</span></span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a1a1ad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 9 5-5 5 5"></path><path d="m7 15 5 5 5-5"></path></svg>
+    </div>
+    <nav class="menu">
+      <span class="menu-head">Workspace</span>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>Dashboard</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"></path></svg>Projects</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>Members</a>
+      <span class="menu-head">Account</span>
+      <a class="on" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>Billing &amp; usage</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>Security</a>
+      <a href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"></path></svg>Preferences</a>
+    </nav>
+    <div class="side-cta">
+      <p>Annual billing saves 18% on the Business plan.</p>
+      <button class="btn btn-primary" type="button">Switch to annual</button>
+    </div>
+  </aside>
+
+  <div class="body">
+    <header class="head">
+      <p class="crumbs">Halcyon Labs <span>/</span> Account <span>/</span> Billing</p>
+      <h1>Billing &amp; usage</h1>
+      <div class="head-actions">
+        <button class="btn" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M4 21h16"></path></svg>
+          Download statements
+        </button>
+        <button class="btn btn-primary" type="button">Manage plan</button>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <section class="card">
+        <header>
+          <h2>Current plan</h2>
+          <span class="hint">Renews 1 April 2026</span>
+        </header>
+        <div class="plan">
+          <div class="plan-main">
+            <div class="plan-name">
+              <h3>Business</h3>
+              <span class="pill">Annual</span>
+              <span class="pill ok">Active</span>
+            </div>
+            <p>25 seats, 10 projects, SSO and audit logs included. Overage is billed monthly in arrears.</p>
+            <dl class="plan-facts">
+              <div class="fact"><dt>Seats used</dt><dd>19 of 25</dd></div>
+              <div class="fact"><dt>Billing contact</dt><dd>finance@halcyon.dev</dd></div>
+              <div class="fact"><dt>Next invoice</dt><dd>1 Apr 2026</dd></div>
+              <div class="fact"><dt>Payment terms</dt><dd>Net 30</dd></div>
+            </dl>
+          </div>
+          <div class="plan-price">
+            <div class="amount">$1,980</div>
+            <div class="per">per month, billed annually</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <header>
+          <h2>Usage this cycle</h2>
+          <span class="hint">1 – 24 March</span>
+          <span class="right pill warn">2 metrics near limit</span>
+        </header>
+        <div class="meters">
+          <div class="meter-row">
+            <span class="name">API requests</span>
+            <span class="figures">7.42M of 10M</span>
+            <span class="track"><i style="width:74%"></i></span>
+            <span class="meter-note">Projected 9.6M by end of cycle at the current rate.</span>
+          </div>
+          <div class="meter-row">
+            <span class="name">Data transfer</span>
+            <span class="figures">1.81 TB of 2 TB</span>
+            <span class="track"><i class="hot" style="width:90.5%"></i></span>
+            <span class="meter-note">Overage is $0.09 per GB after 2 TB.</span>
+          </div>
+          <div class="meter-row">
+            <span class="name">Build minutes</span>
+            <span class="figures">12,940 of 12,000</span>
+            <span class="track"><i class="over" style="width:100%"></i></span>
+            <span class="meter-note">940 minutes over — $37.60 will appear on the next invoice.</span>
+          </div>
+          <div class="meter-row">
+            <span class="name">Object storage</span>
+            <span class="figures">318 GB of 1 TB</span>
+            <span class="track"><i style="width:31%"></i></span>
+            <span class="meter-note">Includes 42 GB of retained build artifacts.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <header>
+          <h2>Invoices</h2>
+          <span class="right"><button class="btn" type="button">View all 24</button></span>
+        </header>
+        <table class="invoices">
+          <thead>
+            <tr>
+              <th>Invoice</th>
+              <th>Date</th>
+              <th>Period</th>
+              <th class="num">Amount</th>
+              <th>Status</th>
+              <th class="num">Receipt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>INV-2026-0311</td>
+              <td>1 Mar 2026</td>
+              <td>Mar 1 – Mar 31</td>
+              <td class="num">$1,980.00</td>
+              <td><span class="pill ok">Paid</span></td>
+              <td class="act"><a class="linky" href="#">PDF</a></td>
+            </tr>
+            <tr>
+              <td>INV-2026-0288</td>
+              <td>1 Feb 2026</td>
+              <td>Feb 1 – Feb 28</td>
+              <td class="num">$2,043.60</td>
+              <td><span class="pill ok">Paid</span></td>
+              <td class="act"><a class="linky" href="#">PDF</a></td>
+            </tr>
+            <tr>
+              <td>INV-2026-0254</td>
+              <td>1 Jan 2026</td>
+              <td>Jan 1 – Jan 31</td>
+              <td class="num">$1,980.00</td>
+              <td><span class="pill ok">Paid</span></td>
+              <td class="act"><a class="linky" href="#">PDF</a></td>
+            </tr>
+            <tr>
+              <td>INV-2025-1219</td>
+              <td>1 Dec 2025</td>
+              <td>Dec 1 – Dec 31</td>
+              <td class="num">$2,116.40</td>
+              <td><span class="pill warn">Past due</span></td>
+              <td class="act"><a class="linky" href="#">PDF</a></td>
+            </tr>
+            <tr>
+              <td>INV-2025-1187</td>
+              <td>1 Nov 2025</td>
+              <td>Nov 1 – Nov 30</td>
+              <td class="num">$1,980.00</td>
+              <td><span class="pill ok">Paid</span></td>
+              <td class="act"><a class="linky" href="#">PDF</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <header>
+          <h2>Payment methods</h2>
+          <span class="right"><button class="btn" type="button">Add method</button></span>
+        </header>
+        <div class="pay">
+          <div class="method is-default">
+            <span class="brandmark">VISA</span>
+            <span class="method-info"><strong>Visa ending 4242</strong><span>Expires 08 / 2028 · Default for all invoices</span></span>
+            <span class="method-actions">
+              <button class="btn" type="button">Edit</button>
+              <button class="btn btn-danger" type="button">Remove</button>
+            </span>
+          </div>
+          <div class="method">
+            <span class="brandmark amex">AMEX</span>
+            <span class="method-info"><strong>Amex ending 1005</strong><span>Expires 02 / 2027 · Backup</span></span>
+            <span class="method-actions">
+              <button class="btn" type="button">Make default</button>
+              <button class="btn btn-danger" type="button">Remove</button>
+            </span>
+          </div>
+          <div class="billing-contact">
+            <div class="field">
+              <label for="bill-email">Billing email</label>
+              <input id="bill-email" type="email" value="finance@halcyon.dev">
+            </div>
+            <div class="field">
+              <label for="bill-country">Billing country</label>
+              <select id="bill-country">
+                <option>United Kingdom</option>
+                <option>United States</option>
+                <option>Germany</option>
+                <option>Japan</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="bill-vat">VAT / Tax ID</label>
+              <input id="bill-vat" type="text" value="GB 418 2290 55">
+            </div>
+            <div class="field">
+              <label for="bill-po">PO number on invoices</label>
+              <input id="bill-po" type="text" value="PO-2026-HAL-004">
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

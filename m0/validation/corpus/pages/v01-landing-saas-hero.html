@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian — Observability that keeps up with you</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #0f1117;
+    --muted: #5b6478;
+    --line: #e6e8ef;
+    --brand: #4f46e5;
+    --brand-dark: #3730a3;
+    --ink: #10121a;
+    --radius: 12px;
+    --shell: 1120px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .shell { max-width: var(--shell); margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; text-decoration: none; }
+
+  .topbar { border-bottom: 1px solid var(--line); }
+  .topbar-inner { display: flex; align-items: center; gap: 32px; height: 72px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -0.01em; font-size: 17px; }
+  .logo-mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--brand), #8b5cf6); display: grid; place-items: center; color: #fff; }
+  .nav { display: flex; gap: 28px; font-size: 14.5px; color: var(--muted); }
+  .nav a:hover { color: var(--fg); }
+  .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 16px; font-size: 14.5px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 10px; border: 1px solid transparent; padding: 11px 20px; font: inherit; font-size: 15px; font-weight: 550; cursor: pointer; }
+  .btn-primary { background: var(--brand); color: #fff; }
+  .btn-primary:hover { background: var(--brand-dark); }
+  .btn-ghost { border-color: var(--line); color: var(--fg); background: #fff; }
+  .btn-sm { padding: 8px 14px; font-size: 14px; }
+  .btn-light { background: #fff; color: var(--ink); }
+  .btn-outline-light { border-color: rgba(255,255,255,0.28); color: #fff; }
+
+  .hero { text-align: center; padding: 96px 0 72px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 550; color: var(--brand); background: #eef2ff; border: 1px solid #ddd9fe; border-radius: 999px; padding: 6px 14px; margin-bottom: 24px; }
+  h1 { font-size: 56px; line-height: 1.08; letter-spacing: -0.032em; margin: 0 auto 20px; max-width: 15ch; font-weight: 700; }
+  .lede { font-size: 19px; color: var(--muted); max-width: 58ch; margin: 0 auto 36px; }
+  .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .hero-note { margin-top: 18px; font-size: 13.5px; color: var(--muted); }
+
+  .logos { padding: 40px 0 72px; }
+  .logos-label { text-align: center; font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
+  .logo-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; opacity: 0.72; }
+  .logo-item { display: flex; align-items: center; gap: 8px; font-weight: 650; font-size: 17px; letter-spacing: -0.01em; color: #3c4457; }
+
+  .section { padding: 80px 0; border-top: 1px solid var(--line); }
+  .section-head { max-width: 640px; margin: 0 auto 48px; text-align: center; }
+  .section-head h2 { font-size: 34px; line-height: 1.2; letter-spacing: -0.022em; margin: 0 0 12px; }
+  .section-head p { color: var(--muted); margin: 0; font-size: 17px; }
+
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .feature { border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; background: #fff; }
+  .feature-icon { width: 40px; height: 40px; border-radius: 10px; background: #eef2ff; color: var(--brand); display: grid; place-items: center; margin-bottom: 18px; }
+  .feature h3 { margin: 0 0 8px; font-size: 17px; letter-spacing: -0.01em; }
+  .feature p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .quote { border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+  .quote blockquote { margin: 0; font-size: 16px; color: #232838; }
+  .quote-by { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+  .avatar { width: 40px; height: 40px; border-radius: 999px; background: #dfe3ee; color: #43506b; display: grid; place-items: center; font-size: 14px; font-weight: 650; flex: none; }
+  .quote-by strong { display: block; font-size: 14.5px; font-weight: 600; }
+  .quote-by span { font-size: 13.5px; color: var(--muted); }
+
+  .cta { background: var(--ink); color: #fff; }
+  .cta-inner { padding: 72px 0; display: flex; align-items: center; gap: 48px; }
+  .cta h2 { font-size: 32px; letter-spacing: -0.022em; margin: 0 0 10px; }
+  .cta p { margin: 0; color: #a7aec2; font-size: 16.5px; max-width: 46ch; }
+  .cta-actions { margin-left: auto; display: flex; gap: 12px; flex: none; }
+
+  .footer { border-top: 1px solid var(--line); padding: 64px 0 40px; }
+  .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .footer-col h4 { margin: 0 0 14px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a { font-size: 14.5px; color: #39415a; }
+  .footer-bottom { display: flex; align-items: center; gap: 16px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--muted); flex-wrap: wrap; }
+  .footer-bottom .spacer { margin-left: auto; }
+
+  @media (max-width: 900px) {
+    .features, .quotes, .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    .cta-inner { flex-direction: column; align-items: flex-start; }
+    h1 { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <a class="logo" href="#">
+      <span class="logo-mark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"></path></svg>
+      </span>
+      Meridian
+    </a>
+    <nav class="nav">
+      <a href="#">Product</a>
+      <a href="#">Solutions</a>
+      <a href="#">Docs</a>
+      <a href="#">Pricing</a>
+      <a href="#">Customers</a>
+    </nav>
+    <div class="topbar-actions">
+      <a href="#">Sign in</a>
+      <a class="btn btn-primary btn-sm" href="#">Start free</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="shell">
+      <span class="eyebrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 10-12h-8z"></path></svg>
+        Now with trace-linked logs
+      </span>
+      <h1>Observability that keeps up with your deploys</h1>
+      <p class="lede">Meridian correlates metrics, traces and logs into a single timeline, so the question you ask at 3am is answered before the incident channel fills up.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#">Start free trial</a>
+        <a class="btn btn-ghost" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Watch the 3-min tour
+        </a>
+      </div>
+      <p class="hero-note">No credit card. 30-day retention on the free tier.</p>
+    </div>
+  </section>
+
+  <section class="logos">
+    <div class="shell">
+      <p class="logos-label">Trusted by engineering teams at</p>
+      <div class="logo-row">
+        <span class="logo-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>Northwind</span>
+        <span class="logo-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="4"></rect></svg>Halcyon</span>
+        <span class="logo-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 3 21 20 3 20"></polygon></svg>Vertex Pay</span>
+        <span class="logo-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16"></path></svg>Cobalt</span>
+        <span class="logo-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 3 8v8l9 5 9-5V8z"></path></svg>Ironclad</span>
+        <span class="logo-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19V5h9l5 5v9z"></path></svg>Sablefish</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <div class="section-head">
+        <h2>One timeline, every signal</h2>
+        <p>Stop stitching four dashboards together by hand. Meridian keeps the correlation for you.</p>
+      </div>
+      <div class="features">
+        <article class="feature">
+          <span class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m7 14 3-4 3 3 5-7"></path></svg></span>
+          <h3>Metrics without cardinality bills</h3>
+          <p>Store every label you actually query. Meridian rolls up the rest automatically at ingest.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h13"></path></svg></span>
+          <h3>Traces linked to their logs</h3>
+          <p>Every span carries the log lines it produced. One click from a slow request to the stack trace.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9"></path><path d="M12 3v9h9"></path></svg></span>
+          <h3>Deploy markers, everywhere</h3>
+          <p>Every chart annotates the release that changed it, pulled straight from your CI.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>
+          <h3>Redaction at the edge</h3>
+          <p>PII patterns are stripped in the collector, before anything leaves your network.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg></span>
+          <h3>Alerts that explain themselves</h3>
+          <p>Each alert ships with the three signals that moved most in the same window.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></span>
+          <h3>OpenTelemetry native</h3>
+          <p>Point your existing collector at one endpoint. No proprietary agent, no vendor SDK.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <div class="section-head">
+        <h2>What teams tell us after a month</h2>
+        <p>Median time-to-first-dashboard is under an hour.</p>
+      </div>
+      <div class="quotes">
+        <figure class="quote">
+          <blockquote>“We cut our p95 checkout latency in half in the first week, mostly because we could finally see which downstream call was doing the waiting.”</blockquote>
+          <figcaption class="quote-by">
+            <span class="avatar">RA</span>
+            <span><strong>Rina Adeyemi</strong><span>Staff SRE, Vertex Pay</span></span>
+          </figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote>“The bill stopped being a surprise. We kept every label we cared about and still paid less than the previous vendor's floor.”</blockquote>
+          <figcaption class="quote-by">
+            <span class="avatar">JT</span>
+            <span><strong>Jonas Thiel</strong><span>Platform lead, Halcyon</span></span>
+          </figcaption>
+        </figure>
+        <figure class="quote">
+          <blockquote>“Deploy markers sound trivial until an on-call engineer who joined last month resolves an incident in four minutes.”</blockquote>
+          <figcaption class="quote-by">
+            <span class="avatar">MO</span>
+            <span><strong>Mei Okonkwo</strong><span>Director of Engineering, Cobalt</span></span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="shell cta-inner">
+      <div>
+        <h2>Point your collector at Meridian today</h2>
+        <p>Free for 30 days on the full feature set, then usage-based pricing that stops at a cap you set.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-light" href="#">Start free</a>
+        <a class="btn btn-outline-light" href="#">Talk to an engineer</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Metrics</a></li>
+          <li><a href="#">Traces</a></li>
+          <li><a href="#">Logs</a></li>
+          <li><a href="#">Alerting</a></li>
+          <li><a href="#">Integrations</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Developers</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API reference</a></li>
+          <li><a href="#">OpenTelemetry guide</a></li>
+          <li><a href="#">Status</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Press kit</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Subprocessors</a></li>
+          <li><a href="#">DPA</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Meridian Systems, Inc.</span>
+      <span class="spacer"></span>
+      <a href="#">Security</a>
+      <a href="#">Trust center</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

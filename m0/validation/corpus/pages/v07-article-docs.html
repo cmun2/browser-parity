@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>createClient() — Emberline docs</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #1a1d24;
+    --muted: #646b7a;
+    --line: #e6e8ee;
+    --soft: #f7f8fa;
+    --brand: #0d6efd;
+    --brand-soft: #eef4ff;
+    --code-bg: #16181f;
+    --sidebar-w: 260px;
+    --toc-w: 224px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  a { color: var(--brand); text-decoration: none; }
+  code, pre, kbd { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
+
+  .docs-top { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,0.94); border-bottom: 1px solid var(--line); height: 60px; display: flex; align-items: center; gap: 18px; padding: 0 24px; }
+  .docs-top .brand { display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--ink); letter-spacing: -0.015em; }
+  .docs-top .brand .mk { width: 25px; height: 25px; border-radius: 7px; background: var(--brand); color: #fff; display: grid; place-items: center; }
+  .docs-top .ver { font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; }
+  .docs-top nav { display: flex; gap: 20px; font-size: 14px; }
+  .docs-top nav a { color: var(--muted); }
+  .docs-top nav a.on { color: var(--ink); font-weight: 600; }
+  .docs-search { margin-left: auto; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; color: #9aa1af; font-size: 13.5px; background: var(--soft); min-width: 220px; }
+  .docs-search kbd { margin-left: auto; font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; background: #fff; }
+
+  .frame { display: grid; grid-template-columns: var(--sidebar-w) minmax(0, 1fr) var(--toc-w); gap: 40px; max-width: 1400px; margin: 0 auto; padding: 0 24px; align-items: start; }
+
+  .tree { position: sticky; top: 60px; max-height: calc(100vh - 60px); overflow-y: auto; padding: 28px 0 40px; font-size: 14px; }
+  .tree section { margin-bottom: 22px; }
+  .tree h3 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #9aa1af; font-weight: 650; }
+  .tree ul { list-style: none; margin: 0; padding: 0; }
+  .tree li a { display: block; padding: 5px 10px; border-radius: 7px; color: #4e5564; }
+  .tree li a:hover { background: var(--soft); }
+  .tree li a.on { background: var(--brand-soft); color: var(--brand); font-weight: 600; }
+  .tree ul ul { margin-left: 10px; border-left: 1px solid var(--line); padding-left: 6px; }
+  .tree ul ul a { font-size: 13.5px; color: #6b7280; }
+
+  .article { padding: 32px 0 80px; min-width: 0; }
+  .breadcrumbs { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .breadcrumbs a { color: var(--muted); }
+  .breadcrumbs .sep { margin: 0 7px; color: #c3c8d2; }
+  .article h1 { margin: 0 0 10px; font-size: 34px; letter-spacing: -0.028em; line-height: 1.2; }
+  .article .standfirst { margin: 0 0 28px; font-size: 17px; color: var(--muted); }
+  .article h2 { margin: 44px 0 12px; font-size: 22px; letter-spacing: -0.018em; padding-top: 8px; border-top: 1px solid var(--line); }
+  .article h3 { margin: 28px 0 8px; font-size: 17px; letter-spacing: -0.01em; }
+  .article p { margin: 0 0 16px; }
+  .article ul, .article ol { margin: 0 0 16px; padding-left: 22px; }
+  .article li { margin-bottom: 6px; }
+  .article :not(pre) > code { background: var(--soft); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; font-size: 0.87em; }
+
+  pre { background: var(--code-bg); color: #e5e9f0; border-radius: 10px; padding: 16px 18px; overflow-x: auto; font-size: 13.5px; line-height: 1.65; margin: 0 0 18px; }
+  pre .k { color: #c792ea; }
+  pre .s { color: #c3e88d; }
+  pre .c { color: #6d7891; }
+  pre .f { color: #82aaff; }
+  .codeblock { margin-bottom: 20px; }
+  .codeblock-head { display: flex; align-items: center; gap: 10px; background: #22252e; color: #a7b0c2; border-radius: 10px 10px 0 0; padding: 8px 14px; font-size: 12.5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .codeblock-head .copy { margin-left: auto; font-size: 12px; color: #8891a4; }
+  .codeblock-head + pre { border-radius: 0 0 10px 10px; margin: 0; }
+
+  .callout { border: 1px solid var(--line); border-left-width: 3px; border-radius: 8px; padding: 14px 16px; margin: 0 0 20px; display: flex; gap: 12px; font-size: 14.5px; }
+  .callout svg { flex: none; margin-top: 3px; }
+  .callout p { margin: 0; }
+  .callout p + p { margin-top: 8px; }
+  .callout strong { display: block; margin-bottom: 2px; }
+  .callout.note { border-left-color: var(--brand); background: var(--brand-soft); }
+  .callout.note svg { color: var(--brand); }
+  .callout.warn { border-left-color: #d97706; background: #fffbeb; }
+  .callout.warn svg { color: #b45309; }
+  .callout.danger { border-left-color: #dc2626; background: #fef2f2; }
+  .callout.danger svg { color: #b91c1c; }
+
+  table.params { width: 100%; border-collapse: collapse; margin: 0 0 22px; font-size: 14px; }
+  table.params th { text-align: left; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: #8b93a3; font-weight: 650; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--soft); }
+  table.params td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.params td:first-child { white-space: nowrap; }
+  table.params .type { color: #8b5cf6; font-size: 13px; }
+  table.params .req { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #b91c1c; background: #fef2f2; border-radius: 4px; padding: 1px 5px; margin-left: 6px; vertical-align: 1px; }
+  table.params .opt { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #6b7280; background: var(--soft); border-radius: 4px; padding: 1px 5px; margin-left: 6px; vertical-align: 1px; }
+
+  .pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 52px; }
+  .pager a { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; color: var(--ink); display: flex; flex-direction: column; gap: 2px; }
+  .pager a:hover { border-color: var(--brand); }
+  .pager .dir { font-size: 12.5px; color: var(--muted); }
+  .pager .ttl { font-weight: 600; }
+  .pager .next { text-align: right; }
+
+  .toc { position: sticky; top: 60px; padding: 32px 0 40px; font-size: 13.5px; max-height: calc(100vh - 60px); overflow-y: auto; }
+  .toc h3 { margin: 0 0 10px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #9aa1af; font-weight: 650; }
+  .toc ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+  .toc li a { display: block; padding: 4px 0 4px 12px; color: #6b7280; margin-left: -1px; border-left: 2px solid transparent; }
+  .toc li a.on { color: var(--brand); border-left-color: var(--brand); font-weight: 600; }
+  .toc li.sub a { padding-left: 24px; font-size: 13px; }
+  .toc .feedback { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+
+  @media (max-width: 1180px) {
+    .frame { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
+    .toc { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="docs-top">
+  <a class="brand" href="#"><span class="mk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 10 8l4 6 2-3 4 7z"></path></svg></span>Emberline</a>
+  <span class="ver">v4.2</span>
+  <nav>
+    <a class="on" href="#">Docs</a>
+    <a href="#">API</a>
+    <a href="#">Guides</a>
+    <a href="#">Changelog</a>
+  </nav>
+  <span class="docs-search">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+    Search docs
+    <kbd>⌘K</kbd>
+  </span>
+</header>
+
+<div class="frame">
+  <nav class="tree">
+    <section>
+      <h3>Getting started</h3>
+      <ul>
+        <li><a href="#">Introduction</a></li>
+        <li><a href="#">Installation</a></li>
+        <li><a href="#">Quickstart</a></li>
+        <li><a href="#">Authentication</a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Client library</h3>
+      <ul>
+        <li><a class="on" href="#">createClient()</a>
+          <ul>
+            <li><a href="#signature">Signature</a></li>
+            <li><a href="#options">Options</a></li>
+            <li><a href="#retries">Retries</a></li>
+          </ul>
+        </li>
+        <li><a href="#">client.send()</a></li>
+        <li><a href="#">client.batch()</a></li>
+        <li><a href="#">client.events()</a></li>
+        <li><a href="#">Error handling</a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Delivery</h3>
+      <ul>
+        <li><a href="#">Templates</a></li>
+        <li><a href="#">Suppression lists</a></li>
+        <li><a href="#">Dedicated IPs</a></li>
+        <li><a href="#">Webhooks</a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Operations</h3>
+      <ul>
+        <li><a href="#">Rate limits</a></li>
+        <li><a href="#">Data residency</a></li>
+        <li><a href="#">Audit logs</a></li>
+      </ul>
+    </section>
+  </nav>
+
+  <article class="article">
+    <p class="breadcrumbs"><a href="#">Docs</a><span class="sep">/</span><a href="#">Client library</a><span class="sep">/</span>createClient()</p>
+    <h1><code>createClient()</code></h1>
+    <p class="standfirst">Creates a configured client instance. Call it once at process start and reuse the result — the client owns a connection pool and a token refresh timer.</p>
+
+    <h2 id="signature">Signature</h2>
+    <p>The only required option is <code>apiKey</code>. Everything else has a default that is safe for production.</p>
+
+    <div class="codeblock">
+      <div class="codeblock-head">index.ts<span class="copy">Copy</span></div>
+<pre><span class="k">import</span> { createClient } <span class="k">from</span> <span class="s">"@emberline/sdk"</span>;
+
+<span class="k">const</span> client = <span class="f">createClient</span>({
+  apiKey: process.env.<span class="s">EMBERLINE_KEY</span>!,
+  region: <span class="s">"eu-west-1"</span>,
+  timeoutMs: <span class="s">10_000</span>,
+  retries: { attempts: <span class="s">3</span>, backoff: <span class="s">"exponential"</span> },
+});
+
+<span class="c">// Reuse `client` for the lifetime of the process.</span>
+<span class="k">await</span> client.<span class="f">send</span>({ to: <span class="s">"ada@example.com"</span>, template: <span class="s">"welcome"</span> });</pre>
+    </div>
+
+    <div class="callout note">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-5"></path><path d="M12 8h.01"></path></svg>
+      <span>
+        <strong>One client per process</strong>
+        <p>Creating a client per request works, but you lose connection reuse and each instance starts its own refresh timer. In a serverless runtime, hoist the client outside the handler.</p>
+      </span>
+    </div>
+
+    <h2 id="options">Options</h2>
+    <p>All options are read once at construction. Changing the object afterwards has no effect.</p>
+
+    <table class="params">
+      <thead>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>apiKey</code><span class="req">Required</span></td>
+          <td class="type">string</td>
+          <td>A live or test key from the dashboard. Keys prefixed <code>sk_test_</code> are routed to the sandbox and never deliver.</td>
+        </tr>
+        <tr>
+          <td><code>region</code><span class="opt">Optional</span></td>
+          <td class="type">"eu-west-1" | "us-east-1" | "ap-northeast-1"</td>
+          <td>Where payloads are processed and stored. Defaults to the region of the key. Cannot be changed after the first send without a data migration.</td>
+        </tr>
+        <tr>
+          <td><code>timeoutMs</code><span class="opt">Optional</span></td>
+          <td class="type">number</td>
+          <td>Per-attempt socket timeout in milliseconds. Defaults to <code>15000</code>. The total wall-clock budget is roughly <code>timeoutMs × attempts</code>.</td>
+        </tr>
+        <tr>
+          <td><code>retries</code><span class="opt">Optional</span></td>
+          <td class="type">RetryPolicy</td>
+          <td>See <a href="#retries">Retries</a>. Defaults to three attempts with exponential backoff and full jitter.</td>
+        </tr>
+        <tr>
+          <td><code>fetch</code><span class="opt">Optional</span></td>
+          <td class="type">typeof fetch</td>
+          <td>Injects a custom fetch implementation. Useful for tracing, proxies, and tests. Must follow the WHATWG signature.</td>
+        </tr>
+        <tr>
+          <td><code>onRateLimit</code><span class="opt">Optional</span></td>
+          <td class="type">(info: RateLimitInfo) =&gt; void</td>
+          <td>Called before each backoff sleep with the remaining quota and reset time. Use it to emit a metric rather than to reimplement retrying.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="retries">Retries</h2>
+    <p>The client retries on network errors, <code>429</code>, and <code>5xx</code> responses. It never retries <code>4xx</code> other than <code>429</code>, because those will fail identically on the second attempt.</p>
+
+    <h3>Idempotency</h3>
+    <p>Every request carries a generated idempotency key so a retried send cannot deliver twice. Supply your own with <code>idempotencyKey</code> when the retry crosses a process boundary:</p>
+
+    <div class="codeblock">
+      <div class="codeblock-head">retry.ts<span class="copy">Copy</span></div>
+<pre><span class="k">await</span> client.<span class="f">send</span>({
+  to: user.email,
+  template: <span class="s">"password-reset"</span>,
+  idempotencyKey: <span class="s">`reset:</span>${'$'}{user.id}<span class="s">:</span>${'$'}{tokenHash}<span class="s">`</span>,
+});</pre>
+    </div>
+
+    <div class="callout warn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.6a2 2 0 0 1 3.4 0l7 12a2 2 0 0 1-1.7 3H5a2 2 0 0 1-1.7-3z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+      <span>
+        <strong>Idempotency keys expire after 24 hours</strong>
+        <p>A retry later than that is treated as a new send. If your queue can hold a message for longer, deduplicate before calling <code>send()</code>.</p>
+      </span>
+    </div>
+
+    <h3>Backoff</h3>
+    <ol>
+      <li>Attempt 1 fails with <code>503</code>.</li>
+      <li>Sleep <code>random(0, 250ms)</code>, attempt 2.</li>
+      <li>Sleep <code>random(0, 500ms)</code>, attempt 3.</li>
+      <li>Throw <code>DeliveryError</code> with <code>cause</code> set to the final response.</li>
+    </ol>
+
+    <div class="callout danger">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>
+      <span>
+        <strong>Do not wrap send() in your own retry loop</strong>
+        <p>Two layers of retry multiply, not add. A three-attempt policy inside a three-attempt loop is nine deliveries against a rate limit that is counting all of them.</p>
+      </span>
+    </div>
+
+    <nav class="pager">
+      <a href="#"><span class="dir">← Previous</span><span class="ttl">Authentication</span></a>
+      <a class="next" href="#"><span class="dir">Next →</span><span class="ttl">client.send()</span></a>
+    </nav>
+  </article>
+
+  <aside class="toc">
+    <h3>On this page</h3>
+    <ul>
+      <li><a class="on" href="#signature">Signature</a></li>
+      <li><a href="#options">Options</a></li>
+      <li><a href="#retries">Retries</a></li>
+      <li class="sub"><a href="#retries">Idempotency</a></li>
+      <li class="sub"><a href="#retries">Backoff</a></li>
+    </ul>
+    <p class="feedback">Was this page helpful?<br><a href="#">Edit on GitHub</a></p>
+  </aside>
+</div>
+
+</body>
+</html>

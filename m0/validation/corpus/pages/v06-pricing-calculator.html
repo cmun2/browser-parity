@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing — pay for what you send</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --soft: #f6f7fb;
+    --ink: #101219;
+    --muted: #666c7c;
+    --line: #e5e7ee;
+    --brand: #c2410c;
+    --brand-soft: #fff5ed;
+    --ok: #15803d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  .shell { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  .nav { border-bottom: 1px solid var(--line); }
+  .nav-inner { display: flex; align-items: center; gap: 30px; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 9px; font-weight: 700; letter-spacing: -0.015em; }
+  .brand .mk { width: 27px; height: 27px; border-radius: 8px; background: var(--brand); color: #fff; display: grid; place-items: center; }
+  .nav-links { display: flex; gap: 26px; font-size: 14.5px; color: var(--muted); }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; font-size: 14.5px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 10px; font: inherit; font-size: 14.5px; font-weight: 550; padding: 10px 18px; cursor: pointer; }
+  .btn-primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .btn-sm { padding: 7px 13px; font-size: 14px; }
+  .btn-block { width: 100%; }
+
+  .head { text-align: center; padding: 72px 0 40px; }
+  .head h1 { margin: 0 0 14px; font-size: 46px; line-height: 1.1; letter-spacing: -0.03em; }
+  .head p { margin: 0 auto; max-width: 56ch; color: var(--muted); font-size: 18px; }
+
+  .calc { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 28px; align-items: start; padding-bottom: 24px; }
+  .panel { border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+  .panel > header { padding: 22px 24px 0; }
+  .panel > header h2 { margin: 0 0 4px; font-size: 19px; letter-spacing: -0.015em; }
+  .panel > header p { margin: 0; color: var(--muted); font-size: 14px; }
+  .panel-body { padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 28px; }
+
+  .slider { display: flex; flex-direction: column; gap: 10px; }
+  .slider-head { display: flex; align-items: baseline; gap: 12px; }
+  .slider-head label { font-weight: 600; font-size: 14.5px; }
+  .slider-head .value { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 650; font-size: 17px; letter-spacing: -0.01em; }
+  .slider-head .unit { color: var(--muted); font-size: 13px; font-weight: 450; }
+  input[type="range"] { width: 100%; accent-color: var(--brand); height: 22px; margin: 0; }
+  .scale { display: flex; justify-content: space-between; font-size: 12px; color: #97a0b1; font-variant-numeric: tabular-nums; }
+
+  .switchrow { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .switchrow input { width: 17px; height: 17px; accent-color: var(--brand); flex: none; margin: 0; }
+  .switchrow .t strong { display: block; font-size: 14px; font-weight: 600; }
+  .switchrow .t span { color: var(--muted); font-size: 13px; }
+  .switchrow .price { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+
+  .estimate { position: sticky; top: 24px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .estimate-top { background: var(--brand-soft); border-bottom: 1px solid #fbdcc6; padding: 24px; }
+  .estimate-top .label { font-size: 12.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--brand); font-weight: 650; }
+  .estimate-top .amount { font-size: 44px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.1; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+  .estimate-top .per { color: var(--muted); font-size: 14px; }
+  .estimate-body { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 16px; }
+  .estimate-note { display: flex; gap: 9px; font-size: 13px; color: var(--muted); }
+  .estimate-note svg { flex: none; margin-top: 3px; color: var(--ok); }
+
+  .breakdown { padding: 8px 0 56px; }
+  .breakdown h2 { font-size: 20px; letter-spacing: -0.018em; margin: 0 0 14px; }
+  table { width: 100%; border-collapse: collapse; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  th { text-align: left; background: var(--soft); font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase; color: #7b8294; font-weight: 650; padding: 12px 18px; border-bottom: 1px solid var(--line); }
+  td { padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  tbody tr:last-child td { border-bottom: 1px solid var(--line); }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tfoot td { font-weight: 650; background: var(--soft); border-bottom: 0; }
+  .dim { color: var(--muted); font-size: 13px; display: block; }
+
+  .plans { padding: 56px 0 80px; border-top: 1px solid var(--line); }
+  .plans h2 { font-size: 30px; letter-spacing: -0.024em; margin: 0 0 8px; text-align: center; }
+  .plans > p { text-align: center; color: var(--muted); margin: 0 0 36px; }
+  .plan-row { display: flex; gap: 20px; align-items: stretch; flex-wrap: wrap; }
+  .plan { flex: 1 1 220px; border: 1px solid var(--line); border-radius: 16px; padding: 26px 22px; display: flex; flex-direction: column; gap: 16px; background: #fff; }
+  .plan.featured { border-color: var(--brand); box-shadow: 0 8px 30px rgba(194,65,12,0.08); }
+  .plan-name { display: flex; align-items: center; gap: 8px; }
+  .plan-name h3 { margin: 0; font-size: 17px; letter-spacing: -0.01em; }
+  .tag { font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--brand); color: #fff; border-radius: 999px; padding: 3px 9px; }
+  .plan-price { font-size: 34px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+  .plan-price small { font-size: 14px; font-weight: 450; color: var(--muted); letter-spacing: 0; }
+  .plan > p { margin: 0; color: var(--muted); font-size: 14px; }
+  .plan ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; font-size: 14px; }
+  .plan li { display: flex; gap: 9px; align-items: flex-start; }
+  .plan li svg { flex: none; margin-top: 4px; color: var(--ok); }
+  .plan .cta { margin-top: auto; }
+
+  @media (max-width: 940px) {
+    .calc { grid-template-columns: 1fr; }
+    .estimate { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="shell nav-inner">
+    <a class="brand" href="#">
+      <span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 10 8l4 6 2-3 4 7z"></path></svg></span>
+      Emberline
+    </a>
+    <nav class="nav-links">
+      <a href="#">Platform</a>
+      <a href="#">Pricing</a>
+      <a href="#">Docs</a>
+      <a href="#">Customers</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#">Sign in</a>
+      <a class="btn btn-primary btn-sm" href="#">Get API key</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="head">
+    <div class="shell">
+      <h1>Pay for what you actually send</h1>
+      <p>No seats, no platform fee, no minimum. Move the sliders to see the bill for a month that looks like yours.</p>
+    </div>
+  </section>
+
+  <div class="shell">
+    <section class="calc">
+      <div class="panel">
+        <header>
+          <h2>Estimate your monthly bill</h2>
+          <p>Based on list pricing. Volume discounts kick in automatically above 5M messages.</p>
+        </header>
+        <div class="panel-body">
+          <div class="slider">
+            <div class="slider-head">
+              <label for="s-messages">Messages sent</label>
+              <span class="value">2,400,000 <span class="unit">/ month</span></span>
+            </div>
+            <input id="s-messages" type="range" min="0" max="100" value="41">
+            <div class="scale"><span>0</span><span>2M</span><span>5M</span><span>10M</span><span>25M</span></div>
+          </div>
+
+          <div class="slider">
+            <div class="slider-head">
+              <label for="s-contacts">Stored contacts</label>
+              <span class="value">185,000 <span class="unit">records</span></span>
+            </div>
+            <input id="s-contacts" type="range" min="0" max="100" value="27">
+            <div class="scale"><span>0</span><span>100k</span><span>250k</span><span>500k</span><span>1M</span></div>
+          </div>
+
+          <div class="slider">
+            <div class="slider-head">
+              <label for="s-retention">Event retention</label>
+              <span class="value">90 <span class="unit">days</span></span>
+            </div>
+            <input id="s-retention" type="range" min="0" max="100" value="60">
+            <div class="scale"><span>7d</span><span>30d</span><span>90d</span><span>180d</span><span>365d</span></div>
+          </div>
+
+          <div class="slider">
+            <div class="slider-head">
+              <label for="s-regions">Delivery regions</label>
+              <span class="value">3 <span class="unit">regions</span></span>
+            </div>
+            <input id="s-regions" type="range" min="0" max="100" value="34">
+            <div class="scale"><span>1</span><span>2</span><span>3</span><span>5</span><span>8</span></div>
+          </div>
+
+          <label class="switchrow">
+            <input type="checkbox" checked>
+            <span class="t"><strong>Dedicated sending IPs</strong><span>Two IPs, warmed over 14 days</span></span>
+            <span class="price">+$180.00</span>
+          </label>
+
+          <label class="switchrow">
+            <input type="checkbox">
+            <span class="t"><strong>SOC 2 evidence export</strong><span>Monthly control attestations</span></span>
+            <span class="price">+$99.00</span>
+          </label>
+
+          <label class="switchrow">
+            <input type="checkbox" checked>
+            <span class="t"><strong>Priority support</strong><span>1-hour first response, 24/5</span></span>
+            <span class="price">+$250.00</span>
+          </label>
+        </div>
+      </div>
+
+      <aside class="estimate">
+        <div class="estimate-top">
+          <p class="label">Estimated monthly</p>
+          <p class="amount">$1,847</p>
+          <p class="per">≈ $0.00077 per message, all in</p>
+        </div>
+        <div class="estimate-body">
+          <button class="btn btn-primary btn-block" type="button">Start with this configuration</button>
+          <button class="btn btn-block" type="button">Email me this estimate</button>
+          <p class="estimate-note">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>
+            Billed in arrears. Set a hard cap and we stop sending rather than invoice you past it.
+          </p>
+          <p class="estimate-note">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>
+            Annual commitments get 18% off the same usage curve.
+          </p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="breakdown">
+      <h2>How that adds up</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Line item</th>
+            <th class="num">Quantity</th>
+            <th class="num">Unit price</th>
+            <th class="num">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Messages · first 1M<span class="dim">Standard delivery tier</span></td>
+            <td class="num">1,000,000</td>
+            <td class="num">$0.00060</td>
+            <td class="num">$600.00</td>
+          </tr>
+          <tr>
+            <td>Messages · 1M – 5M<span class="dim">Volume tier 2</span></td>
+            <td class="num">1,400,000</td>
+            <td class="num">$0.00042</td>
+            <td class="num">$588.00</td>
+          </tr>
+          <tr>
+            <td>Stored contacts<span class="dim">Above the 50k free allowance</span></td>
+            <td class="num">135,000</td>
+            <td class="num">$0.00080</td>
+            <td class="num">$108.00</td>
+          </tr>
+          <tr>
+            <td>Event retention<span class="dim">90 days, 3 regions</span></td>
+            <td class="num">3</td>
+            <td class="num">$40.00</td>
+            <td class="num">$120.00</td>
+          </tr>
+          <tr>
+            <td>Dedicated sending IPs</td>
+            <td class="num">2</td>
+            <td class="num">$90.00</td>
+            <td class="num">$180.00</td>
+          </tr>
+          <tr>
+            <td>Priority support</td>
+            <td class="num">1</td>
+            <td class="num">$250.00</td>
+            <td class="num">$250.00</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Estimated total, before tax</td>
+            <td class="num">$1,846.00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+  </div>
+
+  <section class="plans">
+    <div class="shell">
+      <h2>Or start from a plan</h2>
+      <p>Every plan uses the same usage pricing. The difference is the support and controls around it.</p>
+      <div class="plan-row">
+        <article class="plan">
+          <div class="plan-name"><h3>Developer</h3></div>
+          <div class="plan-price">$0<small> / month</small></div>
+          <p>For prototypes and side projects. 10,000 messages included every month.</p>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>Shared sending pool</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>7-day event retention</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>Community support</li>
+          </ul>
+          <div class="cta"><button class="btn btn-block" type="button">Start free</button></div>
+        </article>
+
+        <article class="plan featured">
+          <div class="plan-name"><h3>Growth</h3><span class="tag">Most picked</span></div>
+          <div class="plan-price">$49<small> / month + usage</small></div>
+          <p>For teams sending in production. Everything in Developer, plus the controls you need to sleep.</p>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>90-day event retention</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>Spend caps and alerts</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>Dedicated IPs available</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>Email support, 8h response</li>
+          </ul>
+          <div class="cta"><button class="btn btn-primary btn-block" type="button">Choose Growth</button></div>
+        </article>
+
+        <article class="plan">
+          <div class="plan-name"><h3>Scale</h3></div>
+          <div class="plan-price">$399<small> / month + usage</small></div>
+          <p>For high-volume senders with compliance obligations and a real on-call rotation.</p>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>365-day retention</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>SSO, SCIM and audit logs</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>Priority support, 1h response</li>
+          </ul>
+          <div class="cta"><button class="btn btn-block" type="button">Choose Scale</button></div>
+        </article>
+
+        <article class="plan">
+          <div class="plan-name"><h3>Enterprise</h3></div>
+          <div class="plan-price">Custom</div>
+          <p>Private deployment, custom data residency, negotiated rates and a named engineer.</p>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>VPC or on-prem delivery</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>Contractual SLA to 99.99%</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"></path></svg>Quarterly architecture review</li>
+          </ul>
+          <div class="cta"><button class="btn btn-block" type="button">Contact sales</button></div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>
