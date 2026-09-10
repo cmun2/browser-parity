@@ -205,6 +205,48 @@ m0/
   NEGATIVE-RESULT-TEMPLATE.md
 ```
 
+## The validation set — the same briefs, emitted by a model
+
+The limitation above ("hand-authored in an AI-typical idiom, not model-emitted")
+applies to a GO exactly as much as it would have applied to a KILL. A defect rate
+measured on pages a person wrote while imagining what an agent writes is evidence
+about that person's imagination until it is checked.
+
+`m0/validation/` checks it. Ten of the thirty briefs, handed as text to a coding
+agent, written in whatever idiom it produces by default, frozen in its own commit
+before anything was run against it, then put through **the same pipeline, the
+same four suppression rules and the same thresholds** — every stage takes
+`--set`, and nothing else about any stage changes.
+
+```sh
+node m0/scripts/run.mjs      --set validation   # done: 821 raw -> 106 survivors
+node m0/scripts/label.mjs    --set validation   # NOT done — this is yours
+node m0/scripts/verdict.mjs  --set validation   # only meaningful after labelling
+node m0/scripts/compare.mjs  --a . --b validation
+```
+
+**The survivors exist; the defect rate does not yet.** Nobody but you can say
+which survivors are genuine, so none were labelled. What is objective, and what
+`compare.mjs` reports:
+
+| same ten briefs | hand-authored | model-emitted |
+|---|---:|---:|
+| raw findings | 1054 | 821 |
+| survivors | 428 | 106 |
+| survivors/page, median | 29 | 1.5 |
+| pages with ≥1 survivor | 9/10 | 6/10 |
+| survivors on tables | 74.8% | 76.4% |
+| survivors on form controls | 13.8% | 2.8% |
+| width + offset-x share | 84.8% | 83.1% |
+| WebKit is the odd engine out | 62.1% | 91.5% |
+
+Model output diverges in the same element families at a quarter of the rate, and
+the whole gap sits at the tolerance rule — hand-authored deltas mostly clear
+`max(2px, 1% of box)`, model-emitted deltas mostly do not. The mix of the ten is
+weighted toward the categories where M0 found defects, so read the paired and
+one-per-category columns, never the raw 10-page rate against 53.3%.
+`m0/validation/corpus/SPECS.md` has the briefs and the caveats.
+
 ## Not in M0
 
 No packaging, no CLI polish, no `--normalize` preset in the measured path, no
