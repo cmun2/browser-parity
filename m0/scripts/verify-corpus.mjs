@@ -1,16 +1,19 @@
 // Shared guard: re-hash the corpus and compare to the frozen manifest.
 // Imported by run.mjs, label.mjs and verdict.mjs so no stage can operate on a
 // corpus that drifted from the one that was frozen.
+//
+// ROOT is a *set* root (see paths.mjs): m0/ by default, m0/validation/ under
+// `--set validation`. Each set carries its own manifest and its own hash.
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
 const sha = (b) => crypto.createHash('sha256').update(b).digest('hex');
 
-export function verifyCorpus(ROOT, { quiet = false } = {}) {
+export function verifyCorpus(ROOT, { quiet = false, setArg = '' } = {}) {
   const MANIFEST = path.join(ROOT, 'corpus/manifest.json');
   if (!fs.existsSync(MANIFEST)) {
-    console.error('No m0/corpus/manifest.json — the corpus is not frozen. Run: node m0/scripts/freeze.mjs');
+    console.error(`No ${path.relative(process.cwd(), MANIFEST)} — that corpus is not frozen. Run: node m0/scripts/freeze.mjs${setArg}`);
     process.exit(1);
   }
   const m = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
@@ -30,9 +33,9 @@ export function verifyCorpus(ROOT, { quiet = false } = {}) {
     console.error(`\nCORPUS TAMPERED — ${bad.length} file(s) differ from the frozen manifest:`);
     for (const b of bad) console.error('  ' + b);
     console.error('\nThe frozen corpus is what makes this measurement a base rate rather than a');
-    console.error('demo. Restore the files (git checkout m0/corpus) or start a new corpus version.');
+    console.error(`demo. Restore the files (git checkout ${path.relative(process.cwd(), path.join(ROOT, 'corpus'))}) or start a new corpus version.`);
     process.exit(1);
   }
-  if (!quiet) console.log(`corpus verified: ${m.pageCount} pages, hash ${m.corpusHash.slice(0, 16)}…`);
+  if (!quiet) console.log(`corpus verified: ${m.corpusVersion} — ${m.pageCount} pages, hash ${m.corpusHash.slice(0, 16)}…`);
   return m;
 }

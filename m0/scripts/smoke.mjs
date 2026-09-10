@@ -7,13 +7,17 @@
 // that it renders the same way twice.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 import { settle, collectFromPage, VIEWPORT } from '../../scripts/funnel.mjs';
+import { resolveSet } from './paths.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const PAGES = path.join(ROOT, 'corpus/pages');
-const SHOTDIR = path.join(ROOT, 'results/smoke');
+// `--set <dir>` picks the corpus (see paths.mjs); the check itself is identical
+// for every set, and stays single-engine for every set.
+const SET = resolveSet();
+const ROOT = SET.root;
+const PAGES = SET.pagesDir;
+const SHOTDIR = path.join(SET.resultsDir, 'smoke');
 const files = fs.readdirSync(PAGES).filter(f => f.endsWith('.html')).sort();
 const shots = process.argv.includes('--screenshots');
 if (shots) fs.mkdirSync(SHOTDIR, { recursive: true });
@@ -22,7 +26,11 @@ if (shots) fs.mkdirSync(SHOTDIR, { recursive: true });
 // page's own <style> block). A missing one renders silently wrong — the first
 // draft of the corpus had 40, which made every `w-3 h-3` icon balloon to fill
 // its card. Checked mechanically so it is never a matter of eyeballing.
-const UTIL = fs.readFileSync(path.join(ROOT, 'corpus/assets/util.css'), 'utf8');
+// A corpus of self-contained single-file pages has no shared stylesheet, in
+// which case every class must be defined in the page's own <style> block — the
+// same check with an empty shared vocabulary.
+const UTILPATH = path.join(SET.assetsDir, 'util.css');
+const UTIL = fs.existsSync(UTILPATH) ? fs.readFileSync(UTILPATH, 'utf8') : '';
 const DEFINED = new Set([...UTIL.matchAll(/\.([a-zA-Z0-9_\\.-]+)/g)].map(m => m[1].replace(/\\/g, '')));
 function undefinedClasses(src) {
   const style = (src.match(/<style>[\s\S]*?<\/style>/g) || []).join('\n');
@@ -91,6 +99,6 @@ await browser.close();
 
 const nodes = rows.map(r => r.nodes).sort((a, b) => a - b);
 console.log(`\n${rows.length} pages · nodes min ${nodes[0]} / median ${nodes[Math.floor(nodes.length / 2)]} / max ${nodes[nodes.length - 1]}`);
-if (shots) console.log(`screenshots: m0/results/smoke/ (review these before freezing)`);
+if (shots) console.log(`screenshots: ${SET.rel}/results/smoke/ (review these before freezing)`);
 if (fail) { console.error(`\n${fail} page(s) failed the sanity check. Fix them BEFORE freezing.`); process.exit(1); }
-console.log('\nall pages sane. next: node m0/scripts/freeze.mjs');
+console.log(`\nall pages sane. next: node m0/scripts/freeze.mjs${SET.isDefault ? '' : ' --set ' + path.basename(ROOT)}`);
