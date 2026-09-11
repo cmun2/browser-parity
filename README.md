@@ -65,9 +65,13 @@ project never proxies a model request and never pays for anyone's inference.
 
 How optional it is, is a measurement rather than a claim. A deterministic
 known-cause matcher, built from the mechanisms in the labelled corpus, explains
-**93.4% of the survivors on a corpus it was never derived from**, with a
+**97.2% of the survivors on a corpus it was never derived from**, with a
 mechanism and a fix and no model in the loop. See **[`ai/README.md`](ai/README.md)**
 and `node --experimental-strip-types ai/coverage.ts`.
+
+Three models were then run against the same findings to ask whether the layer is
+worth switching on at all. None contradicted a rule that was right; two of them
+caught rules that were wrong. **[`ai/MODEL-COMPARISON.md`](ai/MODEL-COMPARISON.md)**
 
 `ai/` can be deleted; there is a test that deletes it and runs the core anyway.
 

@@ -33,6 +33,8 @@ export interface OpenAIOptions {
   reasoningEffort?: RequestOptions['reasoningEffort'];
   /** hard ceiling in USD; the provider refuses to send past it. */
   spendCapUsd?: number;
+  /** spend already incurred elsewhere, so a shared cap can span providers. */
+  initialSpentUsd?: number;
   baseUrl?: string;
   timeoutMs?: number;
 }
@@ -53,6 +55,7 @@ export class OpenAIProvider implements InvestigatorProvider {
   constructor(opts: OpenAIOptions = {}) {
     this.opts = opts;
     this.model = opts.model ?? DEFAULT_MODEL;
+    this.spent = opts.initialSpentUsd ?? 0;
   }
 
   /**

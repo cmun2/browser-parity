@@ -1,6 +1,6 @@
 {
   "schema": "browser-parity/known-cause-coverage/1",
-  "measuredAt": "2026-09-11T14:56:21.933Z",
+  "measuredAt": "2026-09-11T15:18:34.546Z",
   "rules": [
     {
       "id": "control-font-not-inherited",
@@ -33,10 +33,6 @@
     {
       "id": "font-relative-length",
       "what": "A max-width in a font-relative unit (ch/ex/em) resolves against per-engine font metrics."
-    },
-    {
-      "id": "line-height-resolution",
-      "what": "A unitless line-height resolves to a very slightly different pixel value per engine, and per-line rounding accumulates."
     },
     {
       "id": "symptom-absorbed-size",
@@ -134,8 +130,8 @@
         }
       },
       "byConfidence": {
-        "high": 467,
-        "medium": 8,
+        "high": 471,
+        "medium": 4,
         "low": 0
       },
       "verdictAgreement": {
@@ -174,15 +170,15 @@
           "genuine": 0,
           "expected": 0
         },
-        "line-height-resolution": {
-          "findings": 14,
-          "units": 7,
+        "propagated-displacement": {
+          "findings": 19,
+          "units": 10,
           "genuine": 0,
           "expected": 0
         },
-        "propagated-displacement": {
-          "findings": 6,
-          "units": 5,
+        "symptom-inherited-size": {
+          "findings": 2,
+          "units": 2,
           "genuine": 0,
           "expected": 0
         },
@@ -198,12 +194,6 @@
           "genuine": 0,
           "expected": 0
         },
-        "symptom-inherited-size": {
-          "findings": 1,
-          "units": 1,
-          "genuine": 0,
-          "expected": 0
-        },
         "text-shrink-to-fit": {
           "findings": 1,
           "units": 1,
@@ -212,8 +202,8 @@
         }
       },
       "byConfidence": {
-        "high": 87,
-        "medium": 19,
+        "high": 106,
+        "medium": 0,
         "low": 0
       },
       "verdictAgreement": {
@@ -230,15 +220,15 @@
       "derivedFrom": "A",
       "measuredOn": "B · 10-page model-emitted",
       "rules": 10,
-      "coverage": 0.9339622641509434,
-      "unitCoverage": 0.8648648648648649,
-      "covered": 99,
+      "coverage": 0.9716981132075472,
+      "unitCoverage": 0.918918918918919,
+      "covered": 103,
       "findings": 106
     },
     {
       "derivedFrom": "B",
       "measuredOn": "A · 30-page hand-authored",
-      "rules": 3,
+      "rules": 2,
       "coverage": 0,
       "unitCoverage": 0,
       "covered": 0,

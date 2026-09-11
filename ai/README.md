@@ -34,8 +34,8 @@ explaining all of that corpus is a property of the mining.
 
 The figure that means something is the holdout, which the same command prints:
 
-> **10 rules derived from corpus A, applied to corpus B: 93.4% of survivors
-> (99/106) and 86.5% of root-cause units (32/37).**
+> **10 rules derived from corpus A, applied to corpus B: 97.2% of survivors
+> (103/106) and 91.9% of root-cause units (34/37).**
 
 Corpus B was written by a real coding agent, not by the person who wrote the
 rules, and the A-derived rules had never seen it. That is the honest estimate of
@@ -60,12 +60,23 @@ rule that verdicts are never auto-approved applies here too.
 
 ---
 
+## Which model, if any
+
+![model comparison](model-comparison.png)
+
+Three models on the same 27 findings and byte-identical evidence — see
+`MODEL-COMPARISON.md`. None contradicted a rule that was right. Two of them broke
+two rules that were *wrong*, one of which has been deleted. If the layer is switched
+on, the default is **gpt-5.6-luna**: cheapest of the three at $0.001009 per
+investigation, the only one that answered all 27, and self-consistent on identical
+inputs where gpt-5-mini is not.
+
 ## Layout
 
 ```
 types.ts         the data shapes. Interfaces only, no runtime code.
 evidence.ts      survivors.json (+ the per-page node dump) -> one EvidenceBundle
-known-causes.ts  the matcher: 13 rules, ordered, first match wins
+known-causes.ts  the matcher: 12 rules, ordered, first match wins
 provider.ts      the seam: InvestigatorProvider, the tool schemas, the loop
 mock.ts          a provider backed by recorded fixtures
 openai.ts        the Responses API adapter + dryRun(). Never called.
@@ -127,7 +138,13 @@ from geometry:
 
 The rest are geometric: `table-column-distribution`, `line-wrap-count`,
 `text-shrink-to-fit`, `symptom-absorbed-size`, `symptom-inherited-size`,
-`propagated-displacement`, `line-height-resolution`, `ua-checkbox-radio-size`.
+`propagated-displacement`, `ua-checkbox-radio-size`.
+
+There was a thirteenth, `line-height-resolution`. Two models overturned it
+independently and were right; it explained the wrong thing 14 times and has been
+deleted. Deleting it raised out-of-sample coverage. The comment where it used to
+live says why, because a deleted wrong rule is worth more as a warning than as a
+silence.
 
 ## Running it
 

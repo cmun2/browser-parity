@@ -249,23 +249,32 @@ test('propagated-displacement: position moved, box identical', () => {
   assert.match(m!.summary, /p13-form-wizard#1/);
 });
 
-test('line-height-resolution: sub-0.05px differences, accumulated', () => {
+test('a sub-pixel line-height difference is never treated as a cause', () => {
+  // This is the shape that the deleted `line-height-resolution` rule claimed.
+  // The element's own box is identical; only its position moved; the only
+  // differing style is a line-height 0.0083px apart. That cannot move anything,
+  // and the honest answer is that it was displaced from above.
   const m = matchKnownCause(bundle({
-    element: { path: 'BODY[1]/DIV[1]', tag: 'DIV', selector: '.fgroup', display: 'block', text: 'x' },
+    element: { path: 'BODY[1]/ASIDE[1]/DIV[1]', tag: 'DIV', selector: '.fgroup', display: 'block', text: 'Price' },
     properties: [{ prop: 'offset-y', deltaPx: 4.22, values: tri(833.86, 838.08, 833.86) }],
     styleDiffs: { lineHeight: tri('22.475px', '22.4667px', '22.474998px') },
+    ancestors: [ancestor({ tag: 'ASIDE', selector: '.filters', geometry: tri(box(248, 978.84), box(248, 983.10), box(248, 978.84)) })],
   }));
-  assert.equal(m?.ruleId, 'line-height-resolution');
-  assert.equal(m?.verdict, 'expected-engine-difference');
+  assert.equal(m?.ruleId, 'propagated-displacement');
+  assert.match(m!.summary, /reflowed/);
+  assert.doesNotMatch(m!.mechanism, /line-height/i, 'must not offer line-height as the mechanism');
 });
 
-test('a large line-height difference is NOT filed as rounding', () => {
+test('a line-height difference big enough to matter is still allowed to block a rule', () => {
+  // 4px apart is a real line-height difference and must not be waved through as
+  // sub-pixel noise the way 0.0083px is.
   const m = matchKnownCause(bundle({
     element: { path: 'BODY[1]/DIV[1]', tag: 'DIV', selector: '', display: 'block', text: 'x' },
-    properties: [{ prop: 'height', deltaPx: 4, values: tri(100, 104, 100) }],
+    properties: [{ prop: 'offset-y', deltaPx: 4, values: tri(100, 104, 100) }],
     styleDiffs: { lineHeight: tri('24px', '28px', '24px') },
+    ancestors: [ancestor({ geometry: tri(box(400, 100), box(400, 104), box(400, 100)) })],
   }));
-  assert.notEqual(m?.ruleId, 'line-height-resolution');
+  assert.notEqual(m?.ruleId, 'propagated-displacement');
 });
 
 test('nothing matches when there is genuinely no signature', () => {
@@ -286,10 +295,10 @@ test('every rule is reachable on the measured corpus', () => {
     const m = matchKnownCause(buildEvidence(corpus, f));
     if (m) fired.add(m.ruleId);
   }
-  // The three B-derived rules (control-font-not-inherited, font-relative-length,
-  // line-height-resolution) do not fire here, which is the point of tagging them:
-  // this corpus has no `ch` caps, no control that misses `font: inherit`, and no
-  // sub-0.05px line-height split. The other ten must all fire.
+  // The two B-derived rules (control-font-not-inherited, font-relative-length)
+  // do not fire here, which is the point of tagging them: this corpus has no
+  // `ch` caps and no control that misses `font: inherit`. The other ten must
+  // all fire.
   const expectedHere = RULES.filter((r) => r.derivedFrom.includes('A')).map((r) => r.id);
   for (const id of expectedHere) {
     assert.ok(fired.has(id), `rule ${id} never fires on the 30-page corpus`);

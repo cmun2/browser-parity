@@ -80,9 +80,24 @@ function valueDiffs(e: EvidenceBundle): Record<string, Triple<string>> {
   return out;
 }
 
-/** `width`/`height` computed values restate the geometry; they explain nothing. */
+/**
+ * Computed-style differences that could actually explain the divergence.
+ *
+ * `width`/`height` restate the geometry rather than explaining it. And a
+ * `line-height` that differs by less than 0.05px explains nothing at all: it is
+ * below the threshold at which a single line box changes height, it shows up on
+ * a great many nodes, and treating it as a cause is what made the deleted
+ * `line-height-resolution` rule wrong 14 times.
+ */
 function explanatoryDiffKeys(e: EvidenceBundle): string[] {
-  return Object.keys(valueDiffs(e)).filter((k) => k !== 'width' && k !== 'height');
+  return Object.keys(valueDiffs(e)).filter((k) => {
+    if (k === 'width' || k === 'height') return false;
+    if (k === 'lineHeight') {
+      const sp = styleSpread(e, 'lineHeight');
+      if (sp != null && sp <= 0.05) return false;
+    }
+    return true;
+  });
 }
 
 function px(v: string | undefined): number | null {
@@ -484,8 +499,16 @@ const textShrinkToFit: Rule = {
     const w = e.properties.find((p) => p.prop === 'width');
     if (!w) return null;
     const ox = e.properties.find((p) => p.prop === 'offset-x');
-    const d = Math.max(w.deltaPx, ox?.deltaPx ?? 0);
+    // The magnitude this rule may claim is the element's OWN width change. Its
+    // offset can be much larger, because a row of content-sized siblings each
+    // contribute their own difference and the later ones carry the sum:
+    // gpt-5.6-terra showed that p09-dash-infra-status#2 is 1.67px wider but
+    // 5.01px displaced, and that 5.01 is exactly A[1..3]'s excess (1.47 + 1.67
+    // + 1.88 = 5.02). Claiming 5.01px of text measurement on this one element
+    // would be false.
+    const d = w.deltaPx;
     if (d > 12) return null;
+    const carried = (ox?.deltaPx ?? 0) - d;
 
     const disp = e.element.display;
     const contentSized =
@@ -497,13 +520,19 @@ const textShrinkToFit: Rule = {
     return {
       ruleId: this.id,
       cause: 'text-shrink-to-fit',
-      summary: `Content-sized box differs by ${d.toFixed(2)}px because the three engines measure its text differently.`,
+      summary:
+        `Content-sized box is ${d.toFixed(2)}px wider in one engine because the three measure its text differently` +
+        (carried > 0.75 ? `; it is also displaced ${(ox!.deltaPx).toFixed(2)}px, most of which is carried from content before it.` : '.'),
       mechanism:
         `display is ${disp}${e.ancestors[0] ? ` inside a ${e.ancestors[0].styles.chromium?.display ?? 'block'} parent` : ''}, so the box is sized by its ` +
         'contents rather than by a length in the stylesheet. No computed style differs by value — the only thing that differs is the ' +
         `measured text (${engineList(w.values)}). ` +
         'Glyph advances, hinting and sub-pixel rounding are not specified to the pixel, so a text run of this length lands a few pixels ' +
-        'apart. This is the noise floor of cross-engine geometry, not a bug in the page.',
+        'apart. This is the noise floor of cross-engine geometry, not a bug in the page.' +
+        (carried > 0.75
+          ? ` Note that this element's offset-x differs by ${ox!.deltaPx.toFixed(2)}px, which is ${carried.toFixed(2)}px more than its own box changed: ` +
+            'the remainder is accumulated from content-sized elements before it in the same row, not measured on this one.'
+          : ''),
       verdict: 'expected-engine-difference',
       confidence: d < 6 ? 'high' : 'medium',
       fix: {
@@ -616,6 +645,19 @@ const propagatedDisplacement: Rule = {
     const vertical = delta(e, 'offset-y') >= delta(e, 'offset-x');
     const want = off;
     // Look for a survivor whose *size* changed by the amount this one moved.
+    // An ancestor whose height changed by the displacement is as good a culprit
+    // as a sibling finding, and is often the only one available: the content
+    // that actually reflowed is usually below the suppression threshold and so
+    // never becomes a finding at all.
+    const ancCulprit = e.ancestors.find((a) => {
+      const g = a.geometry;
+      if (ENGINES.every((x) => g[x].w === 0 && g[x].h === 0)) return false;
+      const ad = vertical
+        ? spread({ chromium: g.chromium.h, firefox: g.firefox.h, webkit: g.webkit.h })
+        : spread({ chromium: g.chromium.w, firefox: g.firefox.w, webkit: g.webkit.w });
+      return ad > 0.6 && near(ad, want, Math.max(0.75, want * 0.05));
+    });
+
     const culprit = e.related.find((r) => {
       const rs = Math.max(
         r.properties.find((p) => p.prop === 'width')?.deltaPx ?? 0,
@@ -630,63 +672,53 @@ const propagatedDisplacement: Rule = {
       cause: 'propagated-displacement',
       summary: culprit
         ? `Displaced ${off.toFixed(2)}px ${dir} by ${culprit.id} — this element's own box is identical in all three engines.`
-        : `Displaced ${off.toFixed(2)}px ${dir}; this element's own box is identical in all three engines.`,
+        : ancCulprit
+          ? `Displaced ${off.toFixed(2)}px ${dir}: content earlier inside <${ancCulprit.tag.toLowerCase()}>${ancCulprit.selector ? ' ' + ancCulprit.selector : ''} reflowed. This element's own box is identical in all three engines.`
+          : `Displaced ${off.toFixed(2)}px ${dir}; this element's own box is identical in all three engines.`,
       mechanism:
         `width and height agree to within ${size.toFixed(2)}px across all three engines, and no computed style differs by value. ` +
         `Only the position differs (${vertical ? 'offset-y' : 'offset-x'} ${off.toFixed(2)}px). ` +
         (culprit
           ? `${culprit.id} (${culprit.tag} at ${culprit.path.split('/').slice(-2).join('/')}) changes size by the same amount, and this element sits after it in flow. ` +
             'Fix that one and this finding disappears.'
+          : ancCulprit
+          ? `Its ancestor <${ancCulprit.tag.toLowerCase()}> at ${ancCulprit.path.split('/').slice(-2).join('/')} is ${vertical ? 'taller/shorter' : 'wider/narrower'} by the same amount ` +
+            `(${ENGINES.map((x) => (vertical ? ancCulprit.geometry[x].h : ancCulprit.geometry[x].w).toFixed(2)).join(' / ')}), so content before this element inside that container ` +
+            'reflowed to a different size. Nothing on this element is wrong.'
           : 'Nothing on this element is wrong; something earlier in the flow is a different size. The suppression funnel already ' +
             'collapses the parent-inherited case, so the cause is a sibling or an ancestor\'s earlier child, not the direct parent.'),
       verdict: 'unclear',
-      confidence: culprit ? 'high' : 'medium',
+      confidence: culprit || ancCulprit ? 'high' : 'medium',
       fix: culprit
         ? { description: `Symptom only. Fix ${culprit.id}.` }
-        : { description: 'Symptom only. Look at what precedes this element in flow, not at the element itself.' },
+        : ancCulprit
+          ? { description: `Symptom only. Look at what precedes this element inside ${ancCulprit.path}.` }
+          : { description: 'Symptom only. Look at what precedes this element in flow, not at the element itself.' },
       evidenceCited: ['properties', 'related', 'styleDiffs'],
-      rootCauseOf: culprit?.id,
+      rootCauseOf: culprit?.id ?? ancCulprit?.path,
     };
   },
 };
 
-const lineHeightResolution: Rule = {
-  id: 'line-height-resolution',
-  what: 'A unitless line-height resolves to a very slightly different pixel value per engine, and per-line rounding accumulates.',
-  derivedFrom: ['B'],
-  match(e) {
-    const lh = e.styleDiffs.lineHeight;
-    if (!lh) return null;
-    const kind = classifyDiff('lineHeight', lh);
-    const lhSpread = styleSpread(e, 'lineHeight');
-    // Either float noise below 2dp, or a genuine but sub-0.05px difference in
-    // how the engines resolve `line-height: <number>` against the font size.
-    // Anything larger is a real line-height difference and not this mechanism.
-    if (kind !== 'precision' && !(kind === 'value' && lhSpread != null && lhSpread <= 0.05)) return null;
-    if (explanatoryDiffKeys(e).filter((k) => k !== 'lineHeight').length) return null;
-    const d = Math.max(sizeDelta(e), offsetDelta(e));
-    if (d > 10) return null;
-    return {
-      ruleId: this.id,
-      cause: 'line-height-resolution',
-      summary: `Sub-pixel line-height rounding (${ENGINES.map((x) => lh[x]).join(' / ')}) accumulating to ${d.toFixed(2)}px.`,
-      mechanism:
-        `The page specifies line-height as a unitless multiplier. Resolved against the font size it becomes ` +
-        `${ENGINES.map((x) => `${x} ${lh[x]}`).join(', ')} — a spread of ${(lhSpread ?? 0).toFixed(4)}px, far below anything that can be seen on one line. ` +
-        'Each line box rounds independently, so over a long block the error accumulates into whole pixels and everything below shifts. ' +
-        'The engines are not disagreeing about layout; they are disagreeing about the last bit of a float.',
-      verdict: 'expected-engine-difference',
-      confidence: 'medium',
-      fix: {
-        description:
-          'If the accumulation matters, specify line-height in px so every line box rounds the same way. Otherwise this is below the ' +
-          'threshold at which anyone can see it.',
-        css: '/* was: line-height: 1.7 */\nline-height: 23.8px;',
-      },
-      evidenceCited: ['styleDiffs.lineHeight', 'properties'],
-    };
-  },
-};
+// `line-height-resolution` was here, and it was wrong.
+//
+// It fired 14 times across both corpora, at "high" confidence, claiming that a
+// unitless line-height resolving to slightly different pixel values per engine
+// accumulated into whole-pixel displacement. gpt-5.6-luna and gpt-5.6-terra
+// both overturned it independently on v07-article-docs#15, pointing out that a
+// 37.4px vs 37.400002px difference cannot move a 46.4px heading by 7.5px.
+//
+// Following that thread killed the rule everywhere. On v10-table-catalog the
+// arithmetic fails twice over: the per-line error is 0.0083px, so ~500 line
+// boxes would be needed to reach the observed 4.26px, and the sign is backwards
+// — Firefox's lines are SHORTER yet Firefox's <aside> is TALLER. The actual
+// cause is four levels down: a range <input> that is 20px tall in Firefox and
+// 16px in Chromium and WebKit. A UA control metric, not a text metric.
+//
+// The sub-pixel line-height difference is real, appears on many nodes, and
+// explains nothing. It was a coincidence the rule kept mistaking for a cause.
+// Those findings are now explained by propagated-displacement and
+// symptom-absorbed-size, which name the <input>.
 
 /**
  * Ordered. First match wins, so the specific mechanisms come before the general
@@ -704,7 +736,6 @@ export const RULES: Rule[] = [
   tableColumnDistribution,
   lineWrapCount,
   fontRelativeLength,
-  lineHeightResolution,
   // Then the symptom-linkers, which name a specific other node as the cause.
   symptomAbsorbedSize,
   symptomInheritedSize,
