@@ -304,12 +304,19 @@ export interface DryRun {
   };
   images: AssembledRequest['images'];
   cost: CostBreakdown;
+  /** how the output assumption was arrived at, for anyone reading the estimate. */
+  outputAssumption: string;
   /** what a multi-turn investigation costs, with turn 1 priced as above. */
   withToolTurns: { turns: number; totalUsd: number };
   payloadBytes: number;
 }
 
-const ASSUMED_OUTPUT_TOKENS = 450;
+// Measured, not guessed. The step-4 run of 27 investigations on gpt-5-mini at
+// reasoning effort `low` averaged 822 output tokens, of which 280 were reasoning
+// tokens — billed as output at 8x the input rate. The original 450 came from
+// eyeballing the length of an answer and under-priced the run by 52%.
+const ASSUMED_OUTPUT_TOKENS = 850;
+const ASSUMED_REASONING_TOKENS = 280;
 
 function estimateCost(a: AssembledRequest, model: string): CostBreakdown {
   const counts = countRequest(a, model);
@@ -390,6 +397,10 @@ export async function dryRun(
     counts,
     images: assembled.images,
     cost: c,
+    outputAssumption:
+      `${ASSUMED_OUTPUT_TOKENS} output tokens, of which ~${ASSUMED_REASONING_TOKENS} reasoning — measured over 27 investigations ` +
+      'on gpt-5-mini at effort "low" (ai/STEP4-FINDINGS.md). Reasoning tokens are billed as output. ' +
+      'Treat the input half of this estimate as firm and the output half as the soft one.',
     withToolTurns,
     payloadBytes: JSON.stringify(assembled.request).length,
   };

@@ -1,6 +1,6 @@
 {
   "schema": "browser-parity/known-cause-coverage/1",
-  "measuredAt": "2026-09-11T13:33:51.255Z",
+  "measuredAt": "2026-09-11T14:36:18.445Z",
   "rules": [
     {
       "id": "control-font-not-inherited",
@@ -90,10 +90,10 @@
           "expected": 3
         },
         "text-shrink-to-fit": {
-          "findings": 26,
-          "units": 18,
-          "genuine": 3,
-          "expected": 23
+          "findings": 21,
+          "units": 16,
+          "genuine": 2,
+          "expected": 19
         },
         "legend-shrink-to-fit": {
           "findings": 3,
@@ -114,10 +114,10 @@
           "expected": 0
         },
         "propagated-displacement": {
-          "findings": 13,
-          "units": 10,
-          "genuine": 4,
-          "expected": 9
+          "findings": 18,
+          "units": 12,
+          "genuine": 5,
+          "expected": 13
         },
         "line-wrap-count": {
           "findings": 5,
@@ -133,15 +133,15 @@
         }
       },
       "byConfidence": {
-        "high": 470,
-        "medium": 5,
+        "high": 467,
+        "medium": 8,
         "low": 0
       },
       "verdictAgreement": {
-        "agree": 79,
-        "disagree": 7,
-        "abstained": 389,
-        "rate": 0.9186046511627907
+        "agree": 75,
+        "disagree": 6,
+        "abstained": 394,
+        "rate": 0.9259259259259259
       },
       "uncovered": []
     },
@@ -179,14 +179,8 @@
           "expected": 0
         },
         "propagated-displacement": {
-          "findings": 5,
-          "units": 4,
-          "genuine": 0,
-          "expected": 0
-        },
-        "text-shrink-to-fit": {
-          "findings": 2,
-          "units": 2,
+          "findings": 6,
+          "units": 5,
           "genuine": 0,
           "expected": 0
         },
@@ -203,6 +197,12 @@
           "expected": 0
         },
         "symptom-inherited-size": {
+          "findings": 1,
+          "units": 1,
+          "genuine": 0,
+          "expected": 0
+        },
+        "text-shrink-to-fit": {
           "findings": 1,
           "units": 1,
           "genuine": 0,

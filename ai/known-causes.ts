@@ -454,10 +454,17 @@ const textShrinkToFit: Rule = {
   derivedFrom: ['A'],
   match(e) {
     if (explanatoryDiffKeys(e).filter((k) => k !== 'fontFamily' && k !== 'marginLeft').length) return null;
+    // The box must actually be sized differently. Without this the rule claims
+    // pure displacements: p20-article-magazine#1 measures 102.61/102.57/102.61
+    // — identical to a twentieth of a pixel — and only its offset-x moves,
+    // because its parent <form> is 8.62px wider in Firefox. Calling that
+    // "the engines measure its text differently" is false; the text was never
+    // measured differently. Found by the step-4 model run, which overturned
+    // this rule on exactly that finding and was right.
     const w = e.properties.find((p) => p.prop === 'width');
+    if (!w) return null;
     const ox = e.properties.find((p) => p.prop === 'offset-x');
-    if (!w && !ox) return null;
-    const d = Math.max(w?.deltaPx ?? 0, ox?.deltaPx ?? 0);
+    const d = Math.max(w.deltaPx, ox?.deltaPx ?? 0);
     if (d > 12) return null;
 
     const disp = e.element.display;
@@ -474,7 +481,7 @@ const textShrinkToFit: Rule = {
       mechanism:
         `display is ${disp}${e.ancestors[0] ? ` inside a ${e.ancestors[0].styles.chromium?.display ?? 'block'} parent` : ''}, so the box is sized by its ` +
         'contents rather than by a length in the stylesheet. No computed style differs by value — the only thing that differs is the ' +
-        `measured text (${w ? engineList(w.values) : engineList(ox!.values)}). ` +
+        `measured text (${engineList(w.values)}). ` +
         'Glyph advances, hinting and sub-pixel rounding are not specified to the pixel, so a text run of this length lands a few pixels ' +
         'apart. This is the noise floor of cross-engine geometry, not a bug in the page.',
       verdict: 'expected-engine-difference',

@@ -173,6 +173,14 @@ approved budget it replaces that file and nothing else.
 
 ## Cost
 
+Estimated **$0.002314** per investigation on `gpt-5-mini`; measured
+**$0.002291** over 27 real investigations — within 1%. That agreement only holds
+because the output assumption was recalibrated *after* the step-4 run: the
+original estimate assumed 450 output tokens, the real mean was 822 (280 of them
+reasoning tokens, billed as output), and it under-priced the run by 52%. See
+`STEP4-FINDINGS.md`. Treat the input half of a dry run as firm and the output
+half as the soft one.
+
 `--dry-run` counts tokens rather than guessing them. Text is counted with the
 real `o200k_base` BPE when `js-tiktoken` resolves (an optional devDependency,
 lazily imported, never imported by anything in the core) and with a labelled
@@ -198,8 +206,12 @@ them. Re-check them before quoting a figure.
   not whether the model can explain them; it is whether it *contradicts* a rule
   that is right, which would be the strongest argument against running it at all.
 
-At the prices in `pricing.ts`: **$0.042** on `gpt-5-mini` single-turn, **$0.070**
-with a tool round-trip each; **$0.217** / **$0.367** on `gpt-5`.
+**This run has happened.** 28 requests, **$0.061851**, one turn per finding —
+nothing needed a tool round-trip. Results in `STEP4-FINDINGS.md`, transcripts in
+`step4-transcripts/`. In one line: the model named the same mechanism as the rule
+on 13 of 13 controls and overturned one rule that was wrong, but it is not
+self-consistent about *defect vs expected* on identical inputs, so it is an
+explainer and not a judge.
 
 ## Known limits
 

@@ -101,6 +101,7 @@ if (has('--dry-run')) {
   row('  image subtotal', c.imageInputTokens);
   row('TOTAL INPUT', c.totalInputTokens);
   console.log(`  ${'assumed output'.padEnd(26)} ${String(c.assumedOutputTokens).padStart(7)}`);
+  console.log(`\n  ${d.outputAssumption}`);
 
   console.log('\nimages attached');
   for (const im of d.images) {
