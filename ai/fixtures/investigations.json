@@ -1,0 +1,187 @@
+{
+  "schema": "browser-parity/ai-fixture/1",
+  "recordedFrom": "HAND-AUTHORED. No API call was made to produce this file. These are stand-ins shaped exactly like a Responses API result, so that replacing MockProvider with OpenAIProvider changes the source of the bytes and nothing else. When a real run is recorded under an approved budget, it replaces this file in place.",
+  "byFinding": {
+    "p12-form-checkout#2": {
+      "turns": [
+        {
+          "toolCalls": [
+            { "id": "call_1", "name": "read_computed_styles", "args": { "path": "$element", "properties": ["appearance", "paddingTop", "paddingLeft", "minHeight", "boxSizing", "fontSize"] } },
+            { "id": "call_2", "name": "compare_screenshots", "args": {} }
+          ]
+        },
+        {
+          "expectToolResults": 2,
+          "toolCalls": [
+            { "id": "call_3", "name": "rerun_engine", "args": { "engine": "webkit", "path": "$element" } }
+          ]
+        },
+        {
+          "expectToolResults": 1,
+          "investigation": {
+            "findingId": "p12-form-checkout#2",
+            "cause": "ua-select-metrics",
+            "summary": "The native <select> is 15px shorter in WebKit because WebKit does not apply the author's padding to the platform widget.",
+            "mechanism": "Computed padding-top and padding-left are 8px/12px in Chromium and Firefox and 0px in WebKit, and min-height is `auto` in Chromium and Firefox but 18px in WebKit. The page set `padding: 8px 12px` on the select; two engines added it to the widget's intrinsic box and the third ignored it, giving 38px against 23px. A rerun was not available offline, but the page is recorded as self-consistent, so this is an engine difference and not measurement drift.",
+            "verdict": "defect",
+            "confidence": "high",
+            "oddEngineOut": "webkit",
+            "fix": {
+              "description": "Opt out of the native widget before styling it, and set the height explicitly rather than deriving it from padding.",
+              "css": "select { appearance: none; -webkit-appearance: none; height: 38px; padding: 0 12px; }"
+            },
+            "evidenceCited": ["styleDiffs.paddingTop", "styleDiffs.paddingLeft", "styleDiffs.minHeight", "properties[height]"],
+            "unresolved": []
+          }
+        }
+      ]
+    },
+    "p11-form-settings#1": {
+      "turns": [
+        {
+          "investigation": {
+            "findingId": "p11-form-settings#1",
+            "cause": "legend-shrink-to-fit",
+            "summary": "The <legend> is 621.5px wider in WebKit: it fills the fieldset's content box instead of shrinking to its text.",
+            "mechanism": "Used width is 144.5px in Chromium, 144.63px in Firefox and 766px in WebKit, which is the fieldset's inner width. No author style sets a width on the legend, so all three are applying their own UA layout for the fieldset/legend anonymous box. WebKit also places it 15px higher, which is why the whole fieldset body below shifts.",
+            "verdict": "defect",
+            "confidence": "high",
+            "oddEngineOut": "webkit",
+            "fix": {
+              "description": "Do not rely on the UA legend box. Give the legend an explicit width, or replace it with a normal heading referenced by aria-labelledby.",
+              "css": "fieldset > legend { width: auto; float: left; }"
+            },
+            "evidenceCited": ["properties[width]", "geometry", "element.tag"],
+            "unresolved": []
+          }
+        }
+      ]
+    },
+    "v08-table-users#2": {
+      "turns": [
+        {
+          "toolCalls": [
+            { "id": "call_1", "name": "read_computed_styles", "args": { "path": "$parent", "properties": ["fontFamily", "fontSize"] } }
+          ]
+        },
+        {
+          "expectToolResults": 1,
+          "investigation": {
+            "findingId": "v08-table-users#2",
+            "cause": "control-font-not-inherited",
+            "summary": "The .chip <button> is rendered in three different fonts, because it sets font-size but never font-family.",
+            "mechanism": "Computed font-family on the button is Arial in Chromium, -apple-system in Firefox and system-ui in WebKit, while the parent resolves to the page stack in all three. The page's .btn and .pg rules both carry `font: inherit`; the .chip rule sets only font-size, so the UA control font wins, and the three UA control fonts have different advance widths. The button is content-sized, so the metric difference lands directly on width and on every chip's offset-x down the row.",
+            "verdict": "defect",
+            "confidence": "high",
+            "oddEngineOut": "chromium",
+            "fix": {
+              "description": "Make controls inherit the page font. One line fixes every control on the page, not just this one.",
+              "css": "button, input, select, textarea { font: inherit; }"
+            },
+            "evidenceCited": ["styleDiffs.fontFamily", "ancestors[0].styles.fontFamily", "properties[width]"],
+            "unresolved": []
+          }
+        }
+      ]
+    },
+    "p23-table-wide-scroll#1": {
+      "turns": [
+        {
+          "toolCalls": [
+            { "id": "call_1", "name": "inspect_element", "args": { "path": "$parent" } }
+          ]
+        },
+        {
+          "expectToolResults": 1,
+          "investigation": {
+            "findingId": "p23-table-wide-scroll#1",
+            "cause": "table-column-distribution",
+            "summary": "Auto table layout splits this column differently in each engine, and the whole row to its right is shifted by the same amount.",
+            "mechanism": "The table sets no table-layout, so each engine measures the intrinsic min/max content width of every cell and distributes the row width from those measurements. The measurements differ at the sub-pixel level and the distribution amplifies them to whole pixels. 12 cells in this table share this delta exactly, which is the signature of one column boundary moving rather than 12 independent differences.",
+            "verdict": "unclear",
+            "confidence": "high",
+            "oddEngineOut": "webkit",
+            "fix": {
+              "description": "Take the column widths away from the intrinsic sizing algorithm.",
+              "css": "table { table-layout: fixed; width: 100%; }"
+            },
+            "evidenceCited": ["element.path", "properties[0]", "symptomCount"],
+            "unresolved": ["Whether a 23px column shift is visible enough to matter on this page is a judgement about the design, not about the engines."]
+          }
+        }
+      ]
+    },
+    "p16-pricing-calculator#12": {
+      "turns": [
+        {
+          "toolCalls": [
+            { "id": "call_1", "name": "inspect_element", "args": { "path": "$parent" } },
+            { "id": "call_2", "name": "read_computed_styles", "args": { "path": "$parent", "properties": ["display", "flexBasis", "flexGrow", "flexShrink", "minWidth", "gap"] } }
+          ]
+        },
+        {
+          "expectToolResults": 2,
+          "investigation": {
+            "findingId": "p16-pricing-calculator#12",
+            "cause": "flex-free-space-distribution",
+            "summary": "Two cards in one flex row split the available width differently in Firefox, and the text inside them then wraps to a different number of lines.",
+            "mechanism": "The row's own width is identical in all three engines; the cards inside it are not. Each card is a flex item with flex-basis auto, so its base size is its max-content width, which is a text measurement. Firefox measures the longest unbreakable run in the card differently, takes 18.56px more of the row, and the sibling gives up the same amount. That is enough to change where the feature list wraps, which is the 20px height difference: one extra line at a 20px line-height.",
+            "verdict": "defect",
+            "confidence": "medium",
+            "oddEngineOut": "firefox",
+            "fix": {
+              "description": "Give the flex items a basis that does not depend on text measurement.",
+              "css": ".plan-row > * { flex: 1 1 0; min-width: 0; }"
+            },
+            "evidenceCited": ["ancestors[0].geometry", "properties[width]", "properties[height]"],
+            "unresolved": ["flex-direction is not in the collected computed-style set, so the row/column orientation is inferred from the geometry."]
+          }
+        }
+      ]
+    }
+  },
+  "byRule": {
+    "table-column-distribution": {
+      "turns": [
+        {
+          "investigation": {
+            "findingId": "",
+            "cause": "table-column-distribution",
+            "summary": "Column width differs by {delta}px in {odd}; the cells to its right inherit the shift.",
+            "mechanism": "The table uses automatic layout, so the column boundary is a function of measured text rather than of the stylesheet. I agree with the deterministic rule and have nothing to add to it.",
+            "verdict": "unclear",
+            "confidence": "high",
+            "oddEngineOut": null,
+            "fix": { "description": "table-layout: fixed with explicit column widths.", "css": "table { table-layout: fixed; }" },
+            "evidenceCited": ["element.path", "symptomCount"],
+            "unresolved": []
+          }
+        }
+      ]
+    }
+  },
+  "fallback": {
+    "turns": [
+      {
+        "toolCalls": [
+          { "id": "call_1", "name": "compare_screenshots", "args": {} }
+        ]
+      },
+      {
+        "expectToolResults": 1,
+        "investigation": {
+          "findingId": "",
+          "cause": "unresolved",
+          "summary": "<{tag}> on {page} differs by {delta}px on {prop} in {odd}, and the evidence does not settle why.",
+          "mechanism": "No computed style in the collected set differs by value, the ancestors are stable, and no descendant carries the same delta. Something outside the collected property set is responsible. Saying which would be a guess.",
+          "verdict": "unclear",
+          "confidence": "low",
+          "oddEngineOut": null,
+          "fix": null,
+          "evidenceCited": ["properties", "styleDiffs"],
+          "unresolved": ["The collected computed-style set does not include the property that would settle this."]
+        }
+      }
+    ]
+  }
+}

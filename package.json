@@ -3,7 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "test:ai": "node --experimental-strip-types --test \"ai/test/*.test.ts\"",
+    "coverage": "node --experimental-strip-types ai/coverage.ts",
+    "investigate": "node --experimental-strip-types ai/cli.ts"
+  },
   "devDependencies": {
     "@playwright/test": "^1.63.0"
+  },
+  "optionalDependencies": {
+    "js-tiktoken": "^1.0.21"
   }
 }
