@@ -1,0 +1,266 @@
+{
+  "schema": "browser-parity/step4-selection/1",
+  "note": "Pre-registered. Committed before the run so the selection is on record rather than assembled after seeing the answers.",
+  "approvedBudget": {
+    "requests": 54,
+    "spendCapUsd": 0.15,
+    "maxTurnsPerFinding": 2,
+    "model": "gpt-5-mini"
+  },
+  "questions": {
+    "q1_does_the_tail_exist": "residual — the 7 corpus-B findings the A-derived rules cannot explain",
+    "q2_are_the_rules_miscalibrated": "disagreements — every finding where the matcher committed to a verdict and contradicted the owner label",
+    "q3_does_it_contradict_rules_that_are_right": "controls — one high-confidence exemplar per rule, plus backfill"
+  },
+  "totals": {
+    "residual": 7,
+    "disagreements": 7,
+    "controls": 13,
+    "findings": 27,
+    "distinct": 27
+  },
+  "residual": [
+    {
+      "corpus": "B",
+      "id": "v01-landing-saas-hero#1",
+      "tag": "P",
+      "display": "block",
+      "props": "width Δ26.18 offset-x Δ13.09",
+      "explainedInSampleBy": "font-relative-length"
+    },
+    {
+      "corpus": "B",
+      "id": "v01-landing-saas-hero#2",
+      "tag": "P",
+      "display": "block",
+      "props": "width Δ17.37",
+      "explainedInSampleBy": "font-relative-length"
+    },
+    {
+      "corpus": "B",
+      "id": "v06-pricing-calculator#1",
+      "tag": "P",
+      "display": "block",
+      "props": "width Δ24.61 offset-x Δ12.3",
+      "explainedInSampleBy": "font-relative-length"
+    },
+    {
+      "corpus": "B",
+      "id": "v10-table-catalog#1",
+      "tag": "DIV",
+      "display": "block",
+      "props": "offset-y Δ4.22",
+      "explainedInSampleBy": "line-height-resolution"
+    },
+    {
+      "corpus": "B",
+      "id": "v10-table-catalog#2",
+      "tag": "DIV",
+      "display": "block",
+      "props": "offset-y Δ4.17",
+      "explainedInSampleBy": "line-height-resolution"
+    },
+    {
+      "corpus": "B",
+      "id": "v10-table-catalog#3",
+      "tag": "DIV",
+      "display": "block",
+      "props": "offset-y Δ4.16",
+      "explainedInSampleBy": "line-height-resolution"
+    },
+    {
+      "corpus": "B",
+      "id": "v10-table-catalog#4",
+      "tag": "DIV",
+      "display": "block",
+      "props": "offset-y Δ4.1",
+      "explainedInSampleBy": "line-height-resolution"
+    }
+  ],
+  "disagreements": [
+    {
+      "corpus": "A",
+      "id": "p09-dash-infra-status#6",
+      "tag": "SPAN",
+      "rule": "text-shrink-to-fit",
+      "matcherSaid": "expected-engine-difference",
+      "ownerSaid": "genuine/text-metric",
+      "props": "width Δ2.94"
+    },
+    {
+      "corpus": "A",
+      "id": "p09-dash-infra-status#7",
+      "tag": "SPAN",
+      "rule": "text-shrink-to-fit",
+      "matcherSaid": "expected-engine-difference",
+      "ownerSaid": "genuine/text-metric",
+      "props": "width Δ2.52"
+    },
+    {
+      "corpus": "A",
+      "id": "p13-form-wizard#9",
+      "tag": "BUTTON",
+      "rule": "ua-button-padding",
+      "matcherSaid": "defect",
+      "ownerSaid": "expected",
+      "props": "width Δ4 offset-x Δ4 height Δ1"
+    },
+    {
+      "corpus": "A",
+      "id": "p13-form-wizard#11",
+      "tag": "BUTTON",
+      "rule": "ua-button-padding",
+      "matcherSaid": "defect",
+      "ownerSaid": "expected",
+      "props": "width Δ4 offset-x Δ4 height Δ1"
+    },
+    {
+      "corpus": "A",
+      "id": "p13-form-wizard#13",
+      "tag": "BUTTON",
+      "rule": "ua-button-padding",
+      "matcherSaid": "defect",
+      "ownerSaid": "expected",
+      "props": "width Δ4 offset-x Δ4 height Δ1"
+    },
+    {
+      "corpus": "A",
+      "id": "p20-article-magazine#1",
+      "tag": "BUTTON",
+      "rule": "text-shrink-to-fit",
+      "matcherSaid": "expected-engine-difference",
+      "ownerSaid": "genuine/text-metric",
+      "props": "offset-x Δ8.67"
+    },
+    {
+      "corpus": "A",
+      "id": "p20-article-magazine#2",
+      "tag": "FORM",
+      "rule": "symptom-absorbed-size",
+      "matcherSaid": "defect",
+      "ownerSaid": "expected",
+      "props": "width Δ8.62 offset-x Δ8.62"
+    }
+  ],
+  "controls": [
+    {
+      "corpus": "B",
+      "id": "v08-table-users#2",
+      "tag": "BUTTON",
+      "rule": "control-font-not-inherited",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "offset-x Δ5.75 width Δ3.94 height Δ1"
+    },
+    {
+      "corpus": "A",
+      "id": "p11-form-settings#1",
+      "tag": "LEGEND",
+      "rule": "legend-shrink-to-fit",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "width Δ621.5"
+    },
+    {
+      "corpus": "A",
+      "id": "p12-form-checkout#2",
+      "tag": "SELECT",
+      "rule": "ua-select-metrics",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "height Δ15"
+    },
+    {
+      "corpus": "A",
+      "id": "p11-form-settings#6",
+      "tag": "INPUT",
+      "rule": "ua-checkbox-radio-size",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "offset-x Δ3 width Δ2 height Δ2 offset-y Δ1"
+    },
+    {
+      "corpus": "A",
+      "id": "p08-dash-kanban#1",
+      "tag": "BUTTON",
+      "rule": "ua-button-padding",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "offset-x Δ11.87 width Δ3.98"
+    },
+    {
+      "corpus": "A",
+      "id": "p06-dash-analytics#1",
+      "tag": "TH",
+      "rule": "table-column-distribution",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "offset-x Δ16.04"
+    },
+    {
+      "corpus": "A",
+      "id": "p16-pricing-calculator#1",
+      "tag": "UL",
+      "rule": "line-wrap-count",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "height Δ40 width Δ6.19"
+    },
+    {
+      "corpus": "A",
+      "id": "p07-dash-billing#42",
+      "tag": "DIV",
+      "rule": "symptom-absorbed-size",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "height Δ15"
+    },
+    {
+      "corpus": "A",
+      "id": "p16-pricing-calculator#3",
+      "tag": "BUTTON",
+      "rule": "symptom-inherited-size",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "offset-y Δ38 width Δ18.56"
+    },
+    {
+      "corpus": "A",
+      "id": "p09-dash-infra-status#2",
+      "tag": "A",
+      "rule": "text-shrink-to-fit",
+      "verdict": "expected-engine-difference",
+      "confidence": "high",
+      "props": "offset-x Δ5.01 width Δ1.67"
+    },
+    {
+      "corpus": "A",
+      "id": "p13-form-wizard#3",
+      "tag": "FIELDSET",
+      "rule": "propagated-displacement",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "offset-y Δ15"
+    },
+    {
+      "corpus": "B",
+      "id": "v07-article-docs#15",
+      "tag": "H2",
+      "rule": "line-height-resolution",
+      "verdict": "expected-engine-difference",
+      "confidence": "medium",
+      "props": "offset-y Δ7.5",
+      "note": "no untaken high-confidence instance exists for this rule"
+    },
+    {
+      "corpus": "B",
+      "id": "v07-article-docs#1",
+      "tag": "TH",
+      "rule": "table-column-distribution",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "width Δ40.17 offset-x Δ2.16 height Δ0.51",
+      "note": "extra exemplar of the highest-volume rule, on the corpus it was not derived from"
+    }
+  ]
+}

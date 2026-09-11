@@ -173,7 +173,10 @@ export const INVESTIGATION_SCHEMA = {
     mechanism: { type: 'string', description: 'Why the engines disagree, in terms of the evidence given.' },
     verdict: { type: 'string', enum: ['defect', 'expected-engine-difference', 'unclear'] },
     confidence: { type: 'string', enum: ['high', 'medium', 'low'] },
-    oddEngineOut: { type: ['string', 'null'], enum: ['chromium', 'firefox', 'webkit', null] },
+    oddEngineOut: {
+      type: ['string', 'null'],
+      description: 'chromium, firefox or webkit — whichever sits apart from the other two. null if none does.',
+    },
     fix: {
       type: ['object', 'null'],
       additionalProperties: false,
@@ -266,7 +269,10 @@ export function assembleRequest(e: EvidenceBundle, opts: RequestOptions): Assemb
         schema: INVESTIGATION_SCHEMA,
       },
     },
-    max_output_tokens: opts.maxOutputTokens ?? 1200,
+    // On a reasoning model, max_output_tokens covers reasoning tokens too. Set
+    // too low, the budget is consumed by reasoning and the response comes back
+    // `incomplete` with no text — billed, and useless.
+    max_output_tokens: opts.maxOutputTokens ?? 3000,
     // Nothing is stored on OpenAI's side. This project does not keep a
     // conversation, and a stored response is a copy of the user's page.
     store: false,

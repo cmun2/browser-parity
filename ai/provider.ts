@@ -79,13 +79,15 @@ export const TOOL_SCHEMAS: ToolSchema[] = [
     parameters: {
       type: 'object',
       additionalProperties: false,
-      required: ['path'],
+      // Strict function schemas require every property to appear in `required`,
+      // so an optional argument is expressed as a nullable one.
+      required: ['path', 'properties'],
       properties: {
         path: { type: 'string', description: 'Structural path of the element.' },
         properties: {
-          type: 'array',
+          type: ['array', 'null'],
           items: { type: 'string' },
-          description: 'CSS property names in camelCase. Omit for the whole collected set.',
+          description: 'CSS property names in camelCase. Pass null for the whole collected set.',
         },
       },
     },

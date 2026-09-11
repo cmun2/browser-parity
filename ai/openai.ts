@@ -43,6 +43,12 @@ export class OpenAIProvider implements InvestigatorProvider {
   readonly model: string;
   private opts: OpenAIOptions;
   private spent = 0;
+  /** every HTTP request this provider has made, billed or not. */
+  requests = 0;
+  /** called with the raw request and response for every exchange. */
+  onExchange?: (x: { findingId: string; turn: number; status: number; request: unknown; response: unknown }) => void;
+
+  get spentUsd(): number { return this.spent; }
 
   constructor(opts: OpenAIOptions = {}) {
     this.opts = opts;
@@ -86,21 +92,35 @@ export class OpenAIProvider implements InvestigatorProvider {
       model: this.model,
       includeImages: this.opts.includeImages,
       maxOutputTokens: this.opts.maxOutputTokens,
-      reasoningEffort: this.opts.reasoningEffort,
+      // Low, not default. The evidence is already assembled and the question is
+      // narrow; on a reasoning model the default effort mostly buys reasoning
+      // tokens, which are billed as output at 8x the input rate.
+      reasoningEffort: this.opts.reasoningEffort ?? 'low',
       priorKnownCause: ctx.priorKnownCause,
     });
 
-    // Continue an in-flight investigation by appending tool outputs, which is
-    // what previous_response_id is for. Images are attached once, on turn 0.
+    // Multi-turn, statelessly.
+    //
+    // `previous_response_id` is the obvious way to continue a conversation and
+    // it does not work here: it resolves against a response OpenAI stored, and
+    // we send `store: false` precisely so that no copy of the user's page is
+    // kept server-side. Privacy wins, so the whole conversation is resent each
+    // turn — the original user message, the model's function_call items, and
+    // our function_call_output items, in order.
     const body: Record<string, unknown> = { ...assembled.request };
-    if (ctx.turn > 0 && typeof ctx.state === 'string') {
-      body.previous_response_id = ctx.state;
-      body.input = ctx.toolResults.map((r) => ({
-        type: 'function_call_output',
-        call_id: r.id,
-        output: JSON.stringify(r.ok ? r.content : { error: r.content }),
-      }));
+    const prior = (ctx.state as ConversationState | undefined);
+    if (ctx.turn > 0 && prior) {
+      body.input = [
+        ...prior.input,
+        ...prior.calls,
+        ...ctx.toolResults.map((r) => ({
+          type: 'function_call_output',
+          call_id: r.id,
+          output: JSON.stringify(r.ok ? r.content : { error: r.content }),
+        })),
+      ];
     }
+    const sentInput = body.input as unknown[];
 
     if (this.opts.spendCapUsd != null) {
       const est = estimateCost(assembled, this.model);
@@ -127,15 +147,18 @@ export class OpenAIProvider implements InvestigatorProvider {
       clearTimeout(timer);
     }
 
+    this.requests++;
+    const raw = await res.text();
     if (!res.ok) {
-      const text = await res.text().catch(() => '');
-      throw new Error(`OpenAI responded ${res.status}: ${text.slice(0, 400)}`);
+      this.onExchange?.({ findingId: evidence.findingId, turn: ctx.turn, status: res.status, request: body, response: raw });
+      throw new Error(`OpenAI responded ${res.status}: ${raw.slice(0, 600)}`);
     }
-    const json = (await res.json()) as OpenAIResponse;
-    return this.parse(json, evidence);
+    const json = JSON.parse(raw) as OpenAIResponse;
+    this.onExchange?.({ findingId: evidence.findingId, turn: ctx.turn, status: res.status, request: body, response: json });
+    return this.parse(json, evidence, sentInput);
   }
 
-  private parse(json: OpenAIResponse, evidence: EvidenceBundle): ProviderTurn {
+  private parse(json: OpenAIResponse, evidence: EvidenceBundle, sentInput: unknown[]): ProviderTurn {
     const usage = usageFrom(json, this.model);
     if (usage) this.spent += usage.costUsd;
 
@@ -151,13 +174,18 @@ export class OpenAIProvider implements InvestigatorProvider {
       }
     }
 
-    if (calls.length) return { toolCalls: calls, state: json.id, usage };
+    if (calls.length) {
+      // Carry the model's own function_call items forward verbatim; the API
+      // requires each function_call_output to be preceded by its call.
+      const rawCalls = (json.output ?? []).filter((i) => i.type === 'function_call' || i.type === 'reasoning');
+      return { toolCalls: calls, state: { input: sentInput, calls: rawCalls } as ConversationState, usage };
+    }
 
     if (!text.trim()) {
-      return {
-        investigation: unresolvedInvestigation(evidence, 'the model returned neither a verdict nor a tool call'),
-        state: json.id, usage,
-      };
+      const why = json.status === 'incomplete'
+        ? `the response came back incomplete (${json.incomplete_details?.reason ?? 'unknown reason'}) — it was billed and produced no text. Raise max_output_tokens.`
+        : 'the model returned neither a verdict nor a tool call';
+      return { investigation: unresolvedInvestigation(evidence, why), state: undefined, usage };
     }
 
     let parsed: Record<string, unknown>;
@@ -166,7 +194,7 @@ export class OpenAIProvider implements InvestigatorProvider {
     } catch {
       return {
         investigation: unresolvedInvestigation(evidence, `the model returned text that is not valid JSON: ${text.slice(0, 200)}`),
-        state: json.id, usage,
+        state: undefined, usage,
       };
     }
 
@@ -184,10 +212,16 @@ export class OpenAIProvider implements InvestigatorProvider {
         evidenceCited: Array.isArray(parsed.evidenceCited) ? (parsed.evidenceCited as string[]) : [],
         unresolved: Array.isArray(parsed.unresolved) ? (parsed.unresolved as string[]) : [],
       },
-      state: json.id,
+      state: undefined,
       usage,
     };
   }
+}
+
+/** Everything needed to resend a conversation that the server did not store. */
+interface ConversationState {
+  input: unknown[];
+  calls: unknown[];
 }
 
 function unresolvedInvestigation(e: EvidenceBundle, why: string): Omit<Investigation, 'schema' | 'source'> {
@@ -209,6 +243,8 @@ function unresolvedInvestigation(e: EvidenceBundle, why: string): Omit<Investiga
 
 interface OpenAIResponse {
   id?: string;
+  status?: string;
+  incomplete_details?: { reason?: string };
   output?: Array<{
     type: string;
     id?: string;
@@ -221,6 +257,7 @@ interface OpenAIResponse {
     input_tokens?: number;
     output_tokens?: number;
     input_tokens_details?: { cached_tokens?: number };
+    output_tokens_details?: { reasoning_tokens?: number };
   };
 }
 
@@ -240,6 +277,7 @@ function usageFrom(json: OpenAIResponse, model: string): Investigation['usage'] 
     cachedInputTokens: cached,
     outputTokens: u.output_tokens ?? 0,
     imageTokens: 0,
+    reasoningTokens: u.output_tokens_details?.reasoning_tokens ?? 0,
     costUsd: +c.totalUsd.toFixed(6),
   };
 }

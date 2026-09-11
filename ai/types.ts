@@ -183,6 +183,8 @@ export interface TokenUsage {
   cachedInputTokens: number;
   outputTokens: number;
   imageTokens: number;
+  /** reasoning tokens, billed as output. 0 on non-reasoning models. */
+  reasoningTokens?: number;
   /** USD, at the pricing snapshot in ai/pricing.ts. */
   costUsd: number;
 }
