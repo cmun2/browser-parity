@@ -185,6 +185,32 @@ test('font-relative-length: a ch cap, re-centred by auto margins', () => {
   assert.match(m!.mechanism, /ch/);
 });
 
+test('font-relative-length reads the cap directly when max-width was collected', () => {
+  const m = matchKnownCause(bundle({
+    element: { path: 'BODY[1]/DIV[1]/P[1]', tag: 'P', selector: '.lede', display: 'block', text: 'Meridian correlates' },
+    properties: [{ prop: 'width', deltaPx: 26.18, values: tri(691.78, 692.13, 665.95) }],
+    styles: tri({ maxWidth: '691.784px' }, { maxWidth: '692.133px' }, { maxWidth: '665.955444px' }),
+    styleDiffs: { maxWidth: tri('691.784px', '692.133px', '665.955444px') },
+    ancestors: [ancestor({ geometry: tri(box(1120, 300), box(1120, 300), box(1120, 300)) })],
+  }));
+  assert.equal(m?.ruleId, 'font-relative-length');
+  assert.equal(m?.confidence, 'high');
+  assert.match(m!.mechanism, /the cap itself differs/);
+  assert.ok(m!.evidenceCited.includes('styles.maxWidth'));
+});
+
+test('a max-width that is collected and IDENTICAL rules the cause out', () => {
+  // A px or rem cap resolves to the same number everywhere. If the cap did not
+  // move, the width difference is something else, and the rule must not claim it.
+  const m = matchKnownCause(bundle({
+    element: { path: 'BODY[1]/DIV[1]/P[1]', tag: 'P', selector: '', display: 'block', text: 'x' },
+    properties: [{ prop: 'width', deltaPx: 26, values: tri(691, 692, 665) }],
+    styles: tri({ maxWidth: '700px' }, { maxWidth: '700px' }, { maxWidth: '700px' }),
+    ancestors: [ancestor({ geometry: tri(box(1120, 300), box(1120, 300), box(1120, 300)) })],
+  }));
+  assert.notEqual(m?.ruleId, 'font-relative-length');
+});
+
 test('font-relative-length does not fire when the parent moved by the same amount', () => {
   const m = matchKnownCause(bundle({
     element: { path: 'BODY[1]/DIV[1]/P[1]', tag: 'P', selector: '', display: 'block', text: 'x' },

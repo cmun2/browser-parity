@@ -43,11 +43,22 @@ const has = (n: string) => process.argv.includes(n);
 // the matcher must be measurable against both corpora from either branch, and
 // copying study data into ai/ would fork the evidence.
 
-interface CorpusSpec { name: string; root: string; labels?: string; origin: string; survivorsFile?: string }
+interface CorpusSpec { name: string; root: string; labels?: string; origin: string; survivorsFile?: string; evidenceDir?: string }
+
+// The re-collection with `maxWidth` included (ai/recollect.mjs). Used when
+// present; m0/results/evidence is the fallback. Geometry is identical between
+// the two to 0.0000px and the funnel counts are byte-identical, so this only
+// ever adds a property — but which set was read is printed, because a coverage
+// number that does not say what evidence it was computed from is not a number.
+const V2 = path.join(REPO, 'ai', '.evidence-v2');
+const v2For = (name: string) => {
+  const d = path.join(V2, name);
+  return fs.existsSync(d) ? d : undefined;
+};
 
 const SPECS: CorpusSpec[] = [
-  { name: 'A · 30-page hand-authored', root: path.join(REPO, 'm0'), labels: path.join(REPO, 'm0/results/labels.jsonl'), origin: 'hand-authored' },
-  { name: 'B · 10-page model-emitted', root: path.join(REPO, 'm0/validation'), origin: 'model-emitted' },
+  { name: 'A · 30-page hand-authored', root: path.join(REPO, 'm0'), labels: path.join(REPO, 'm0/results/labels.jsonl'), origin: 'hand-authored', evidenceDir: v2For('m0') },
+  { name: 'B · 10-page model-emitted', root: path.join(REPO, 'm0/validation'), origin: 'model-emitted', evidenceDir: v2For('validation') },
 ];
 
 const VALIDATION_REF = 'm0-validation-model-emitted:m0/validation/results/survivors.json';
@@ -98,6 +109,7 @@ interface CorpusResult {
   name: string;
   origin: string;
   hasDumps: boolean;
+  evidenceDir: string;
   findings: number;
   rootCauseUnits: number;
   covered: number;
@@ -124,7 +136,7 @@ function measure(spec: CorpusSpec, opts: MeasureOpts = {}): CorpusResult | null 
   };
   const survivorsFile = survivorsFileFor(spec);
   if (!survivorsFile) return null;
-  const corpus = new Corpus({ root: spec.root, name: spec.name, survivorsFile });
+  const corpus = new Corpus({ root: spec.root, name: spec.name, survivorsFile, evidenceDir: spec.evidenceDir });
   const labels = readLabels(spec.labels);
   const findings = corpus.findings();
 
@@ -188,6 +200,7 @@ function measure(spec: CorpusSpec, opts: MeasureOpts = {}): CorpusResult | null 
     name: spec.name,
     origin: spec.origin,
     hasDumps: corpus.hasDumps,
+    evidenceDir: path.relative(REPO, corpus.evidenceDir) + (spec.evidenceDir ? '  (re-collected, includes maxWidth)' : '  (original M0 collection)'),
     findings: findings.length,
     rootCauseUnits: allUnitKeys.size,
     covered,
@@ -224,6 +237,7 @@ console.log('='.repeat(78));
 
 for (const r of results) {
   console.log(`\n${r.name}   [${r.origin}]${r.hasDumps ? '' : '   ** no per-page evidence dump on disk: ancestor-dependent rules degraded **'}`);
+  console.log(`  evidence                  ${r.evidenceDir}`);
   console.log(`  survivors                 ${String(r.findings).padStart(6)}`);
   console.log(`  explained by the matcher  ${String(r.covered).padStart(6)}   ${pct(r.coverage)}`);
   console.log(`  root-cause units          ${String(r.rootCauseUnits).padStart(6)}`);

@@ -70,7 +70,7 @@ export function classifyDiff(key: string, values: Triple<string>): DiffKind {
 // ---------------------------------------------------------------- style relevance
 
 const WIDTH_STYLES = [
-  'display', 'position', 'boxSizing', 'width', 'minWidth', 'flexBasis', 'flexGrow', 'flexShrink',
+  'display', 'position', 'boxSizing', 'width', 'minWidth', 'maxWidth', 'flexBasis', 'flexGrow', 'flexShrink',
   'marginLeft', 'paddingLeft', 'borderLeftWidth', 'whiteSpace', 'textOverflow', 'overflowX',
   'fontFamily', 'fontSize', 'fontWeight', 'gap', 'gridTemplateColumns', 'writingMode', 'appearance',
 ];
@@ -144,17 +144,21 @@ export interface CorpusPaths {
   name: string;
   /** defaults to `<root>/results/survivors.json`; override to read a copy. */
   survivorsFile?: string;
+  /** defaults to `<root>/results/evidence`; override to read a re-collection. */
+  evidenceDir?: string;
 }
 
 export class Corpus {
   readonly name: string;
   readonly root: string;
   readonly survivors: SurvivorsFile;
+  readonly evidenceDir: string;
   private dumps = new Map<string, EvidenceDump | null>();
 
   constructor(p: CorpusPaths) {
     this.name = p.name;
     this.root = p.root;
+    this.evidenceDir = p.evidenceDir ?? path.join(p.root, 'results', 'evidence');
     const file = p.survivorsFile ?? path.join(p.root, 'results', 'survivors.json');
     this.survivors = JSON.parse(fs.readFileSync(file, 'utf8'));
   }
@@ -170,14 +174,14 @@ export class Corpus {
   /** null when the (gitignored) per-page dump is not on disk. */
   dump(pageId: string): EvidenceDump | null {
     if (!this.dumps.has(pageId)) {
-      const f = path.join(this.root, 'results', 'evidence', pageId + '.json');
+      const f = path.join(this.evidenceDir, pageId + '.json');
       this.dumps.set(pageId, fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null);
     }
     return this.dumps.get(pageId)!;
   }
 
   get hasDumps(): boolean {
-    return fs.existsSync(path.join(this.root, 'results', 'evidence'));
+    return fs.existsSync(this.evidenceDir);
   }
 
   shotPath(file: string): string {

@@ -1,6 +1,6 @@
 {
   "schema": "browser-parity/known-cause-coverage/1",
-  "measuredAt": "2026-09-11T14:36:18.445Z",
+  "measuredAt": "2026-09-11T14:56:21.933Z",
   "rules": [
     {
       "id": "control-font-not-inherited",
@@ -32,7 +32,7 @@
     },
     {
       "id": "font-relative-length",
-      "what": "A font-relative cap (ch/ex/em) or an intrinsic max-content width resolves against per-engine font metrics."
+      "what": "A max-width in a font-relative unit (ch/ex/em) resolves against per-engine font metrics."
     },
     {
       "id": "line-height-resolution",
@@ -60,6 +60,7 @@
       "name": "A · 30-page hand-authored",
       "origin": "hand-authored",
       "hasDumps": true,
+      "evidenceDir": "ai/.evidence-v2/m0  (re-collected, includes maxWidth)",
       "findings": 475,
       "rootCauseUnits": 138,
       "covered": 475,
@@ -149,6 +150,7 @@
       "name": "B · 10-page model-emitted",
       "origin": "model-emitted",
       "hasDumps": true,
+      "evidenceDir": "ai/.evidence-v2/validation  (re-collected, includes maxWidth)",
       "findings": 106,
       "rootCauseUnits": 37,
       "covered": 106,
@@ -210,8 +212,8 @@
         }
       },
       "byConfidence": {
-        "high": 86,
-        "medium": 20,
+        "high": 87,
+        "medium": 19,
         "low": 0
       },
       "verdictAgreement": {

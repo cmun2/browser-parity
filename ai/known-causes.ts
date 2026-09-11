@@ -382,68 +382,88 @@ const lineWrapCount: Rule = {
 
 const fontRelativeLength: Rule = {
   id: 'font-relative-length',
-  what: 'A font-relative cap (ch/ex/em) or an intrinsic max-content width resolves against per-engine font metrics.',
+  what: 'A max-width in a font-relative unit (ch/ex/em) resolves against per-engine font metrics.',
   derivedFrom: ['B'],
   match(e) {
     const w = e.properties.find((p) => p.prop === 'width');
     if (!w) return null;
-    if (explanatoryDiffKeys(e).filter((k) => k !== 'marginLeft' && k !== 'fontFamily').length) return null;
+
+    // Direct evidence, available since `maxWidth` was added to the collected
+    // set. getComputedStyle resolves `max-width: 58ch` to pixels, so the
+    // declared unit is not visible — but a cap that differs BETWEEN ENGINES is
+    // conclusive on its own: `px` and `rem` caps resolve identically
+    // everywhere, and only a font-relative unit (ch, ex, em against a differing
+    // font) or a percentage of a differing basis can move. The parent is
+    // stable, so it is the former.
+    const capTriple = e.styleDiffs.maxWidth ?? (() => {
+      const v = { chromium: e.styles.chromium?.maxWidth, firefox: e.styles.firefox?.maxWidth, webkit: e.styles.webkit?.maxWidth };
+      return v.chromium != null ? (v as Triple<string>) : undefined;
+    })();
+    const capSpread = capTriple && ENGINES.every((x) => px(capTriple[x]) != null)
+      ? Math.max(...ENGINES.map((x) => px(capTriple[x])!)) - Math.min(...ENGINES.map((x) => px(capTriple[x])!))
+      : null;
+    const capMoved = capSpread != null && capSpread > 0.5;
+
+    if (!capMoved) {
+      // No usable max-width evidence. Fall back to the geometric signature,
+      // which is weaker and must not claim a mechanism it cannot see.
+      const known = capTriple != null && ENGINES.every((x) => capTriple[x] != null);
+      if (known) return null;  // maxWidth was collected and does NOT differ: not this cause.
+    }
+
+    if (explanatoryDiffKeys(e).filter((k) => k !== 'marginLeft' && k !== 'fontFamily' && k !== 'maxWidth').length) return null;
     const disp = e.element.display;
     if (!['block', 'flow-root', 'list-item'].includes(disp)) return null;
 
     // A cap only means anything when the element's width is its own. Inside a
     // flex or grid parent the width is assigned by the container's distribution
     // algorithm, and a narrower box there is free-space arithmetic over measured
-    // text, not a resolved length. Without this check the rule swallows every
-    // `.flex-1` child in the corpus and calls text-measurement noise a defect —
-    // which is exactly the 12 findings where it disagreed with the owner.
+    // text, not a resolved length.
     const parentDisplay = e.ancestors[0]?.styles.chromium?.display ?? '';
     if (['flex', 'inline-flex', 'grid', 'inline-grid'].includes(parentDisplay)) return null;
 
     const parent = parentBox(e);
     if (!parent) return null;
-    // The available width must be effectively stable. Not bit-identical: a
-    // content-sized ancestor picks up its own pixel or two of text-measurement
-    // noise, and demanding exact equality throws away the real cases. What
-    // matters is that the parent did not move by anything like this amount.
     const parentSpread = spread(parent);
     if (parentSpread > Math.max(0.5, w.deltaPx / 3)) return null;
     const widest = Math.max(...ENGINES.map((x) => w.values[x]));
-    if (widest >= parent.chromium - 0.5) return null;  // not capped: it fills its parent
+    if (widest >= parent.chromium - 0.5) return null;
 
     const rel = w.deltaPx / widest;
     if (rel < 0.005) return null;
 
-    // Auto horizontal margins re-centre the box, so half the width difference
-    // shows up as an offset difference. That pairing is the strongest signal
-    // that the *cap* moved rather than the content.
     const mSpread = styleSpread(e, 'marginLeft');
     const centred = mSpread != null && near(mSpread, w.deltaPx / 2, 0.6);
     const odd = e.oddEngineOut;
+
+    const capLine = capMoved
+      ? `Computed max-width is ${ENGINES.map((x) => `${x} ${capTriple![x]}`).join(' / ')} — the cap itself differs by ${capSpread!.toFixed(2)}px, ` +
+        'and the used width equals it. A cap declared in `px` or `rem` resolves to the same number in every engine; one declared in `ch`, ' +
+        '`ex` or `em` does not, because those units are defined in terms of the font\'s "0" advance, its x-height and its size. ' +
+        'The declared unit is not recoverable from a computed value, but a cap that moved is a font-relative cap.'
+      : 'No max-width was collected for this element, so the cap is inferred from the geometry rather than read: the box is narrower than ' +
+        'its stable parent and differs by a percentage rather than by a pixel or two, which is the signature of a length resolved against font metrics.';
+
     return {
       ruleId: this.id,
       cause: 'font-relative-length',
-      summary:
-        `The box is capped ${w.deltaPx.toFixed(1)}px (${(rel * 100).toFixed(1)}%) narrower in ${odd ?? 'one engine'} while its parent is identical` +
-        (centred ? ', and auto margins re-centre it, so the offset moves by half that.' : '.'),
+      summary: capMoved
+        ? `max-width resolves ${capSpread!.toFixed(1)}px shorter in ${odd ?? 'one engine'} — the cap is in a font-relative unit (ch/ex/em), not px.`
+        : `The box is capped ${w.deltaPx.toFixed(1)}px (${(rel * 100).toFixed(1)}%) narrower in ${odd ?? 'one engine'} while its parent is identical.`,
       mechanism:
         `The parent measures ${parent.chromium.toFixed(2)}px, varying by only ${parentSpread.toFixed(2)}px across engines, so the available width is not in question. ` +
-        `This box resolves to ${engineList(w.values)} — a ${(rel * 100).toFixed(1)}% difference, far above the sub-pixel floor. ` +
-        'A width that is narrower than the parent and differs by a percentage rather than a pixel or two is a length resolved against ' +
-        'font metrics: `ch` and `ex` are defined in terms of the font\'s "0" advance and x-height, and `max-content` is defined in terms ' +
-        'of measured text. The engines pick different values for those.' +
+        `This box resolves to ${engineList(w.values)}. ` + capLine +
         (centred ? ` margin-left differs by ${mSpread!.toFixed(2)}px, exactly half the width difference, which is what auto margins do when the box changes size.` : ''),
-      // A `ch` cap is a page-authoring choice that does not survive an engine
-      // change, so a large one is a defect. Small ones are inside the noise the
-      // owner labelled 'expected', so abstain there.
       verdict: rel >= 0.02 ? 'defect' : 'unclear',
-      confidence: centred ? 'high' : 'medium',
+      confidence: capMoved ? 'high' : centred ? 'high' : 'medium',
       fix: {
         description:
           'Express the measure in absolute units. `max-width: 58ch` is a different number of pixels in every engine; `max-width: 42rem` is not.',
         css: '/* was: max-width: 58ch */\nmax-width: 42rem;',
       },
-      evidenceCited: ['properties[width]', 'ancestors[0].geometry', 'styleDiffs.marginLeft'],
+      evidenceCited: capMoved
+        ? ['styles.maxWidth', 'properties[width]', 'ancestors[0].geometry']
+        : ['properties[width]', 'ancestors[0].geometry', 'styleDiffs.marginLeft'],
     };
   },
 };

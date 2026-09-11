@@ -26,12 +26,29 @@ export interface ModelPricing {
  * https://developers.openai.com/api/docs/guides/images-vision on this date.
  */
 export const PRICING_AS_OF = '2026-09-11';
+/** The gpt-5.6 family was added on this date, from the same two pages. */
+export const PRICING_GPT56_AS_OF = '2026-09-11';
 export const PRICING_SOURCES = [
   'https://developers.openai.com/api/docs/pricing',
   'https://developers.openai.com/api/docs/guides/images-vision',
 ];
 
 export const PRICING: Record<string, ModelPricing> = {
+  // gpt-5.6 family. Standard tier (the pricing page also lists batch, flex,
+  // priority and fast rows; those are not what a plain Responses call bills at).
+  // All three are patch-based with multiplier 1.2 and a 2,500-patch budget at
+  // detail `high` — our largest crop is 900x640 = 580 patches, so the budget
+  // never binds and the resize branch stays dead.
+  'gpt-5.6-luna': {
+    input: 0.20, cachedInput: 0.02, output: 1.20,
+    image: { kind: 'patch', multiplier: 1.2, patchBudget: 2500 },
+    multimodal: true,
+  },
+  'gpt-5.6-terra': {
+    input: 2.00, cachedInput: 0.20, output: 12.00,
+    image: { kind: 'patch', multiplier: 1.2, patchBudget: 2500 },
+    multimodal: true,
+  },
   'gpt-5': {
     input: 1.25, cachedInput: 0.125, output: 10.0,
     image: { kind: 'tile', baseTokens: 70, tileTokens: 140 },
