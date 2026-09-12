@@ -1,0 +1,494 @@
+{
+  "status": 200,
+  "request": {
+    "model": "gpt-5-mini",
+    "instructions": "Reply with the required JSON. This is a reachability probe.",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Probe. Set cause to \"probe\", verdict to \"unclear\", confidence to \"low\", everything else empty."
+          }
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "name": "inspect_element",
+        "description": "Return the recorded box (width, height, parent-relative and absolute offset) for one element, in all three engines. Use it to walk up or down from the finding — e.g. to check whether the parent is the same width everywhere.",
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Structural path, e.g. BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[2]."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "name": "read_computed_styles",
+        "description": "Return the collected computed styles for one element in all three engines. Only the curated property set is collected; unknown properties come back as null rather than a guess.",
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "properties"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Structural path of the element."
+            },
+            "properties": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "description": "CSS property names in camelCase. Pass null for the whole collected set."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "name": "rerun_engine",
+        "description": "Re-collect one engine on the same page and report whether the element measures the same as it did in the run under review. Use it to separate \"the engines disagree\" from \"the measurement is unstable\".",
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "engine",
+            "path"
+          ],
+          "properties": {
+            "engine": {
+              "type": "string",
+              "enum": [
+                "chromium",
+                "firefox",
+                "webkit"
+              ]
+            },
+            "path": {
+              "type": "string",
+              "description": "Structural path of the element to re-measure."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "name": "compare_screenshots",
+        "description": "Return the pixel dimensions and on-disk paths of the three element crops, plus which pairs are byte-identical. The crops are already attached to the first message; this is for checking whether two engines rendered identically.",
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {}
+        },
+        "strict": true
+      }
+    ],
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "investigation",
+        "strict": true,
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cause",
+            "summary",
+            "mechanism",
+            "verdict",
+            "confidence",
+            "oddEngineOut",
+            "fix",
+            "evidenceCited",
+            "unresolved"
+          ],
+          "properties": {
+            "cause": {
+              "type": "string",
+              "description": "Short stable slug for the mechanism, e.g. control-font-not-inherited."
+            },
+            "summary": {
+              "type": "string",
+              "description": "One sentence. What is wrong and where."
+            },
+            "mechanism": {
+              "type": "string",
+              "description": "Why the engines disagree, in terms of the evidence given."
+            },
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "defect",
+                "expected-engine-difference",
+                "unclear"
+              ]
+            },
+            "confidence": {
+              "type": "string",
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ]
+            },
+            "oddEngineOut": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "chromium, firefox or webkit — whichever sits apart from the other two. null if none does."
+            },
+            "fix": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false,
+              "required": [
+                "description",
+                "css"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "css": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "evidenceCited": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Dotted paths into the evidence bundle that the conclusion rests on."
+            },
+            "unresolved": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Anything you needed and could not get. Empty array if nothing."
+            }
+          }
+        }
+      }
+    },
+    "max_output_tokens": 3000,
+    "reasoning": {
+      "effort": "low"
+    },
+    "store": false
+  },
+  "response": {
+    "id": "resp_0ff4b8884599a2cc016aa41017912887d0a4ade20321908730",
+    "object": "response",
+    "created_at": 1789136919,
+    "status": "completed",
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "completed_at": 1789136923,
+    "error": null,
+    "frequency_penalty": 0,
+    "incomplete_details": null,
+    "instructions": "Reply with the required JSON. This is a reachability probe.",
+    "max_output_tokens": 3000,
+    "max_tool_calls": null,
+    "model": "gpt-5-mini-2025-08-07",
+    "moderation": null,
+    "output": [
+      {
+        "id": "rs_0ff4b8884599a2cc016aa41018ae0487d0a8e90f069112c358",
+        "type": "reasoning",
+        "content": [],
+        "encrypted_content": "<1932 chars of opaque reasoning state elided>",
+        "summary": []
+      },
+      {
+        "id": "msg_0ff4b8884599a2cc016aa4101a9e7c87d09e29097966ab7c72",
+        "type": "message",
+        "status": "completed",
+        "content": [
+          {
+            "type": "output_text",
+            "annotations": [],
+            "logprobs": [],
+            "text": "{\"cause\":\"probe\",\"summary\":\"\",\"mechanism\":\"\",\"verdict\":\"unclear\",\"confidence\":\"low\",\"oddEngineOut\":null,\"fix\":null,\"evidenceCited\":[],\"unresolved\":[]}"
+          }
+        ],
+        "role": "assistant"
+      }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "in_memory",
+    "reasoning": {
+      "context": "current_turn",
+      "effort": "low",
+      "mode": "standard",
+      "summary": null
+    },
+    "safety_identifier": null,
+    "service_tier": "default",
+    "store": false,
+    "temperature": 1,
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "description": null,
+        "name": "investigation",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cause",
+            "summary",
+            "mechanism",
+            "verdict",
+            "confidence",
+            "oddEngineOut",
+            "fix",
+            "evidenceCited",
+            "unresolved"
+          ],
+          "properties": {
+            "cause": {
+              "type": "string",
+              "description": "Short stable slug for the mechanism, e.g. control-font-not-inherited."
+            },
+            "summary": {
+              "type": "string",
+              "description": "One sentence. What is wrong and where."
+            },
+            "mechanism": {
+              "type": "string",
+              "description": "Why the engines disagree, in terms of the evidence given."
+            },
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "defect",
+                "expected-engine-difference",
+                "unclear"
+              ]
+            },
+            "confidence": {
+              "type": "string",
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ]
+            },
+            "oddEngineOut": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "chromium, firefox or webkit — whichever sits apart from the other two. null if none does."
+            },
+            "fix": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false,
+              "required": [
+                "description",
+                "css"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "css": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "evidenceCited": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Dotted paths into the evidence bundle that the conclusion rests on."
+            },
+            "unresolved": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Anything you needed and could not get. Empty array if nothing."
+            }
+          }
+        },
+        "strict": true
+      },
+      "verbosity": "medium"
+    },
+    "tool_choice": "auto",
+    "tool_usage": {
+      "image_gen": {
+        "input_tokens": 0,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "output_tokens": 0,
+        "output_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 0
+        },
+        "total_tokens": 0
+      },
+      "web_search": {
+        "num_requests": 0
+      }
+    },
+    "tools": [
+      {
+        "type": "function",
+        "description": "Return the recorded box (width, height, parent-relative and absolute offset) for one element, in all three engines. Use it to walk up or down from the finding — e.g. to check whether the parent is the same width everywhere.",
+        "name": "inspect_element",
+        "output_schema": null,
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Structural path, e.g. BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[2]."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "description": "Return the collected computed styles for one element in all three engines. Only the curated property set is collected; unknown properties come back as null rather than a guess.",
+        "name": "read_computed_styles",
+        "output_schema": null,
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "properties"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Structural path of the element."
+            },
+            "properties": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "description": "CSS property names in camelCase. Pass null for the whole collected set."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "description": "Re-collect one engine on the same page and report whether the element measures the same as it did in the run under review. Use it to separate \"the engines disagree\" from \"the measurement is unstable\".",
+        "name": "rerun_engine",
+        "output_schema": null,
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "engine",
+            "path"
+          ],
+          "properties": {
+            "engine": {
+              "type": "string",
+              "enum": [
+                "chromium",
+                "firefox",
+                "webkit"
+              ]
+            },
+            "path": {
+              "type": "string",
+              "description": "Structural path of the element to re-measure."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "description": "Return the pixel dimensions and on-disk paths of the three element crops, plus which pairs are byte-identical. The crops are already attached to the first message; this is for checking whether two engines rendered identically.",
+        "name": "compare_screenshots",
+        "output_schema": null,
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {}
+        },
+        "strict": true
+      }
+    ],
+    "top_logprobs": 0,
+    "top_p": 1,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 615,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 160,
+      "output_tokens_details": {
+        "reasoning_tokens": 64
+      },
+      "total_tokens": 775
+    },
+    "user": null,
+    "metadata": {}
+  }
+}

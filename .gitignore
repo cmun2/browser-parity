@@ -7,3 +7,11 @@ m0/results/shots/
 m0/results/smoke/
 m0/results/evidence/
 m0/results/labels.demo.jsonl
+ai/.corpus-cache/
+
+# Credentials. The AI investigator reads OPENAI_API_KEY from the environment;
+# a .env here is a convenience for local runs and must never be committed.
+.env
+.env.*
+!.env.example
+ai/.evidence-v2/
