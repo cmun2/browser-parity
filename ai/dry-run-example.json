@@ -1,0 +1,295 @@
+{
+  "model": "gpt-5-mini",
+  "pricingAsOf": "2026-09-11",
+  "pricingSources": [
+    "https://developers.openai.com/api/docs/pricing",
+    "https://developers.openai.com/api/docs/guides/images-vision"
+  ],
+  "tokenBackend": "o200k_base (exact)",
+  "request": {
+    "model": "gpt-5-mini",
+    "instructions": "You explain why three browser engines laid out the same element differently.\n\nA deterministic pipeline has already done the measuring and the suppression. It compared Chromium, Firefox and WebKit rendering the same page at the same moment, discarded SVG interiors, inline text nodes, sub-tolerance deltas and parent-inherited deltas, and what reaches you is what survived. Your job is the one thing it cannot do: say WHY.\n\nRules:\n- The measurements are ground truth. Never dispute a number you were given; explain it.\n- Name a mechanism, not a category. \"Text metrics differ\" is not an answer. \"The <button> sets font-size but not font-family, so it falls back to each engine's UA control font, and Chromium's Arial is narrower than WebKit's system-ui\" is.\n- Only cite evidence you were actually given. Computed styles outside the collected set come back as null from the tools; a null is not permission to assume a value.\n- A difference in how an engine serialises a computed value is not a rendering difference. font-family quoting and BlinkMacSystemFont/system-ui aliasing have already been filtered out for you.\n- Distinguish the element being wrong from the element being moved. If width and height agree in all three engines and only the offset differs, the cause is elsewhere in the flow; say where and stop.\n- Playwright's WebKit is not Safari. Do not claim anything about Safari or iOS.\n- If the evidence does not support a specific mechanism, say so and set confidence to low. An honest \"I cannot tell from this\" is worth more than a plausible story.\n\nUse the tools when a specific measurement would settle the question. Do not use them to browse.",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "# finding p12-form-checkout#2  (page p12-form-checkout, corpus m0)\n\nelement   <select> #f-select-0.w-full.px-3.py-2.border   display: block\npath      BODY[1]/DIV[1]/FORM[1]/SECTION[2]/DIV[2]/LABEL[1]/SELECT[1]\ntext      \"LisbonTorontoOsakaNairobiRotterdamAustinTallinnMedellín\"\n\n## what differs\nheight    Δ15px   chromium 38   firefox 38   webkit 23\n\n## box, per engine  (w h, parent-relative x y, absolute x y)\nchromium  269.98 x 38   rel 0,28   abs 136,502\nfirefox   270 x 38   rel 0,28   abs 136,502\nwebkit    270 x 23   rel 0,28   abs 136,502\n\n## computed styles that differ\nwhiteSpace       chromium: pre   firefox: nowrap   webkit: pre\noverflowX        chromium: clip   firefox: clip   webkit: visible\noverflowY        chromium: clip   firefox: clip   webkit: visible\nminHeight        chromium: auto   firefox: auto   webkit: 18px\nwidth            chromium: 269.984px   firefox: 270px   webkit: 270px\nheight           chromium: 38px   firefox: 38px   webkit: 23px\npaddingTop       chromium: 8px   firefox: 8px   webkit: 0px\npaddingLeft      chromium: 12px   firefox: 12px   webkit: 0px\n(filtered as serialisation-only, not rendering differences: fontFamily)\n\n## computed styles, same in all three\ndisplay: block; position: static; boxSizing: border-box; lineHeight: normal; fontFamily: -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif; fontSize: 16px; fontWeight: 400; marginTop: 0px; borderTopWidth: 1px; gap: normal; flexBasis: auto; flexGrow: 0; flexShrink: 1; writingMode: horizontal-tb; appearance: auto\n\n## ancestors  (nearest first)\n 1  <label> .flex.flex-col.gap-2   w 269.98/270/270   h 70/70/70   display: flex\n 2  <div> .grid.grid-cols-2.gap-5   w 559.98/560/560   h 70/70/70   display: grid\n 3  <section> .flex.flex-col.gap-5   w 559.98/560/560   h 284/284/284   display: flex\n 4  <form> .flex.flex-col.gap-8   w 559.98/560/560   h 1059/1057/1061   display: flex\n      differing styles: height 1059px/1057px/1061px\n\n## other survivors on this page  (4 shown)\n  p12-form-checkout#1  <legend>  width Δ377.50\n  p12-form-checkout#3  <input>  offset-x Δ3 width Δ2 height Δ2 offset-y Δ1\n  p12-form-checkout#4  <input>  offset-x Δ3 width Δ2 height Δ2 offset-y Δ1\n  p12-form-checkout#5  <input>  offset-x Δ3 width Δ2 height Δ2 offset-y Δ1\n\nsymptoms sharing this exact delta on this page: 1\nengine furthest from the other two on the largest-delta property: webkit\n\n## environment\nchromium 153.0.8010.12 · firefox 155.0 · webkit 26.6 · playwright 1.63.0 · darwin arm64 · viewport 1280x900 @1x · normalization: none (pages measured exactly as generated)\nfont fingerprint: system-ui=244.289 sans-serif=236.609 serif=218.633 monospace=288.047 Helvetica=236.609 Arial=236.609 Georgia=236.000 Inter=218.633"
+          },
+          {
+            "type": "input_text",
+            "text": "crop: chromium, 380x260px, element outlined in red, all three crops framed identically"
+          },
+          {
+            "type": "input_image",
+            "image_url": "data:image/png;base64,<23972 base64 chars elided>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "crop: firefox, 380x260px, element outlined in red, all three crops framed identically"
+          },
+          {
+            "type": "input_image",
+            "image_url": "data:image/png;base64,<28772 base64 chars elided>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "crop: webkit, 380x260px, element outlined in red, all three crops framed identically"
+          },
+          {
+            "type": "input_image",
+            "image_url": "data:image/png;base64,<28656 base64 chars elided>",
+            "detail": "high"
+          },
+          {
+            "type": "input_text",
+            "text": "## the deterministic matcher already has an answer\nrule       ua-select-metrics\ncause      ua-select-metrics\nconfidence high\nsummary    <select> is 15px shorter in one engine: author padding is not applied to the native control.\nmechanism  The computed values the engines disagree on are paddingTop, paddingLeft, minHeight, overflowX, overflowY, whiteSpace — paddingTop = chromium 8px / firefox 8px / webkit 0px; paddingLeft = chromium 12px / firefox 12px / webkit 0px; minHeight = chromium auto / firefox auto / webkit 18px; overflowX = chromium clip / firefox clip / webkit visible; overflowY = chromium clip / firefox clip / webkit visible; whiteSpace = chromium pre / firefox nowrap / webkit pre. A native <select> is rendered by the platform widget, and the engines disagree about whether author padding, min-height and overflow apply to it at all. The page set padding; only two of the three engines honoured it.\n\nConfirm it or overturn it. If you confirm it, say so and stop — do not re-derive it at length. If you overturn it, say exactly which piece of evidence the rule mis-read."
+          }
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "name": "inspect_element",
+        "description": "Return the recorded box (width, height, parent-relative and absolute offset) for one element, in all three engines. Use it to walk up or down from the finding — e.g. to check whether the parent is the same width everywhere.",
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Structural path, e.g. BODY[1]/DIV[1]/TABLE[1]/TBODY[1]/TR[3]/TD[2]."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "name": "read_computed_styles",
+        "description": "Return the collected computed styles for one element in all three engines. Only the curated property set is collected; unknown properties come back as null rather than a guess.",
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Structural path of the element."
+            },
+            "properties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "CSS property names in camelCase. Omit for the whole collected set."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "name": "rerun_engine",
+        "description": "Re-collect one engine on the same page and report whether the element measures the same as it did in the run under review. Use it to separate \"the engines disagree\" from \"the measurement is unstable\".",
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "engine",
+            "path"
+          ],
+          "properties": {
+            "engine": {
+              "type": "string",
+              "enum": [
+                "chromium",
+                "firefox",
+                "webkit"
+              ]
+            },
+            "path": {
+              "type": "string",
+              "description": "Structural path of the element to re-measure."
+            }
+          }
+        },
+        "strict": true
+      },
+      {
+        "type": "function",
+        "name": "compare_screenshots",
+        "description": "Return the pixel dimensions and on-disk paths of the three element crops, plus which pairs are byte-identical. The crops are already attached to the first message; this is for checking whether two engines rendered identically.",
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {}
+        },
+        "strict": true
+      }
+    ],
+    "text": {
+      "format": {
+        "type": "json_schema",
+        "name": "investigation",
+        "strict": true,
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cause",
+            "summary",
+            "mechanism",
+            "verdict",
+            "confidence",
+            "oddEngineOut",
+            "fix",
+            "evidenceCited",
+            "unresolved"
+          ],
+          "properties": {
+            "cause": {
+              "type": "string",
+              "description": "Short stable slug for the mechanism, e.g. control-font-not-inherited."
+            },
+            "summary": {
+              "type": "string",
+              "description": "One sentence. What is wrong and where."
+            },
+            "mechanism": {
+              "type": "string",
+              "description": "Why the engines disagree, in terms of the evidence given."
+            },
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "defect",
+                "expected-engine-difference",
+                "unclear"
+              ]
+            },
+            "confidence": {
+              "type": "string",
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ]
+            },
+            "oddEngineOut": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "chromium",
+                "firefox",
+                "webkit",
+                null
+              ]
+            },
+            "fix": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false,
+              "required": [
+                "description",
+                "css"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "css": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "evidenceCited": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Dotted paths into the evidence bundle that the conclusion rests on."
+            },
+            "unresolved": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Anything you needed and could not get. Empty array if nothing."
+            }
+          }
+        }
+      }
+    },
+    "max_output_tokens": 1200,
+    "store": false
+  },
+  "counts": {
+    "systemPromptTokens": 351,
+    "evidenceTokens": 917,
+    "imageLabelTokens": 64,
+    "toolSchemaTokens": 435,
+    "outputSchemaTokens": 269,
+    "messageOverheadTokens": 16,
+    "textInputTokens": 2052,
+    "imageInputTokens": 390,
+    "totalInputTokens": 2442,
+    "assumedOutputTokens": 450
+  },
+  "images": [
+    {
+      "engine": "chromium",
+      "width": 380,
+      "height": 260,
+      "bytes": 17979,
+      "base64Bytes": 23972
+    },
+    {
+      "engine": "firefox",
+      "width": 380,
+      "height": 260,
+      "bytes": 21579,
+      "base64Bytes": 28772
+    },
+    {
+      "engine": "webkit",
+      "width": 380,
+      "height": 260,
+      "bytes": 21491,
+      "base64Bytes": 28656
+    }
+  ],
+  "cost": {
+    "model": "gpt-5-mini",
+    "textInputTokens": 2052,
+    "imageInputTokens": 390,
+    "cachedInputTokens": 0,
+    "outputTokens": 450,
+    "inputUsd": 0.0006105,
+    "cachedUsd": 0,
+    "outputUsd": 0.0009,
+    "totalUsd": 0.0015105000000000001
+  },
+  "withToolTurns": {
+    "turns": 2,
+    "totalUsd": 0.00254655
+  },
+  "payloadBytes": 90978
+}

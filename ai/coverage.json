@@ -1,0 +1,246 @@
+{
+  "schema": "browser-parity/known-cause-coverage/1",
+  "measuredAt": "2026-09-11T15:18:34.546Z",
+  "rules": [
+    {
+      "id": "control-font-not-inherited",
+      "what": "A form control sets font-size but not font-family, so each engine uses its own UA control font."
+    },
+    {
+      "id": "legend-shrink-to-fit",
+      "what": "WebKit stretches a <legend> to the fieldset content box; Chromium and Firefox shrink it to fit."
+    },
+    {
+      "id": "ua-select-metrics",
+      "what": "WebKit's native <select> ignores author padding and computes its own intrinsic height."
+    },
+    {
+      "id": "ua-checkbox-radio-size",
+      "what": "Checkbox/radio intrinsic size and margins come from the UA stylesheet and differ by 1–3px."
+    },
+    {
+      "id": "ua-button-padding",
+      "what": "A <button> with no author padding-inline picks up the UA default, which is 6px in Chromium/WebKit and 4px in Firefox."
+    },
+    {
+      "id": "table-column-distribution",
+      "what": "Auto table layout distributes column widths from intrinsic text measurements, which differ per engine."
+    },
+    {
+      "id": "line-wrap-count",
+      "what": "The text wraps onto a different number of lines, so the box height differs by a whole multiple of line-height."
+    },
+    {
+      "id": "font-relative-length",
+      "what": "A max-width in a font-relative unit (ch/ex/em) resolves against per-engine font metrics."
+    },
+    {
+      "id": "symptom-absorbed-size",
+      "what": "A container reports a descendant's size difference as its own; the named descendant is the cause."
+    },
+    {
+      "id": "symptom-inherited-size",
+      "what": "The element is the size its ancestor made it; the divergence was created further up."
+    },
+    {
+      "id": "text-shrink-to-fit",
+      "what": "A content-sized box (inline-block, inline-flex, flex item, table cell) inherits the engines' text-measurement difference."
+    },
+    {
+      "id": "propagated-displacement",
+      "what": "The element's own box is identical everywhere; it is displaced by a size difference elsewhere on the page."
+    }
+  ],
+  "corpora": [
+    {
+      "name": "A · 30-page hand-authored",
+      "origin": "hand-authored",
+      "hasDumps": true,
+      "evidenceDir": "ai/.evidence-v2/m0  (re-collected, includes maxWidth)",
+      "findings": 475,
+      "rootCauseUnits": 138,
+      "covered": 475,
+      "coveredUnits": 138,
+      "coverage": 1,
+      "unitCoverage": 1,
+      "labelled": 475,
+      "genuine": 180,
+      "genuineCovered": 180,
+      "genuineCoverage": 1,
+      "byRule": {
+        "table-column-distribution": {
+          "findings": 320,
+          "units": 50,
+          "genuine": 90,
+          "expected": 230
+        },
+        "symptom-absorbed-size": {
+          "findings": 34,
+          "units": 26,
+          "genuine": 18,
+          "expected": 16
+        },
+        "ua-button-padding": {
+          "findings": 43,
+          "units": 17,
+          "genuine": 40,
+          "expected": 3
+        },
+        "text-shrink-to-fit": {
+          "findings": 21,
+          "units": 16,
+          "genuine": 2,
+          "expected": 19
+        },
+        "legend-shrink-to-fit": {
+          "findings": 3,
+          "units": 3,
+          "genuine": 3,
+          "expected": 0
+        },
+        "ua-checkbox-radio-size": {
+          "findings": 22,
+          "units": 5,
+          "genuine": 16,
+          "expected": 6
+        },
+        "ua-select-metrics": {
+          "findings": 1,
+          "units": 1,
+          "genuine": 1,
+          "expected": 0
+        },
+        "propagated-displacement": {
+          "findings": 18,
+          "units": 12,
+          "genuine": 5,
+          "expected": 13
+        },
+        "line-wrap-count": {
+          "findings": 5,
+          "units": 5,
+          "genuine": 5,
+          "expected": 0
+        },
+        "symptom-inherited-size": {
+          "findings": 8,
+          "units": 4,
+          "genuine": 0,
+          "expected": 8
+        }
+      },
+      "byConfidence": {
+        "high": 471,
+        "medium": 4,
+        "low": 0
+      },
+      "verdictAgreement": {
+        "agree": 75,
+        "disagree": 6,
+        "abstained": 394,
+        "rate": 0.9259259259259259
+      },
+      "uncovered": []
+    },
+    {
+      "name": "B · 10-page model-emitted",
+      "origin": "model-emitted",
+      "hasDumps": true,
+      "evidenceDir": "ai/.evidence-v2/validation  (re-collected, includes maxWidth)",
+      "findings": 106,
+      "rootCauseUnits": 37,
+      "covered": 106,
+      "coveredUnits": 37,
+      "coverage": 1,
+      "unitCoverage": 1,
+      "labelled": 0,
+      "genuine": 0,
+      "genuineCovered": 0,
+      "genuineCoverage": null,
+      "byRule": {
+        "font-relative-length": {
+          "findings": 3,
+          "units": 3,
+          "genuine": 0,
+          "expected": 0
+        },
+        "table-column-distribution": {
+          "findings": 76,
+          "units": 16,
+          "genuine": 0,
+          "expected": 0
+        },
+        "propagated-displacement": {
+          "findings": 19,
+          "units": 10,
+          "genuine": 0,
+          "expected": 0
+        },
+        "symptom-inherited-size": {
+          "findings": 2,
+          "units": 2,
+          "genuine": 0,
+          "expected": 0
+        },
+        "symptom-absorbed-size": {
+          "findings": 2,
+          "units": 2,
+          "genuine": 0,
+          "expected": 0
+        },
+        "control-font-not-inherited": {
+          "findings": 3,
+          "units": 3,
+          "genuine": 0,
+          "expected": 0
+        },
+        "text-shrink-to-fit": {
+          "findings": 1,
+          "units": 1,
+          "genuine": 0,
+          "expected": 0
+        }
+      },
+      "byConfidence": {
+        "high": 106,
+        "medium": 0,
+        "low": 0
+      },
+      "verdictAgreement": {
+        "agree": 0,
+        "disagree": 0,
+        "abstained": 0,
+        "rate": null
+      },
+      "uncovered": []
+    }
+  ],
+  "holdout": [
+    {
+      "derivedFrom": "A",
+      "measuredOn": "B · 10-page model-emitted",
+      "rules": 10,
+      "coverage": 0.9716981132075472,
+      "unitCoverage": 0.918918918918919,
+      "covered": 103,
+      "findings": 106
+    },
+    {
+      "derivedFrom": "B",
+      "measuredOn": "A · 30-page hand-authored",
+      "rules": 2,
+      "coverage": 0,
+      "unitCoverage": 0,
+      "covered": 0,
+      "findings": 475
+    }
+  ],
+  "combined": {
+    "findings": 581,
+    "covered": 581,
+    "coverage": 1,
+    "rootCauseUnits": 175,
+    "coveredUnits": 175,
+    "unitCoverage": 1
+  }
+}

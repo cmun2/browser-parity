@@ -1,0 +1,366 @@
+{
+  "schema": "browser-parity/model-comparison-scored/1",
+  "scoredAt": "2026-09-11T15:15:57.981Z",
+  "evidence": "ai/.evidence-v2 (re-collected, includes maxWidth) — identical bytes for all three models",
+  "budget": {
+    "maxRequests": 120,
+    "spendCapUsd": 0.8,
+    "maxTurnsPerFinding": 2
+  },
+  "totals": {
+    "requests": 97,
+    "spentUsd": 0.340439,
+    "answered": 73,
+    "stopped": null
+  },
+  "perModel": {
+    "gpt-5-mini": {
+      "answered": 23,
+      "totalCostUsd": 0.046745,
+      "meanCostUsd": 0.002032,
+      "meanInputTokens": 2663,
+      "meanOutputTokens": 793,
+      "meanReasoningTokens": 287,
+      "requests": 27,
+      "controls": {
+        "confirmed": 11,
+        "refined": 1,
+        "overturnedCorrectly": 0,
+        "confirmedAWrongRule": 1,
+        "contradictedARightRule": 0,
+        "unanswered": 0,
+        "cells": [
+          {
+            "id": "v08-table-users#2",
+            "rule": "control-font-not-inherited",
+            "modelCause": "control-font-not-inherited",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p11-form-settings#1",
+            "rule": "legend-shrink-to-fit",
+            "modelCause": "legend-shrink-to-fit",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p12-form-checkout#2",
+            "rule": "ua-select-metrics",
+            "modelCause": "ua-select-metrics",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p11-form-settings#6",
+            "rule": "ua-checkbox-radio-size",
+            "modelCause": "ua-checkbox-radio-size",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p08-dash-kanban#1",
+            "rule": "ua-button-padding",
+            "modelCause": "ua-button-padding",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p06-dash-analytics#1",
+            "rule": "table-column-distribution",
+            "modelCause": "table-column-distribution",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p16-pricing-calculator#1",
+            "rule": "line-wrap-count",
+            "modelCause": "line-wrap-count",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p07-dash-billing#42",
+            "rule": "symptom-absorbed-size",
+            "modelCause": "ua-form-control-box-difference",
+            "outcome": "refined",
+            "why": "Named the <select> and its UA control height. The rule says \"a descendant carries this delta\"; the model says which descendant and why. Same mechanism, stated one level deeper."
+          },
+          {
+            "id": "p16-pricing-calculator#3",
+            "rule": "symptom-inherited-size",
+            "modelCause": "symptom-inherited-size",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p09-dash-infra-status#2",
+            "rule": "text-shrink-to-fit",
+            "modelCause": "text-shrink-to-fit",
+            "outcome": "confirmed",
+            "why": "Agreed with text-shrink-to-fit."
+          },
+          {
+            "id": "p13-form-wizard#3",
+            "rule": "propagated-displacement",
+            "modelCause": "propagated-displacement",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "v07-article-docs#15",
+            "rule": "line-height-resolution",
+            "modelCause": "line-height-resolution",
+            "outcome": "confirmed-a-wrong-rule",
+            "why": "Agreed with line-height-resolution, which was wrong. Not a contradiction, but a missed catch."
+          },
+          {
+            "id": "v07-article-docs#1",
+            "rule": "table-column-distribution",
+            "modelCause": "table-column-distribution",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          }
+        ]
+      },
+      "wobbleTriplet": [
+        "expected-engine-difference",
+        "expected-engine-difference",
+        "defect"
+      ],
+      "wobbleStable": false
+    },
+    "gpt-5.6-luna": {
+      "answered": 27,
+      "totalCostUsd": 0.027249,
+      "meanCostUsd": 0.001009,
+      "meanInputTokens": 3393,
+      "meanOutputTokens": 443,
+      "meanReasoningTokens": 69,
+      "requests": 33,
+      "controls": {
+        "confirmed": 11,
+        "refined": 1,
+        "overturnedCorrectly": 1,
+        "confirmedAWrongRule": 0,
+        "contradictedARightRule": 0,
+        "unanswered": 0,
+        "cells": [
+          {
+            "id": "v08-table-users#2",
+            "rule": "control-font-not-inherited",
+            "modelCause": "control-font-not-inherited",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p11-form-settings#1",
+            "rule": "legend-shrink-to-fit",
+            "modelCause": "legend-shrink-to-fit",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p12-form-checkout#2",
+            "rule": "ua-select-metrics",
+            "modelCause": "ua-select-metrics",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p11-form-settings#6",
+            "rule": "ua-checkbox-radio-size",
+            "modelCause": "ua-checkbox-radio-size",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p08-dash-kanban#1",
+            "rule": "ua-button-padding",
+            "modelCause": "ua-button-padding",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p06-dash-analytics#1",
+            "rule": "table-column-distribution",
+            "modelCause": "table-column-distribution",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p16-pricing-calculator#1",
+            "rule": "line-wrap-count",
+            "modelCause": "line-wrap-count",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p07-dash-billing#42",
+            "rule": "symptom-absorbed-size",
+            "modelCause": "select-ua-control-height",
+            "outcome": "refined",
+            "why": "Named the <select> and its UA control height. The rule says \"a descendant carries this delta\"; the model says which descendant and why. Same mechanism, stated one level deeper."
+          },
+          {
+            "id": "p16-pricing-calculator#3",
+            "rule": "symptom-inherited-size",
+            "modelCause": "symptom-inherited-size",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p09-dash-infra-status#2",
+            "rule": "text-shrink-to-fit",
+            "modelCause": "cross-engine-text-metrics-in-flex-item",
+            "outcome": "confirmed",
+            "why": "cross-engine-text-metrics-in-flex-item is text-shrink-to-fit under another name."
+          },
+          {
+            "id": "p13-form-wizard#3",
+            "rule": "propagated-displacement",
+            "modelCause": "propagated-displacement",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "v07-article-docs#15",
+            "rule": "line-height-resolution",
+            "modelCause": "upstream-table-layout",
+            "outcome": "overturned-correctly",
+            "why": "A 37.4 vs 37.400002px line-height cannot move a 46.4px heading 7.5px; the <article> ancestor is 7.5px shorter in WebKit. VERIFIED: ancestor heights are 2636.31 / 2636.13 / 2628.81. The rule has since been deleted."
+          },
+          {
+            "id": "v07-article-docs#1",
+            "rule": "table-column-distribution",
+            "modelCause": "table-column-distribution",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          }
+        ]
+      },
+      "wobbleTriplet": [
+        "defect",
+        "defect",
+        "defect"
+      ],
+      "wobbleStable": true
+    },
+    "gpt-5.6-terra": {
+      "answered": 23,
+      "totalCostUsd": 0.25575,
+      "meanCostUsd": 0.01112,
+      "meanInputTokens": 3622,
+      "meanOutputTokens": 531,
+      "meanReasoningTokens": 59,
+      "requests": 35,
+      "controls": {
+        "confirmed": 10,
+        "refined": 1,
+        "overturnedCorrectly": 2,
+        "confirmedAWrongRule": 0,
+        "contradictedARightRule": 0,
+        "unanswered": 0,
+        "cells": [
+          {
+            "id": "v08-table-users#2",
+            "rule": "control-font-not-inherited",
+            "modelCause": "control-font-not-inherited",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p11-form-settings#1",
+            "rule": "legend-shrink-to-fit",
+            "modelCause": "legend-shrink-to-fit",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p12-form-checkout#2",
+            "rule": "ua-select-metrics",
+            "modelCause": "ua-select-metrics",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p11-form-settings#6",
+            "rule": "ua-checkbox-radio-size",
+            "modelCause": "ua-checkbox-radio-size",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p08-dash-kanban#1",
+            "rule": "ua-button-padding",
+            "modelCause": "ua-button-padding",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p06-dash-analytics#1",
+            "rule": "table-column-distribution",
+            "modelCause": "table-column-distribution",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p16-pricing-calculator#1",
+            "rule": "line-wrap-count",
+            "modelCause": "line-wrap-count",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p07-dash-billing#42",
+            "rule": "symptom-absorbed-size",
+            "modelCause": "ua-select-intrinsic-height",
+            "outcome": "refined",
+            "why": "Named the <select> and its UA control height. The rule says \"a descendant carries this delta\"; the model says which descendant and why. Same mechanism, stated one level deeper."
+          },
+          {
+            "id": "p16-pricing-calculator#3",
+            "rule": "symptom-inherited-size",
+            "modelCause": "symptom-inherited-size",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "p09-dash-infra-status#2",
+            "rule": "text-shrink-to-fit",
+            "modelCause": "intrinsic-text-width-accumulation-in-flex-nav",
+            "outcome": "overturned-correctly",
+            "why": "Showed the 5.01px offset is the sum of the preceding siblings' width excesses (1.47+1.67+1.88=5.02) while this element is only 1.67px wider. VERIFIED against the evidence dump: exact. The rule was over-claiming magnitude and has been fixed."
+          },
+          {
+            "id": "p13-form-wizard#3",
+            "rule": "propagated-displacement",
+            "modelCause": "propagated-displacement",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          },
+          {
+            "id": "v07-article-docs#15",
+            "rule": "line-height-resolution",
+            "modelCause": "upstream-table-column-sizing-reflow",
+            "outcome": "overturned-correctly",
+            "why": "Same critique as luna, reached independently, plus the table-column evidence above the heading. VERIFIED."
+          },
+          {
+            "id": "v07-article-docs#1",
+            "rule": "table-column-distribution",
+            "modelCause": "table-column-distribution",
+            "outcome": "confirmed",
+            "why": "same mechanism slug as the rule"
+          }
+        ]
+      },
+      "wobbleTriplet": [
+        "expected-engine-difference",
+        "expected-engine-difference",
+        "expected-engine-difference"
+      ],
+      "wobbleStable": true
+    }
+  }
+}

@@ -1,0 +1,1255 @@
+{
+  "schema": "browser-parity/step4-result/1",
+  "ranAt": "2026-09-11T14:34:51.953Z",
+  "model": "gpt-5-mini",
+  "budget": {
+    "maxRequests": 54,
+    "spendCapUsd": 0.15,
+    "maxTurnsPerFinding": 2
+  },
+  "totals": {
+    "findingsAsked": 27,
+    "requests": 28,
+    "actualCostUsd": 0.061851,
+    "stopped": null
+  },
+  "results": [
+    {
+      "bucket": "residual",
+      "corpus": "B",
+      "id": "v01-landing-saas-hero#1",
+      "tag": "P",
+      "display": "block",
+      "props": "width Δ26.18 offset-x Δ13.09",
+      "explainedInSampleBy": "font-relative-length",
+      "requests": 1,
+      "matcherRule": "font-relative-length",
+      "matcherVerdict": "defect",
+      "matcherCause": "font-relative-length",
+      "model": {
+        "cause": "auto-margin-subpixel-rounding",
+        "verdict": "expected-engine-difference",
+        "confidence": "medium",
+        "summary": "WebKit resolved the block's horizontal layout with a different subpixel rounding when distributing leftover inline space for auto margins, producing a ~26px narrower computed width and ~13px larger left offset than Chromium/Firefox.",
+        "mechanism": "The P is a block inside a fixed-width ancestor (.shell 1120px). The engines computed different pixel values for marginLeft and the element width (evidence: computed width and marginLeft differ). The numeric pattern shows the width delta (~26.18px) is roughly twice the offset-x delta (~13.09px), which indicates the leftover horizontal space was redistributed differently: WebKit assigned ≈13px more left margin and ≈13px more right margin (so the block's width ended up ≈26px smaller) while Chromium and Firefox produced matching distributions. This is consistent with subpixel rounding rules/algorithms used when resolving auto margins and available width for a block-level element (i.e. how the engine divides fractional pixels between width and the two auto margins). Ancestors' widths are identical across engines, so the difference arises during the block's final width/margin resolution rather than from the container size or font metrics.",
+        "fix": {
+          "description": "Make the intended horizontal sizing/centering explicit so engines don't have to split fractional pixels differently. Either give the element an explicit width (or max-width) and use auto margins, or make it fill its container (width:100%) and constrain inner text with max-width. This removes the dependence on per‑engine rounding when dividing leftover space.",
+          "css": "/* option A: explicit max width and center */\n.lede { max-width: 720px; margin-left: auto; margin-right: auto; }\n\n/* option B: force full-bleed block and constrain internal text */\n.lede { width: 100%; }\n.lede > .inner { max-width: 720px; margin: 0 auto; }\n"
+        },
+        "evidenceCited": [
+          "computed styles that differ.width",
+          "computed styles that differ.marginLeft",
+          "what differs.width",
+          "what differs.offset-x",
+          "ancestors.1 <div> .shell w 1120/1120/1120"
+        ],
+        "unresolved": [
+          "No explicit CSS rule set for this P was provided (e.g. whether margins are 'auto' or a specific computed margin-right), so I cannot point to the exact authored declaration that led to auto-margin resolution.",
+          "I don't have the engine-internal rounding algorithm or the fractional intermediate values used by each engine, so the diagnosis is about rounding behavior rather than a line-by-line reproduction of internal arithmetic."
+        ],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2585,
+        "cachedInputTokens": 0,
+        "outputTokens": 1261,
+        "imageTokens": 0,
+        "reasoningTokens": 640,
+        "costUsd": 0.003168
+      },
+      "error": null
+    },
+    {
+      "bucket": "residual",
+      "corpus": "B",
+      "id": "v01-landing-saas-hero#2",
+      "tag": "P",
+      "display": "block",
+      "props": "width Δ17.37",
+      "explainedInSampleBy": "font-relative-length",
+      "requests": 1,
+      "matcherRule": "font-relative-length",
+      "matcherVerdict": "defect",
+      "matcherCause": "font-relative-length",
+      "model": {
+        "cause": "subpixel-line-wrapping-from-parent-width-rounding",
+        "verdict": "expected-engine-difference",
+        "confidence": "medium",
+        "summary": "WebKit laid out this <p> ~17px narrower than Chromium/Firefox because sub-pixel rounding in the ancestor column produced a different available inline width in WebKit, which changed line breaks and produced a shorter laid-out box.",
+        "mechanism": "The paragraph's font-size, white-space and other in-flow text properties are the same across engines, so the only plausible renderer-level mechanism that produces a ~17px change in the computed width is a different available inline formatting width that caused different line breaking. The immediate containing <div> (ancestor #1) shows slightly different computed widths between engines (527.547px / 525.467px / 527.390625px). WebKit's internal rounding of fractional widths during block layout produced an available width for the paragraph that differs enough to change where a line break falls; that altered the paragraph's intrinsic/used width and led WebKit to compute the paragraph width as 461.03125px instead of ~478px. In short: small ancestor subpixel differences + engine rounding/line-breaking rules → different wrapping → different computed width.",
+        "fix": {
+          "description": "Make the paragraph's available inline width and wrapping deterministic across engines so rounding can't change line breaks. Options: remove reliance on fractional parent widths, force the paragraph to occupy the full parent width, or prevent wrapping at an engine-sensitive point.",
+          "css": "/* pick one of these fixes depending on desired behaviour */\n/* 1) Force the paragraph to use the full container width */\n.shell .cta-inner > div p { width: 100%; }\n\n/* 2) Avoid engine-sensitive wrapping at that space by allowing hyphenation/breaking */\n.shell .cta-inner > div p { word-break: break-word; hyphens: auto; }\n\n/* 3) Eliminate fractional layout by using an integer width on the parent */\n.shell .cta-inner > div { width: 527px; }"
+        },
+        "evidenceCited": [
+          "what differs.width Δ17.37px chromium 478.08 firefox 478.40 webkit 461.03",
+          "computed styles that differ.width chromium: 478.078px firefox: 478.4px webkit: 461.03125px",
+          "ancestors.1 <div> w 527.55/525.47/527.39 differing styles: width 527.547px/525.467px/527.390625px",
+          "computed styles, same in all three (fontSize, whiteSpace)"
+        ],
+        "unresolved": [
+          "Line-height, letter-spacing, word-spacing, text-wrap/hyphens and explicit padding/margin on the immediate parent were not collected; those could confirm whether the break occurred at a particular word or was influenced by spacing rules.",
+          "Exact glyph metrics/float rounding behaviour per-engine (would need engine internals or glyph-level measurements) to raise confidence to high."
+        ],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2356,
+        "cachedInputTokens": 0,
+        "outputTokens": 1048,
+        "imageTokens": 0,
+        "reasoningTokens": 320,
+        "costUsd": 0.002685
+      },
+      "error": null
+    },
+    {
+      "bucket": "residual",
+      "corpus": "B",
+      "id": "v06-pricing-calculator#1",
+      "tag": "P",
+      "display": "block",
+      "props": "width Δ24.61 offset-x Δ12.3",
+      "explainedInSampleBy": "font-relative-length",
+      "requests": 1,
+      "matcherRule": "font-relative-length",
+      "matcherVerdict": "defect",
+      "matcherCause": "font-relative-length",
+      "model": {
+        "cause": "percentage-margin-rounding-difference",
+        "verdict": "expected-engine-difference",
+        "confidence": "medium",
+        "summary": "WebKit computed a smaller used width and a larger computed margin-left for the P, moving it ~12.3px right and shrinking its width ~24.6px compared to Chromium/Firefox.",
+        "mechanism": "The paragraph's used width and left margin were computed differently by WebKit due to subpixel/rounding differences when resolving the element's used width and margin values (likely coming from a percentage or calc-based margin/width in the stylesheet). Evidence: the three engines agree on the ancestor widths (DIV .shell = 1120px), font-size/line-height and display mode, but WebKit's computed width (609.234375px) and marginLeft (231.375px) differ from Chromium/Firefox (≈633.84px width and ≈219.10px marginLeft). Because the width and marginLeft both differ and the height and lineHeight are effectively identical, the layout difference is in how the used width / margin were derived (rounding of fractional pixels when converting percentage/calc to a used value), not in text shaping or line breaking.",
+        "fix": {
+          "description": "Avoid relying on engine-dependent rounding by making the block sizing explicit (use fixed max-width or explicit margins) or use auto-centering so engines compute the same used values. If the intent is a centered narrow text column, prefer max-width plus auto horizontal margins.",
+          "css": "/* Example: make width deterministic and center */\n.your-selector {\n  max-width: 640px;    /* choose the desired text column width */\n  margin-left: auto;\n  margin-right: auto;\n}\n/* Or ensure integer pixel result if you must use percentage */\n.your-selector { width: 56.0%; /* pick a percentage that resolves to an integer px at your container width */ }"
+        },
+        "evidenceCited": [
+          "what differs.width",
+          "what differs.offset-x",
+          "box, per engine.chromium",
+          "box, per engine.firefox",
+          "box, per engine.webkit",
+          "computed styles that differ.marginLeft",
+          "computed styles that differ.width",
+          "computed styles that differ.lineHeight",
+          "ancestors.1 <div> .shell"
+        ],
+        "unresolved": [
+          "The page's authored CSS rule for this P (is margin-left specified as a percentage/calc or is width coming from a percentage-based container?), and whether the element is using a percent-based margin or a calc() that forces subpixel rounding differences. Those original CSS declarations were not provided."
+        ],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2505,
+        "cachedInputTokens": 0,
+        "outputTokens": 1121,
+        "imageTokens": 0,
+        "reasoningTokens": 512,
+        "costUsd": 0.002868
+      },
+      "error": null
+    },
+    {
+      "bucket": "residual",
+      "corpus": "B",
+      "id": "v10-table-catalog#1",
+      "tag": "DIV",
+      "display": "block",
+      "props": "offset-y Δ4.22",
+      "explainedInSampleBy": "line-height-resolution",
+      "requests": 1,
+      "matcherRule": "line-height-resolution",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "line-height-resolution",
+      "model": {
+        "cause": "subpixel-line-height-rounding",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "Firefox's layout produced a very slightly different resolved line-height for this element (and its ancestors); that changed an ancestor's computed height by ~4.22px, which moved the .fgroup's y offset relative to the other engines.",
+        "mechanism": "The engines resolved line-height to slightly different fractional pixel values (lineHeight: chromium 22.475px, firefox 22.4667px, webkit 22.474998px). Those small differences accumulate when laying out the ancestor chain (the aside and layout ancestors also show differing heights), producing a ~4.22px difference in the ancestor block's height in Firefox and therefore a different parent-relative y offset for the static-position .fgroup. The element's own width and height agree between engines (248 x ≈122.52px), so the element was not sized differently — it was moved because an ancestor's computed height/flow position differed due to sub-pixel rounding of line boxes.",
+        "fix": {
+          "description": "Prevent tiny engine-dependent rounding of line boxes from changing layout by making the line-height (or the ancestor's layout) explicit and not left to per-engine rounding. Typical fixes: set a consistent line-height (either a unitless value that better matches your intent or an explicit px value) on the element and/or its relevant ancestors, or avoid relying on accumulated anonymous line box heights (for example, use exact padding/margins or a flex/grid layout for that column).",
+          "css": ".filters, .filters .fgroup { line-height: 22.475px; }\n/* or: */\n.filters, .filters .fgroup { line-height: 1.55; }"
+        },
+        "evidenceCited": [
+          "what differs.offset-y Δ4.22px chromium 833.86 firefox 838.08 webkit 833.86",
+          "computed styles that differ.lineHeight chromium: 22.475px firefox: 22.4667px webkit: 22.474998px",
+          "box, per engine chromium 248 x 122.52 rel 0,833.86 firefox 248 x 122.55 rel 0,838.08 webkit 248 x 122.52 rel 0,833.86",
+          "ancestors[1] <aside> .filters differing styles: height 978.844px/983.1px/978.84375px; lineHeight 22.475px/22.4667px/22.474998px",
+          "ancestors[2] <div> .layout differing styles: height 1613.45px/1613.52px/1613.453125px; lineHeight 22.475px/22.4667px/22.474998px",
+          "symptoms sharing this exact delta on this page: 3 (same ~4px shift on sibling elements)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2189,
+        "cachedInputTokens": 0,
+        "outputTokens": 1045,
+        "imageTokens": 0,
+        "reasoningTokens": 320,
+        "costUsd": 0.002637
+      },
+      "error": null
+    },
+    {
+      "bucket": "residual",
+      "corpus": "B",
+      "id": "v10-table-catalog#2",
+      "tag": "DIV",
+      "display": "block",
+      "props": "offset-y Δ4.17",
+      "explainedInSampleBy": "line-height-resolution",
+      "requests": 1,
+      "matcherRule": "line-height-resolution",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "line-height-resolution",
+      "model": {
+        "cause": "subpixel-line-height-rounding-accumulation",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "Firefox computed slightly different fractional line-height which made ancestor boxes (aside/layout) about 4.26px taller; that extra height cascaded and moved this .fgroup down by ~4.17px.",
+        "mechanism": "The collected computed styles show Firefox's lineHeight is 22.4667px while Chromium and WebKit produce ~22.475px. The aside ancestor's height is larger in Firefox (983.10px) than in the other two (978.844px), a difference of ~4.26px which matches the observed ~4.17px offset-y delta on the .fgroup. Because the element is static-positioned with identical width/height across engines, the observed Y shift is due to upstream layout (ancestor box height difference) rather than the element's own box. The most plausible mechanism is per-engine differences in computing and rounding fractional line-height / leading across the tree; those fractional-pixel differences accumulated in the ancestor's block formatting, producing the consistent ~4px vertical shift seen in multiple sibling findings on this page.",
+        "fix": {
+          "description": "Make vertical layout deterministic across engines by removing the source of subpixel accumulation. Options: set an exact line-height that rounds identically in all engines (explicit px), give the affected ancestor a fixed height, or normalize rounding by using integer values where possible. Applying an explicit line-height on the ancestor or this element prevents engines' fractional calculations from accumulating and shifting descendants.",
+          "css": ".filters, .fgroup {\n  /* Example: use an integer pixel line-height to avoid fractional differences */\n  line-height: 22px;\n}\n\n/* Or fix the ancestor height if appropriate */\n.aside.filters {\n  /* only if a fixed height works for your layout */\n  height: 978px;\n}"
+        },
+        "evidenceCited": [
+          "computed styles that differ.lineHeight",
+          "box, per engine.chromium.abs y",
+          "box, per engine.firefox.abs y",
+          "box, per engine.webkit.abs y",
+          "ancestors.1 <aside> .filters differing styles.height",
+          "ancestors.2 <div> .layout differing styles.height",
+          "what differs.offset-y"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2194,
+        "cachedInputTokens": 0,
+        "outputTokens": 859,
+        "imageTokens": 0,
+        "reasoningTokens": 320,
+        "costUsd": 0.002266
+      },
+      "error": null
+    },
+    {
+      "bucket": "residual",
+      "corpus": "B",
+      "id": "v10-table-catalog#3",
+      "tag": "DIV",
+      "display": "block",
+      "props": "offset-y Δ4.16",
+      "explainedInSampleBy": "line-height-resolution",
+      "requests": 1,
+      "matcherRule": "line-height-resolution",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "line-height-resolution",
+      "model": {
+        "cause": "subpixel-rounding-accumulation-in-flow",
+        "verdict": "expected-engine-difference",
+        "confidence": "medium",
+        "summary": "Firefox's layout produced slightly different fractional line-height/height values on ancestor boxes (and on this element), causing a ~4.16px vertical shift of the .fgroup inside the aside compared with Chromium/WebKit.",
+        "mechanism": "The measured lineHeight and height values show tiny per-engine differences (lineHeight: 22.4667px in Firefox vs ~22.475px in Chromium/WebKit; element height: 91.15px in Firefox vs ~91.1406px elsewhere). Those per-line and per-box fractional differences accumulate up the flow (the aside and the grid ancestor also show the same small height/line-height drift). The result is that Firefox's ancestor boxes become taller by a few device pixels, moving this static-positioned child downward by ~4.16px. This is a classic subpixel / rounding accumulation in the block layout path (line box metrics → element height → parent height → child's position), with Firefox rounding/accumulating differently than Chromium/WebKit.",
+        "fix": {
+          "description": "Prevent fractional rounding accumulation by stabilising the inline metrics or by anchoring the layout with an explicit height/line-height that is identical across engines. Two practical fixes: (1) set an explicit pixel line-height or unitless consistent value on the affected elements so engines compute identical line boxes; (2) avoid relying on cumulative auto heights by giving the ancestor or this .fgroup an explicit height or a consistent layout container (flex/grid) that normalises rounding.",
+          "css": ".filters, .layout, .fgroup {\n  /* Option A: force a consistent px line-height to avoid per-engine fractional differences */\n  line-height: 22.475px;\n}\n/* Or Option B: anchor the box so small ancestor differences won't move the child */\n.fgroup {\n  /* give the element an explicit height (if acceptable) */\n  height: 91.14px;\n}\n"
+        },
+        "evidenceCited": [
+          "what differs.offset-y",
+          "box.per engine.chromium",
+          "box.per engine.firefox",
+          "box.per engine.webkit",
+          "computed styles that differ.lineHeight",
+          "computed styles that differ.height",
+          "ancestors.1 <aside> .filters.differing styles",
+          "ancestors.2 <div> .layout.differing styles",
+          "symptoms sharing this exact delta on this page: 3",
+          "engine furthest from the other two on the largest-delta property: firefox"
+        ],
+        "unresolved": [
+          "Which exact rounding stage (font metrics → inline box height → margin-collapsing / grid row sizing) causes the 4.16px aggregate — the collected computed-set does not include lower-level line box internals or per-line baseline offsets.",
+          "Whether a particular CSS rule (not in the collected set) such as a subpixel transform on an ancestor influenced composition order and rounding."
+        ],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2182,
+        "cachedInputTokens": 0,
+        "outputTokens": 924,
+        "imageTokens": 0,
+        "reasoningTokens": 192,
+        "costUsd": 0.002393
+      },
+      "error": null
+    },
+    {
+      "bucket": "residual",
+      "corpus": "B",
+      "id": "v10-table-catalog#4",
+      "tag": "DIV",
+      "display": "block",
+      "props": "offset-y Δ4.1",
+      "explainedInSampleBy": "line-height-resolution",
+      "requests": 1,
+      "matcherRule": "line-height-resolution",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "line-height-resolution",
+      "model": {
+        "cause": "subpixel-line-height-rounding-in-ancestor",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "Firefox computed a slightly larger line-height on this element and its ancestors; that produces a ~4.1px cumulative vertical offset compared with Chromium/WebKit.",
+        "mechanism": "Firefox's layout produced a marginally larger computed line-height (22.4667px vs ~22.475px) which propagated into slightly larger ancestor heights; those extra fractions accumulate and, due to per-line/box rounding differences in the block formatting flow, the <div>.fgroup block ends up positioned ~4.10px lower in Firefox. Multiple sibling elements share the same exact delta, and the ancestor <aside> and layout container also show matching small height/line-height differences, indicating the offset is caused by rounding/accumulation in the vertical layout of ancestors rather than an intrinsic size/positioning difference of the element itself.",
+        "fix": {
+          "description": "If you need pixel-identical vertical alignment across engines, make the vertical metrics deterministic so engines can't accumulate different fractions. Constrain line-height or force layout so rounding won't accumulate (for example by using an explicit integer pixel line-height on the container or this element, or by altering the layout to avoid many stacked text line boxes).",
+          "css": ".fgroup { line-height: 22px; }\n/* or set a unit that rounds consistently across engines, e.g. */\n.aside, .layout { line-height: 22px; }"
+        },
+        "evidenceCited": [
+          "what differs.offset-y",
+          "box, per engine.chromium.rel y",
+          "box, per engine.firefox.rel y",
+          "box, per engine.webkit.rel y",
+          "computed styles that differ.lineHeight",
+          "computed styles that differ.height",
+          "ancestors.1",
+          "ancestors.2",
+          "other survivors on this page (3 shown)",
+          "symptoms sharing this exact delta on this page: 1",
+          "engine furthest from the other two on the largest-delta property: firefox"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2195,
+        "cachedInputTokens": 0,
+        "outputTokens": 907,
+        "imageTokens": 0,
+        "reasoningTokens": 384,
+        "costUsd": 0.002363
+      },
+      "error": null
+    },
+    {
+      "bucket": "disagreement",
+      "corpus": "A",
+      "id": "p09-dash-infra-status#6",
+      "tag": "SPAN",
+      "rule": "text-shrink-to-fit",
+      "matcherSaid": "expected-engine-difference",
+      "ownerSaid": "genuine/text-metric",
+      "props": "width Δ2.94",
+      "requests": 1,
+      "matcherRule": "text-shrink-to-fit",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "text-shrink-to-fit",
+      "model": {
+        "cause": "text-shrink-to-fit",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The span's content-sized width differs across engines because the element is sized from its text run and each engine measures that text slightly differently (WebKit farther out).",
+        "mechanism": "The <span> is display: block but sits directly inside a flex container, so its used width is determined by its contents (shrink-to-fit/content-size) rather than an explicit stylesheet width. The collected computed widths show Chromium 109.578px, Firefox 109.667px and WebKit 112.515625px — the only surviving difference is the measured text width. Engines differ in glyph advances, hinting and subpixel rounding, so the same text run yields a few-pixel difference in the content-sized box. WebKit is the outlier here.",
+        "fix": {
+          "description": "Remove dependence on engine text metrics by giving the element a layout-determining size (or a font that renders identically across engines). Two options: supply an explicit width/flex-basis so layout doesn't depend on measured text, or use a monospaced/web-safe font that reduces cross-engine measurement variance.",
+          "css": ".font-medium { /* option A: fix box size */ width: 110px; /* or flex-basis: 110px; */ }\n/* or */\n.font-medium { /* option B: make text measurement stable */ font-family: ui-monospace, Menlo, Consolas, monospace; }"
+        },
+        "evidenceCited": [
+          "what differs.width",
+          "box, per engine.chromium",
+          "box, per engine.firefox",
+          "box, per engine.webkit",
+          "computed styles that differ.width",
+          "computed styles, same in all three.display",
+          "ancestors.1 (display: flex)",
+          "the deterministic matcher.rule",
+          "the deterministic matcher.summary"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2608,
+        "cachedInputTokens": 0,
+        "outputTokens": 851,
+        "imageTokens": 0,
+        "reasoningTokens": 384,
+        "costUsd": 0.002354
+      },
+      "error": null
+    },
+    {
+      "bucket": "disagreement",
+      "corpus": "A",
+      "id": "p09-dash-infra-status#7",
+      "tag": "SPAN",
+      "rule": "text-shrink-to-fit",
+      "matcherSaid": "expected-engine-difference",
+      "ownerSaid": "genuine/text-metric",
+      "props": "width Δ2.52",
+      "requests": 1,
+      "matcherRule": "text-shrink-to-fit",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "text-shrink-to-fit",
+      "model": {
+        "cause": "text-shrink-to-fit",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The span's content-sized width differs because the engines measure the text run differently (Chromium 93.92px, Firefox 94px, WebKit 96.44px).",
+        "mechanism": "The span is display:block but lives directly inside a flex container, so its used inline-size is governed by its intrinsic (content) size — i.e. shrink-to-fit/text sizing — rather than a stylesheet length. The collected computed styles show no substantive property differences that could explain the delta, and the only differing numbers are the measured widths (93.9219px / 94px / 96.4375px). The engines therefore disagree on the glyph advances/subpixel measurements for that text run (hinting, shaping, subpixel rounding), producing the few-pixel spread; WebKit is the furthest out.",
+        "fix": {
+          "description": "If you need identical geometry across engines, avoid relying on content-based (shrink-to-fit) sizing for this element. Options: give the element an explicit width (or max-width) in CSS, make it use a fixed-size font-family with identical metrics across platforms, or set a stylesheet length so layout doesn't depend on engine text measurement. Example CSS alternatives are shown below.",
+          "css": "/* Option A: fix the width so engines can't differ */ .font-medium { width: 94px; }\n/* Option B: avoid content shrink-to-fit by using a flex item rule that establishes a basis */ .font-medium { flex: 0 0 auto; }\n/* Option C: choose a platform-consistent font or a webfont with identical metrics */ .font-medium { font-family: 'YourWebFont', ui-monospace, monospace; }"
+        },
+        "evidenceCited": [
+          "box.width",
+          "box.chromium",
+          "box.firefox",
+          "box.webkit",
+          "computed_styles.width",
+          "computed_styles.same:display",
+          "ancestors.1.display",
+          "ancestors.1.width"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2593,
+        "cachedInputTokens": 0,
+        "outputTokens": 838,
+        "imageTokens": 0,
+        "reasoningTokens": 384,
+        "costUsd": 0.002324
+      },
+      "error": null
+    },
+    {
+      "bucket": "disagreement",
+      "corpus": "A",
+      "id": "p13-form-wizard#9",
+      "tag": "BUTTON",
+      "rule": "ua-button-padding",
+      "matcherSaid": "defect",
+      "ownerSaid": "expected",
+      "props": "width Δ4 offset-x Δ4 height Δ1",
+      "requests": 1,
+      "matcherRule": "ua-button-padding",
+      "matcherVerdict": "defect",
+      "matcherCause": "ua-button-padding",
+      "model": {
+        "cause": "ua-button-padding",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The button's horizontal padding comes from the UA stylesheet and differs between engines (padding-left 6/4/6), producing the 4px width and offset-x delta (2px per side).",
+        "mechanism": "The page sets only the button's vertical sizing so horizontal padding is inherited from each engine's user-agent stylesheet. Computed padding-left is chromium 6px / firefox 4px / webkit 6px (and padding-top 1/1/0px), so Firefox's 2px smaller inline padding produces a 4px smaller total width (2px on left + 2px on right) and shifts the buttons in that row. The differing UA min-height in WebKit (15px) explains its 1px shorter height.",
+        "fix": {
+          "description": "Normalize button padding/height in author CSS so all engines use the same computed box (override UA defaults).",
+          "css": "button { padding: 1px 6px; min-height: 15px; box-sizing: border-box; }"
+        },
+        "evidenceCited": [
+          "what differs.width",
+          "what differs.offset-x",
+          "what differs.height",
+          "computed styles that differ.paddingLeft",
+          "computed styles that differ.paddingTop",
+          "computed styles that differ.width",
+          "computed styles that differ.height",
+          "descendants carrying the same size delta.+2 <path>",
+          "other survivors on this page.[list showing multiple adjacent buttons with same deltas] "
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2684,
+        "cachedInputTokens": 0,
+        "outputTokens": 727,
+        "imageTokens": 0,
+        "reasoningTokens": 320,
+        "costUsd": 0.002125
+      },
+      "error": null
+    },
+    {
+      "bucket": "disagreement",
+      "corpus": "A",
+      "id": "p13-form-wizard#11",
+      "tag": "BUTTON",
+      "rule": "ua-button-padding",
+      "matcherSaid": "defect",
+      "ownerSaid": "expected",
+      "props": "width Δ4 offset-x Δ4 height Δ1",
+      "requests": 1,
+      "matcherRule": "ua-button-padding",
+      "matcherVerdict": "defect",
+      "matcherCause": "ua-button-padding",
+      "model": {
+        "cause": "ua-button-padding",
+        "verdict": "defect",
+        "confidence": "high",
+        "summary": "The button is picking up different UA horizontal padding in each engine (padding-left: 6 / 4 / 6), producing the 4px width and 4px offset-x differences (Firefox is 4px narrower and shifted).",
+        "mechanism": "The page sets vertical padding but not horizontal padding for this <button>, so the browsers fall back to their user-agent button padding for inline axis. Computed paddingLeft is Chromium 6px, Firefox 4px, WebKit 6px; that 4px difference explains the 4px width gap (and because padding applies on both inline sides the layout shift propagates to the element's offset-x and the adjacent buttons).",
+        "fix": {
+          "description": "Normalize the button's horizontal padding (or set padding-inline) in your stylesheet so all engines compute the same box.",
+          "css": "button { padding-inline: 6px; /* or padding-left:6px; padding-right:6px; */ }"
+        },
+        "evidenceCited": [
+          "computed styles that differ.paddingLeft chromium: 6px firefox: 4px webkit: 6px",
+          "what differs.width Δ4px chromium 32 firefox 28 webkit 32",
+          "what differs.offset-x Δ4px chromium 429 firefox 433 webkit 429",
+          "computed styles that differ.paddingTop chromium: 1px firefox: 1px webkit: 0px",
+          "descendants carrying the same size delta.<path> w 12/13.20/12 Δw 1.20 (shows icon sizing varies but main width delta equals padding difference)",
+          "the deterministic matcher rule.ua-button-padding (provided by the pipeline)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2684,
+        "cachedInputTokens": 0,
+        "outputTokens": 578,
+        "imageTokens": 0,
+        "reasoningTokens": 128,
+        "costUsd": 0.001827
+      },
+      "error": null
+    },
+    {
+      "bucket": "disagreement",
+      "corpus": "A",
+      "id": "p13-form-wizard#13",
+      "tag": "BUTTON",
+      "rule": "ua-button-padding",
+      "matcherSaid": "defect",
+      "ownerSaid": "expected",
+      "props": "width Δ4 offset-x Δ4 height Δ1",
+      "requests": 1,
+      "matcherRule": "ua-button-padding",
+      "matcherVerdict": "defect",
+      "matcherCause": "ua-button-padding",
+      "model": {
+        "cause": "ua-button-padding",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "<button> is narrower in Firefox because the UA stylesheet supplies smaller horizontal padding there (padding-left 4px vs 6px in Chromium/WebKit), producing the 4px width and offset-x delta.",
+        "mechanism": "The page sets only vertical padding (or none) on the button so horizontal padding comes from each engine's user-agent rules. Computed paddingLeft is chromium=6px, firefox=4px, webkit=6px; the 4px width difference (32 vs 28) equals twice the 2px per-side padding difference, and the offset-x shift propagates to the sibling buttons.",
+        "fix": {
+          "description": "Author should normalize the button's horizontal padding (or set padding-inline / padding-left & padding-right) so all engines use the same values.",
+          "css": "button { padding-inline: 6px; /* or desired value: e.g. 6px 6px */ }"
+        },
+        "evidenceCited": [
+          "computed styles that differ.paddingLeft",
+          "computed styles that differ.paddingTop",
+          "what differs.width",
+          "what differs.offset-x",
+          "box, per engine.chromium",
+          "box, per engine.firefox",
+          "box, per engine.webkit",
+          "descendants carrying the same size delta.+2 <path>",
+          "the deterministic matcher already has an answer.rule"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2684,
+        "cachedInputTokens": 0,
+        "outputTokens": 641,
+        "imageTokens": 0,
+        "reasoningTokens": 256,
+        "costUsd": 0.001953
+      },
+      "error": null
+    },
+    {
+      "bucket": "disagreement",
+      "corpus": "A",
+      "id": "p20-article-magazine#1",
+      "tag": "BUTTON",
+      "rule": "text-shrink-to-fit",
+      "matcherSaid": "expected-engine-difference",
+      "ownerSaid": "genuine/text-metric",
+      "props": "offset-x Δ8.67",
+      "requests": 1,
+      "matcherRule": "text-shrink-to-fit",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "text-shrink-to-fit",
+      "model": {
+        "cause": "ancestor-width-diff",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The button's own box size is the same in all engines; Firefox has the parent <form> 8.62px wider, which shifts the button's parent-relative x by the same amount.",
+        "mechanism": "The button measures the same width/height in all three engines (chromium 102.61×52, firefox 102.57×52, webkit 102.61×52) so the element itself isn't being sized differently. The only surviving positional delta is offset-x (chromium 248, firefox 256.67, webkit 248). The nearest ancestor <form> (the button's parent) has a width that differs by the same amount (chromium 350.609px / firefox 359.233px / webkit 350.609375px). Because the form is a flex container and its used inline size is content-dependent here, Firefox's layout produced a wider form (likely due to how it measured some content inside that form), which pushes the button's relative x by ~8.62px. In short: the button moved because its parent’s used width differs across engines, not because the button’s own text or box sizing differs.",
+        "fix": {
+          "description": "Prevent the parent from sizing itself differently across engines by giving it a determinate inline size or using flex alignment that doesn't depend on intrinsic measurement. That makes the button's position stable.",
+          "css": "form { width: 350.61px; /* or max-width: 350.61px; */ }\n/* or avoid content-sized layout: */\nform { justify-content: flex-start; }\n/* or give the input/button fixed/flex-basis sizes so intrinsic measurements can't shift layout */"
+        },
+        "evidenceCited": [
+          "## box, per engine  (w h, parent-relative x y, absolute x y)",
+          "  chromium  102.61 x 52   rel 248,0   abs 1049.39,2693.14",
+          "  firefox   102.57 x 52   rel 256.67,0   abs 1049.43,2693.15",
+          "  webkit    102.61 x 52   rel 248,0   abs 1049.39,2693.14",
+          "## ancestors  (nearest first)",
+          " 1  <form> .flex.gap-2.flex-wrap   w 350.61/359.23/350.61   h 52/52/52   display: flex"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2337,
+        "cachedInputTokens": 0,
+        "outputTokens": 1112,
+        "imageTokens": 0,
+        "reasoningTokens": 448,
+        "costUsd": 0.002808
+      },
+      "error": null
+    },
+    {
+      "bucket": "disagreement",
+      "corpus": "A",
+      "id": "p20-article-magazine#2",
+      "tag": "FORM",
+      "rule": "symptom-absorbed-size",
+      "matcherSaid": "defect",
+      "ownerSaid": "expected",
+      "props": "width Δ8.62 offset-x Δ8.62",
+      "requests": 1,
+      "matcherRule": "symptom-absorbed-size",
+      "matcherVerdict": "defect",
+      "matcherCause": "symptom-absorbed-size",
+      "model": {
+        "cause": "symptom-absorbed-size",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The form's width differs because its child <input> (.px-4.py-3.rounded-lg.text-slate-900) has the same +8.62px delta (Firefox larger) and its UA form-control box differs across engines.",
+        "mechanism": "The container FORM's width/offset change is exactly the same amount as an innermost descendant INPUT (FORM[1]/INPUT[1]), so the container is moved/resized only because the input's used size differs. Computed styles collected on the FORM are identical across engines (display, gap, font-size, box-sizing, padding/margin left, etc.), and the descendant input carries the same Δw (240 / 248.67 / 240). That pattern — a form control element differing while author CSS is absent or identical — indicates the engines' UA form-control box (default padding/border/inline box handling) differs. The deterministic matcher labelled this 'symptom-absorbed-size' because the intermediate inherited deltas were suppressed and the parent reported the surviving difference.",
+        "fix": {
+          "description": "Normalize the form control box across browsers by authoring an explicit size/box model for the input (set width, box-sizing, padding and border) rather than relying on UA defaults. This will make all engines render the same width and prevent the parent form from absorbing engine-specific control sizing.",
+          "css": "form input { box-sizing: border-box; width: 240px; padding: 0.75rem 1rem; border-width: 1px; }\n/* Or, reset UA appearance entirely and then size: */\nform input { appearance: none; -webkit-appearance: none; -moz-appearance: none; box-sizing: border-box; width: 240px; padding: 12px 16px; }"
+        },
+        "evidenceCited": [
+          "box, per engine: chromium 350.61 x 52 rel 713.39,70; firefox 359.23 x 52 rel 704.77,70; webkit 350.61 x 52 rel 713.39,70",
+          "computed styles, same in all three: display: flex; gap: 8px; boxSizing: border-box; fontSize: 16px; (etc.)",
+          "descendants carrying the same size delta +1 <input> .px-4.py-3.rounded-lg.text-slate-900 w 240/248.67/240 h 52/52/52 Δw 8.67"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2434,
+        "cachedInputTokens": 0,
+        "outputTokens": 838,
+        "imageTokens": 0,
+        "reasoningTokens": 192,
+        "costUsd": 0.002285
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "B",
+      "id": "v08-table-users#2",
+      "tag": "BUTTON",
+      "rule": "control-font-not-inherited",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "offset-x Δ5.75 width Δ3.94 height Δ1",
+      "requests": 1,
+      "matcherRule": "control-font-not-inherited",
+      "matcherVerdict": "defect",
+      "matcherCause": "control-font-not-inherited",
+      "model": {
+        "cause": "control-font-not-inherited",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The button is using each engine's UA control font (different fontFamily per engine), so text metrics — and therefore the content-sized button's width/height/offset — differ.",
+        "mechanism": "The element's computed fontFamily is different across engines (chromium: Arial; firefox: -apple-system; webkit: system-ui). Form controls (and some replaced/interactive controls) often get a UA-provided control font instead of inheriting the parent's font. Because this button's box is sized to its content, the engines' different control fonts have different glyph metrics, which changes measured text dimensions and causes the observed Δ in width, height and horizontal offset. Chromium (using Arial) measures smaller, so its width/offset are the outlier.",
+        "fix": {
+          "description": "Make the button use a consistent font across engines (either inherit the page font or explicitly set a cross-platform font) so text metrics are the same.",
+          "css": "button.chip { font-family: inherit; }\n/* or */\nbutton.chip { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }"
+        },
+        "evidenceCited": [
+          "computed styles that differ.fontFamily",
+          "box, per engine.width",
+          "box, per engine.height",
+          "box, per engine.parent-relative x (offset-x)",
+          "ancestors[1] .chips differing styles.width",
+          "the deterministic matcher already has an answer.rule"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "chromium"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2550,
+        "cachedInputTokens": 0,
+        "outputTokens": 618,
+        "imageTokens": 0,
+        "reasoningTokens": 192,
+        "costUsd": 0.001873
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p11-form-settings#1",
+      "tag": "LEGEND",
+      "rule": "legend-shrink-to-fit",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "width Δ621.5",
+      "requests": 1,
+      "matcherRule": "legend-shrink-to-fit",
+      "matcherVerdict": "defect",
+      "matcherCause": "legend-shrink-to-fit",
+      "model": {
+        "cause": "legend-shrink-to-fit",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "<legend> is 622px wider in WebKit — WebKit expands the legend to fill the fieldset while Chromium and Firefox shrink the legend to its text.",
+        "mechanism": "Chromium and Firefox are sizing the legend shrink-to-fit (used width ≈ 144.5px) while WebKit constructs the legend's anonymous box so it spans almost the full fieldset (used width 766px). That difference also changes how the legend participates in the fieldset’s flow, producing the different vertical offset seen for later content. This is a known, engine-level divergence in how fieldset/legend anonymous boxes are built, not something set explicitly by the page.",
+        "fix": {
+          "description": "If you need consistent behavior across engines, make the legend’s sizing explicit so it cannot rely on engine-dependent fieldset/legend anonymous-box rules. Common workarounds: give the legend an intrinsic shrink-to-fit context (e.g. display: inline-block;) or explicitly set a width like width: max-content; or constrain via padding/box-sizing. Example CSS: legend { display: inline-block; }",
+          "css": "legend { display: inline-block; }"
+        },
+        "evidenceCited": [
+          "what differs.width (chromium 144.50, firefox 144.63, webkit 766)",
+          "box per engine (chromium 144.50 x 20 rel 17,0; firefox 144.63 x 20 rel 17,0; webkit 766 x 20 rel 17,0)",
+          "computed styles that differ.minWidth (chromium: auto; firefox: 0px; webkit: 0px)",
+          "ancestors.1 <fieldset> width 800/800/800",
+          "the deterministic matcher.rule: legend-shrink-to-fit (cause: legend-shrink-to-fit, confidence high)",
+          "crops (visuals showing legend narrow in chromium/firefox but full-width in webkit)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2936,
+        "cachedInputTokens": 0,
+        "outputTokens": 752,
+        "imageTokens": 0,
+        "reasoningTokens": 256,
+        "costUsd": 0.002238
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p12-form-checkout#2",
+      "tag": "SELECT",
+      "rule": "ua-select-metrics",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "height Δ15",
+      "requests": 1,
+      "matcherRule": "ua-select-metrics",
+      "matcherVerdict": "defect",
+      "matcherCause": "ua-select-metrics",
+      "model": {
+        "cause": "ua-select-metrics",
+        "verdict": "defect",
+        "confidence": "high",
+        "summary": "<select> rendered 15px shorter in WebKit because WebKit's native control size does not include the author's padding (paddingTop/Left = 0px in WebKit vs 8/12px in Chromium/Firefox).",
+        "mechanism": "Two engines (Chromium, Firefox) compute and apply author padding to the <select> (paddingTop 8px / paddingLeft 12px) producing a 38px control; WebKit reports 0px padding and a smaller computed height (23px). The differing computed properties minHeight (WebKit 18px vs auto), overflow (WebKit visible vs clip) and whiteSpace also indicate WebKit is sizing the element to the platform/native widget intrinsic metrics rather than adding the author padding. In short: the platform/UA select widget in WebKit ignores the author padding, so the element's final CSS height is the native control height (smaller) instead of the padded height used by Chromium/Firefox.",
+        "fix": {
+          "description": "Make the control size independent of the native widget's intrinsic sizing so all engines produce the same box. Common approaches: reset native appearance and size via CSS, or apply the padding on a wrapper element and size the native control explicitly.",
+          "css": "select { -webkit-appearance: none; appearance: none; box-sizing: border-box; padding: 8px 12px; min-height: 38px; }\n/* or wrap the <select> and apply padding to the wrapper instead of the native control */"
+        },
+        "evidenceCited": [
+          "what differs: height Δ15px chromium 38 firefox 38 webkit 23",
+          "box, per engine: chromium 269.98 x 38 ... firefox 270 x 38 ... webkit 270 x 23",
+          "computed styles that differ: paddingTop chromium: 8px firefox: 8px webkit: 0px",
+          "computed styles that differ: paddingLeft chromium: 12px firefox: 12px webkit: 0px",
+          "computed styles that differ: minHeight chromium: auto firefox: auto webkit: 18px",
+          "computed styles that differ: overflowX/overflowY chromium: clip firefox: clip webkit: visible",
+          "deterministic matcher: rule ua-select-metrics (summary: author padding is not applied to the native control)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2560,
+        "cachedInputTokens": 0,
+        "outputTokens": 914,
+        "imageTokens": 0,
+        "reasoningTokens": 320,
+        "costUsd": 0.002468
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p11-form-settings#6",
+      "tag": "INPUT",
+      "rule": "ua-checkbox-radio-size",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "offset-x Δ3 width Δ2 height Δ2 offset-y Δ1",
+      "requests": 1,
+      "matcherRule": "ua-checkbox-radio-size",
+      "matcherVerdict": "unclear",
+      "matcherCause": "ua-checkbox-radio-size",
+      "model": {
+        "cause": "ua-checkbox-radio-size",
+        "verdict": "defect",
+        "confidence": "high",
+        "summary": "The input is relying on UA (browser) defaults for checkbox/radio sizing and margin; the three engines' UA styles disagree, so the control measures 12px/13px/14px and margin-left 2px/5px.",
+        "mechanism": "The page does not supply a concrete width/height or margin for this form control; the computed styles show width/height/minWidth/minHeight coming from the UA (webkit reports 12px, chromium 13px, firefox 14px) and marginLeft differs (webkit 2px vs chromium/firefox 5px). The small, consistent deltas across multiple similar inputs on the page indicate different user-agent default rules for native input controls rather than a layout bug in the page.",
+        "fix": {
+          "description": "Override the UA intrinsic size by specifying explicit width, height and margin for the input (or use appearance: none and style as desired). This makes all engines render the same box.",
+          "css": "input.shrink-0 { width: 14px; height: 14px; margin-left: 5px; /* or desired values */ display: inline-block; }"
+        },
+        "evidenceCited": [
+          "what differs: width Δ2px chromium 13 firefox 14 webkit 12",
+          "what differs: height Δ2px chromium 13 firefox 14 webkit 12",
+          "what differs: offset-x Δ3px chromium 5 firefox 5 webkit 2",
+          "computed styles that differ: minWidth chromium:auto firefox:auto webkit:12px",
+          "computed styles that differ: minHeight chromium:auto firefox:auto webkit:12px",
+          "computed styles that differ: marginLeft chromium:5px firefox:5px webkit:2px",
+          "other survivors on this page: p11-form-settings#7 p11-form-settings#8 — share same exact delta",
+          "deterministic matcher: rule ua-checkbox-radio-size (provided by pipeline)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2571,
+        "cachedInputTokens": 0,
+        "outputTokens": 712,
+        "imageTokens": 0,
+        "reasoningTokens": 192,
+        "costUsd": 0.002067
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p08-dash-kanban#1",
+      "tag": "BUTTON",
+      "rule": "ua-button-padding",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "offset-x Δ11.87 width Δ3.98",
+      "requests": 1,
+      "matcherRule": "ua-button-padding",
+      "matcherVerdict": "defect",
+      "matcherCause": "ua-button-padding",
+      "model": {
+        "cause": "ua-button-padding",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The buttons rely on the browser UA horizontal padding for <button>, and Firefox's UA provides 4px while Chromium/WebKit provide 6px — producing the 3.98px width and 11.87px offset differences.",
+        "mechanism": "The page sets vertical padding but not horizontal padding on the <button>, so padding-left/right come from each engine's user-agent stylesheet. Computed paddingLeft is chromium 6px / firefox 4px / webkit 6px; the ~3.98px width difference equals the 2px-per-side difference applied on both sides (≈4px total). Because these buttons are inline in a flex row, the smaller width in Firefox shifts that button and the following items, causing the offset-x delta.",
+        "fix": {
+          "description": "Explicitly set the horizontal padding (padding-left/right or padding-inline) on the button so all engines use the same value instead of relying on UA defaults.",
+          "css": "button.py-3.text-sm.whitespace-nowrap.border-b-2 { padding-inline: 6px; /* or choose desired value */ }"
+        },
+        "evidenceCited": [
+          "computed styles that differ.paddingLeft",
+          "computed styles that differ.width",
+          "box, per engine.chromium.rel x and width",
+          "box, per engine.firefox.rel x and width",
+          "box, per engine.webkit.rel x and width",
+          "the deterministic matcher rule: ua-button-padding"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2373,
+        "cachedInputTokens": 0,
+        "outputTokens": 602,
+        "imageTokens": 0,
+        "reasoningTokens": 192,
+        "costUsd": 0.001797
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p06-dash-analytics#1",
+      "tag": "TH",
+      "rule": "table-column-distribution",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "offset-x Δ16.04",
+      "requests": 1,
+      "matcherRule": "table-column-distribution",
+      "matcherVerdict": "unclear",
+      "matcherCause": "table-column-distribution",
+      "model": {
+        "cause": "table-column-distribution",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "Auto table layout produced different column widths across engines: the <th> (Owner) is shifted (chromium 219.61px, firefox 203.57px, webkit 203.59px) because the table's column distribution differs.",
+        "mechanism": "The table is using automatic (non-fixed) layout so each engine computes intrinsic/minimum and preferred widths for cells and then distributes the available table width. Small sub-pixel differences in measured content widths (and in how the distribution algorithm resolves ties/rounding) lead to a different integer/pixel allocation of the columns. That per-column width difference moves this <th> and every cell to its right by the same amount; the ancestor table/row widths also differ by the same ~16.02px, and multiple sibling cells show the identical Δ, which indicates a single column-distribution decision is the root cause.",
+        "fix": {
+          "description": "If you need pixel-identical alignment across engines, give the table a deterministic column sizing strategy: either set table-layout: fixed and explicit column widths, or apply explicit widths to the relevant <col> / cells so engines don't re-measure and redistribute.",
+          "css": "table { table-layout: fixed; }\n/* or */\ncol:nth-child(2) { width: 160px; }\n/* or set explicit widths on the relevant th/td */"
+        },
+        "evidenceCited": [
+          "what differs: offset-x Δ16.04px chromium 219.61 firefox 203.57 webkit 203.59",
+          "box, per engine: ancestor <tr>/<thead>/<table> widths differ 805.156px/789.483px/789.140625px",
+          "ancestors: <div> .overflow-x-auto width 632.656px/632.667px/632.65625px (small/insignificant)",
+          "other survivors: multiple table cells (IDs #2–#7 etc) share the same Δ16.04 and other findings show Δ16.02 for neighboring columns",
+          "deterministic matcher rule: table-column-distribution (provided)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "chromium"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2724,
+        "cachedInputTokens": 0,
+        "outputTokens": 614,
+        "imageTokens": 0,
+        "reasoningTokens": 64,
+        "costUsd": 0.001909
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p16-pricing-calculator#1",
+      "tag": "UL",
+      "rule": "line-wrap-count",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "height Δ40 width Δ6.19",
+      "requests": 1,
+      "matcherRule": "line-wrap-count",
+      "matcherVerdict": "defect",
+      "matcherCause": "line-wrap-count",
+      "model": {
+        "cause": "line-wrap-count",
+        "verdict": "defect",
+        "confidence": "high",
+        "summary": "Firefox lays the UL narrower in height because its inline text wraps into 2 fewer lines than Chromium/WebKit (line-height = 20px → 40px total), caused by a different wrap point.",
+        "mechanism": "The element's computed line-height is 20px (shared across engines) and the observed height delta is exactly 40px (2×20px). Ancestor/descendant widths show Firefox gives ~6.19px more inline width to the text (UL width: chromium/webkit 185.81px vs firefox 192px; descendant span widths match that pattern 161.81/168/161.81), so Firefox fits more words on a line and the content needs 2 fewer lines. In short: a small difference in available/measured inline width (from ancestor/flex rounding) changed the word-wrapping, producing an integer-line-height height change.",
+        "fix": {
+          "description": "Make wrapping deterministic across engines by removing the small width variations that change the wrap point, or by preventing sensitive wrapping. Options: give the list a fixed pixel width, normalize the flex sizing, or allow words to break earlier so wrapping doesn't depend on a few pixels of difference.",
+          "css": "/* examples */\n/* 1) Force the UL to a stable width so engines can't differ by subpixel rounding */\nul.your-selector { width: 186px; }\n\n/* 2) Make flex sizing stable (if the issue comes from a flex child rounding) */\n.your-flex-child { min-width: 0; /* allow proper shrinking inside flex */ }\n\n/* 3) Make wrapping less sensitive to tiny width changes */\nul.your-selector { word-break: break-word; /* or overflow-wrap: anywhere; */ }"
+        },
+        "evidenceCited": [
+          "computed styles: lineHeight 20px",
+          "what differs: height Δ40px chromium 328 firefox 288 webkit 328",
+          "what differs: width Δ6.19px chromium 185.81 firefox 192 webkit 185.81",
+          "ancestors[1] width 251.812px/258px/251.8125px (shows ancestor width rounding differs)",
+          "descendants carrying same delta: span widths 161.81/168/161.81 and span heights 80/60/80 (one descendant has firefox 60px vs others 80px)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 3086,
+        "cachedInputTokens": 0,
+        "outputTokens": 926,
+        "imageTokens": 0,
+        "reasoningTokens": 320,
+        "costUsd": 0.002623
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p07-dash-billing#42",
+      "tag": "DIV",
+      "rule": "symptom-absorbed-size",
+      "verdict": "defect",
+      "confidence": "high",
+      "props": "height Δ15",
+      "requests": 1,
+      "matcherRule": "symptom-absorbed-size",
+      "matcherVerdict": "defect",
+      "matcherCause": "symptom-absorbed-size",
+      "model": {
+        "cause": "symptom-absorbed-size",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The container height differs by 15px because an inner <select> (#f-select-1) is 38px in Chromium/Firefox but 23px in WebKit, and that delta is propagated up.",
+        "mechanism": "All collected computed styles on the container are identical across engines, and the innermost descendant carrying the exact same 15px delta is LABEL[2]/SELECT[1] (measured heights: chromium 38px, firefox 38px, webkit 23px). This select is a native form control whose UA stylesheet/metrics vary between engines; the container’s size is effectively 'absorbing' that descendant difference. The suppression funnel hid intermediate inherited-style changes, so the reported element is the container while the real source is the UA-styled control.",
+        "fix": {
+          "description": "Make the control sizing explicit in the page stylesheet instead of relying on UA defaults (set explicit height, padding, box-sizing or normalize appearance). That will remove engine-dependent UA differences.",
+          "css": "/* example: normalize the select so engines render the same box */\nselect#f-select-1 {\n  appearance: none; /* opt out of native styling if you use a custom UI */\n  height: 38px;      /* explicit height matching Chromium/Firefox */\n  padding: 6px 8px; /* match design intent */\n  box-sizing: border-box;\n}\n/* or normalize all native controls via a reset/normalize stylesheet */"
+        },
+        "evidenceCited": [
+          "descendants.+4 <select> #f-select-1.w-full.px-3.py-2.border   h 38/38/23   Δh 15",
+          "descendants.+3 <label> .flex.flex-col.gap-2   h 66/66/51   Δh 15",
+          "descendants.+2 <div> .flex.flex-col.gap-5   h 156/156/141   Δh 15",
+          "box, per engine.webkit 328 x 485",
+          "box, per engine.chromium 328 x 500",
+          "computed styles that differ: height chromium: 500px firefox: 500px webkit: 485px",
+          "computed styles, same in all three: (display, boxSizing, lineHeight, fontSize, gap, ...) — indicates no authored style difference on the container"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 3053,
+        "cachedInputTokens": 0,
+        "outputTokens": 786,
+        "imageTokens": 0,
+        "reasoningTokens": 192,
+        "costUsd": 0.002335
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p16-pricing-calculator#3",
+      "tag": "BUTTON",
+      "rule": "symptom-inherited-size",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "offset-y Δ38 width Δ18.56",
+      "requests": 1,
+      "matcherRule": "symptom-inherited-size",
+      "matcherVerdict": "unclear",
+      "matcherCause": "symptom-inherited-size",
+      "model": {
+        "cause": "symptom-inherited-size",
+        "verdict": "defect",
+        "confidence": "high",
+        "summary": "The button's width and vertical position follow its direct ancestor DIV[1]/DIV[4], which is 18.562px narrower in Firefox; the button itself has no differing size styles so it inherits that difference.",
+        "mechanism": "The button sets no width and its computed size properties (display, padding, height, font-size, line-height, etc.) are identical across engines. The nearest ancestor <div> (.flex-1.relative.rounded-2xl.border at BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]) shows the same 18.562px width delta (276.562px / 258px / 276.5625px). The button's reported widths (210.562px / 192px / 210.5625px) match that ancestor's difference, so the button is being sized by the ancestor's available space. The engine outlier is Firefox, which produced the narrower ancestor (and therefore narrower button) and also a different Y offset — the Y-offset deltas are coming from ancestor layout/height differences higher in the chain (see differing heights on ancestors and main), not from any differing computed size on the button itself.",
+        "fix": {
+          "description": "Make sizing explicit at the element you want stable (the button) or fix the ancestor's cross-engine layout. Options: give the button an explicit width (or max-width) or ensure the ancestor has a consistent width across engines (e.g. avoid relying on auto/flex-basis differences).",
+          "css": ".inline-flex.items-center.justify-center.gap-2 { width: 210.56px; }\n/* or */\n.flex-1.relative.rounded-2xl.border { width: 276.562px; }\n/* or make the button fill its parent predictably: */\n.inline-flex.items-center.justify-center.gap-2 { width: 100%; box-sizing: border-box; }"
+        },
+        "evidenceCited": [
+          "path: BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4]/BUTTON[1] (box widths: chromium 210.56 / firefox 192 / webkit 210.56; offset-y chromium 237 / firefox 275 / webkit 237)",
+          "ancestors[1]: BODY[1]/MAIN[1]/DIV[2]/DIV[1]/DIV[4] (widths: chromium 276.562px / firefox 258px / webkit 276.5625px)",
+          "computed styles (button): width values reported per-engine and shared computed properties list showing no differing size-affecting properties on the button (fontSize 14px; height 46px; paddingLeft 16px; paddingTop 12px; lineHeight 20px; etc.)",
+          "ancestors list: differing heights on ancestor chain and main (which explain the offset-y differences)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "firefox"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2736,
+        "cachedInputTokens": 0,
+        "outputTokens": 1058,
+        "imageTokens": 0,
+        "reasoningTokens": 320,
+        "costUsd": 0.0028
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p09-dash-infra-status#2",
+      "tag": "A",
+      "rule": "text-shrink-to-fit",
+      "verdict": "expected-engine-difference",
+      "confidence": "high",
+      "props": "offset-x Δ5.01 width Δ1.67",
+      "requests": 1,
+      "matcherRule": "text-shrink-to-fit",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "text-shrink-to-fit",
+      "model": {
+        "cause": "text-shrink-to-fit",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The anchor's content-sized block box measures differently because each engine measured the text run to a slightly different width (WebKit bigger).",
+        "mechanism": "The <a> is display:block inside a flex container, so its used width is determined by its content (shrink-to-fit). The collected computed widths match the layout widths (chromium 62.625px, firefox 62.6667px, webkit 64.296875px) and the box measurements show the same pattern; therefore the engines disagree on the text run/glyph advances/subpixel rounding for this label, moving and widening the box in WebKit. No other computed property differs to explain the delta.",
+        "fix": {
+          "description": "Avoid relying on content-size differences if you need identical layout across engines. Possible remedies: give the element a fixed/explicit width, constrain it with flex properties (e.g. flex: 0 0 <px>), or change layout so text size doesn't determine the box (e.g. inline-block with explicit padding)."
+        },
+        "evidenceCited": [
+          "what differs: offset-x Δ5.01px chromium 247.88 firefox 248 webkit 252.89",
+          "what differs: width Δ1.67px chromium 62.63 firefox 62.67 webkit 64.30",
+          "box, per engine: chromium 62.63 x 19.50 rel 247.88,0 abs 449.11,18.25",
+          "box, per engine: firefox 62.67 x 19.50 rel 248,0 abs 449.33,18.25",
+          "box, per engine: webkit 64.30 x 19.50 rel 252.89,0 abs 457.47,18.25",
+          "computed styles that differ: width chromium: 62.625px firefox: 62.6667px webkit: 64.296875px",
+          "ancestors: <nav> .flex.gap-5.text-slate-400 w 310.50/310.667/317.1875 display: flex"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2530,
+        "cachedInputTokens": 0,
+        "outputTokens": 650,
+        "imageTokens": 0,
+        "reasoningTokens": 128,
+        "costUsd": 0.001932
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "A",
+      "id": "p13-form-wizard#3",
+      "tag": "FIELDSET",
+      "rule": "propagated-displacement",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "offset-y Δ15",
+      "requests": 1,
+      "matcherRule": "propagated-displacement",
+      "matcherVerdict": "unclear",
+      "matcherCause": "propagated-displacement",
+      "model": {
+        "cause": "propagated-displacement",
+        "verdict": "expected-engine-difference",
+        "confidence": "high",
+        "summary": "The fieldset's own box (w/h) is identical in all engines; WebKit's ancestor DIV above it is 15px shorter, so the fieldset is shifted up in WebKit — the position difference is propagated from that ancestor.",
+        "mechanism": "An ancestor (BODY[1]/DIV[1]/DIV[2]/DIV[1] — listed as p13-form-wizard#2) has a 15px smaller computed height in WebKit (389/389/374 → WebKit 374), and this fieldset participates in the normal flow after that ancestor. Because the subject's own width/height and all collected computed styles are identical across engines, the only way its Y offset can differ is by being laid out relative to a different-sized preceding box; the ancestor's height delta propagates the 15px vertical displacement to this element.",
+        "fix": {
+          "description": "Fix the differing ancestor layout so it reports the same height in all engines (investigate p13-form-wizard#2). Alternatively, make the fieldset's position independent of the ancestor's height (e.g. give the container stable sizing, or remove reliance on the ancestor's flexible size)."
+        },
+        "evidenceCited": [
+          "box per engine: chromium rel y 176 / firefox rel y 176 / webkit rel y 161",
+          "box per engine: chromium abs y 525 / firefox abs y 525 / webkit abs y 510",
+          "computed styles: display/height/lineHeight/fontSize/... identical across engines (see 'computed styles, same in all three')",
+          "ancestors[1] entry: <div> .flex.flex-col.gap-5 — height 389/389/374 (differs in WebKit)",
+          "deterministic matcher rule: propagated-displacement (provided)"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2719,
+        "cachedInputTokens": 0,
+        "outputTokens": 734,
+        "imageTokens": 0,
+        "reasoningTokens": 320,
+        "costUsd": 0.002148
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "B",
+      "id": "v07-article-docs#15",
+      "tag": "H2",
+      "rule": "line-height-resolution",
+      "verdict": "expected-engine-difference",
+      "confidence": "medium",
+      "props": "offset-y Δ7.5",
+      "note": "no untaken high-confidence instance exists for this rule",
+      "requests": 1,
+      "matcherRule": "line-height-resolution",
+      "matcherVerdict": "expected-engine-difference",
+      "matcherCause": "line-height-resolution",
+      "model": {
+        "cause": "line-height-resolution",
+        "verdict": "defect",
+        "confidence": "medium",
+        "summary": "Per-line sub-pixel differences in resolved line-height (unitless → px) accumulated down the article, shifting the H2 by ~7.5px; WebKit is the outlier.",
+        "mechanism": "The page uses a unitless line-height which gets resolved against font-size to a fractional pixel (computed: chromium 37.4px, firefox 37.4px, webkit 37.400002px). Each engine independently rounds line box positions per line; the tiny per-line rounding error in WebKit accumulates through the article’s lines (ancestor <article> heights differ by ~7.5px), producing the observed 7.50px offset in the H2.",
+        "fix": {
+          "description": "Make the line-height deterministic across engines so per-line rounding can’t accumulate. Options: set an explicit pixel line-height, reduce the number of wrapped lines, or set a block-level line-height in px on containers to avoid repeated per-line multiplication.",
+          "css": "/* example: make line-height exact */ body, .article { line-height: 37px; }\n/* or */ h2 { line-height: 37px; }"
+        },
+        "evidenceCited": [
+          "computed styles.lineHeight",
+          "box, per engine.chromium.rel y",
+          "box, per engine.firefox.rel y",
+          "box, per engine.webkit.rel y",
+          "ancestors.1 <article> differing styles.height",
+          "ancestors.2 <div> .frame differing styles.height"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2997,
+        "cachedInputTokens": 0,
+        "outputTokens": 502,
+        "imageTokens": 0,
+        "reasoningTokens": 128,
+        "costUsd": 0.001753
+      },
+      "error": null
+    },
+    {
+      "bucket": "control",
+      "corpus": "B",
+      "id": "v07-article-docs#1",
+      "tag": "TH",
+      "rule": "table-column-distribution",
+      "verdict": "unclear",
+      "confidence": "high",
+      "props": "width Δ40.17 offset-x Δ2.16 height Δ0.51",
+      "note": "extra exemplar of the highest-volume rule, on the corpus it was not derived from",
+      "requests": 1,
+      "matcherRule": "table-column-distribution",
+      "matcherVerdict": "unclear",
+      "matcherCause": "table-column-distribution",
+      "model": {
+        "cause": "table-column-distribution",
+        "verdict": "defect",
+        "confidence": "high",
+        "summary": "Auto table layout produced a different column width in WebKit (webkit: 112.55px vs chromium ~152.7px / firefox ~152.5px).",
+        "mechanism": "The table is using the automatic table layout (no table-layout: fixed and no explicit column widths). Each engine measures intrinsic/minimum and preferred widths of the cells in that column and then distributes the available table width accordingly. Small differences in text/inline measurement and tie‑breaking between engines lead WebKit to pick a much narrower width for this column; that difference is then propagated to every cell to the right (matching the identical offset-x delta on sibling cells).",
+        "fix": {
+          "description": "Make column sizing deterministic across engines by giving the table fixed layout or by specifying column widths (col/colgroup or explicit th/td widths). This prevents engines from using differing intrinsic measurements and distribution heuristics.",
+          "css": "/* Option A: stable fixed algorithm */ table { table-layout: fixed; }\n/* Option B: explicit column width */ colgroup { width: 668px; } colgroup col:nth-child(2) { width: 152px; }\n/* Or set widths on the TH/TD involved */ thead th:nth-child(2), tbody td:nth-child(2) { width:152px; }"
+        },
+        "evidenceCited": [
+          "computed styles that differ.width",
+          "computed styles that differ.height",
+          "element display: table-cell in finding header",
+          "ancestors.3 <table> w 668/668/668 (table width same across engines)",
+          "other survivors on this page (many sibling TD/TH entries share the same width/offset deltas)",
+          "deterministic matcher rule: table-column-distribution"
+        ],
+        "unresolved": [],
+        "oddEngineOut": "webkit"
+      },
+      "usage": {
+        "model": "gpt-5-mini",
+        "inputTokens": 2856,
+        "cachedInputTokens": 0,
+        "outputTokens": 569,
+        "imageTokens": 0,
+        "reasoningTokens": 128,
+        "costUsd": 0.001852
+      },
+      "error": null
+    }
+  ]
+}

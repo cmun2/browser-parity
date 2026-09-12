@@ -16,6 +16,14 @@ export const VIEWPORT = { width: 1280, height: 900 };
 // `styles`, `text` and `sel` are additive: they exist for the M0 labelling UI
 // (element crops + human context) and are never read by the delta computation
 // or by any suppression rule, so funnel counts are unaffected.
+//
+// `maxWidth` was added to SK after the M0 study, because three of the seven
+// findings the investigator layer could not explain were `max-width: <n>ch`
+// caps resolving against different font metrics, and neither a rule nor a model
+// can name a property that was never collected (ai/STEP4-FINDINGS.md).
+// Adding a key to SK cannot move a funnel count: every suppression rule reads
+// only `ns`, `disp`, `ppath` and geometry. `m0/results/` is not regenerated —
+// the M0 numbers stand on the evidence they were measured from.
 export const collectSource = `() => {
   const path=(el)=>{const p=[];let n=el;
     while(n&&n.nodeType===1&&n!==document.documentElement){let i=1,s=n;
@@ -23,7 +31,7 @@ export const collectSource = `() => {
       p.unshift(n.tagName+'['+i+']');n=n.parentElement;}return p.join('/');};
   const SK=['display','position','fontFamily','fontSize','lineHeight','fontWeight','whiteSpace',
     'overflowX','overflowY','flexBasis','flexGrow','flexShrink','minWidth','minHeight','width','height',
-    'boxSizing','appearance','marginTop','marginLeft','paddingTop','paddingLeft',
+    'boxSizing','appearance','marginTop','marginLeft','paddingTop','paddingLeft','maxWidth',
     'borderTopWidth','borderLeftWidth','gap','gridTemplateColumns','textOverflow','writingMode'];
   const res={};
   for(const el of document.querySelectorAll('body *')){
