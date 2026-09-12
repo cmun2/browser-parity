@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account settings</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card: #fff;
+    --ink: #16181d;
+    --muted: #6c7280;
+    --line: #e3e5ea;
+    --accent: #0f766e;
+    --accent-soft: #ecfdf5;
+    --danger: #b42318;
+    --bar-h: 68px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+    padding-bottom: var(--bar-h);
+  }
+  a { color: inherit; }
+
+  .masthead { background: #fff; border-bottom: 1px solid var(--line); }
+  .masthead-inner { max-width: 1080px; margin: 0 auto; padding: 20px 24px 0; }
+  .masthead h1 { margin: 0 0 4px; font-size: 24px; letter-spacing: -0.02em; }
+  .masthead p { margin: 0 0 18px; color: var(--muted); }
+  .tabs { display: flex; gap: 4px; }
+  .tabs a { padding: 10px 14px; font-size: 13.5px; font-weight: 550; color: var(--muted); border-bottom: 2px solid transparent; text-decoration: none; }
+  .tabs a.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .layout { max-width: 1080px; margin: 0 auto; padding: 28px 24px 40px; display: grid; grid-template-columns: 216px minmax(0, 1fr); gap: 32px; align-items: start; }
+
+  .sectionnav { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 2px; }
+  .sectionnav a { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 8px; color: #4d5261; font-weight: 500; text-decoration: none; font-size: 13.5px; }
+  .sectionnav a.on { background: #fff; border: 1px solid var(--line); color: var(--ink); font-weight: 600; }
+  .sectionnav hr { border: 0; border-top: 1px solid var(--line); margin: 10px 4px; }
+
+  .panel { display: flex; flex-direction: column; gap: 22px; }
+  .group { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  .group > header { padding: 18px 22px; border-bottom: 1px solid var(--line); }
+  .group > header h2 { margin: 0 0 3px; font-size: 16px; letter-spacing: -0.01em; }
+  .group > header p { margin: 0; color: var(--muted); font-size: 13px; }
+  .group-body { padding: 22px; display: flex; flex-direction: column; gap: 20px; }
+
+  .row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px; align-items: start; }
+  .row > .label { padding-top: 8px; }
+  .row .label label { font-weight: 550; display: block; }
+  .row .label .hint { color: var(--muted); font-size: 12.5px; margin-top: 2px; display: block; }
+  .control { display: flex; flex-direction: column; gap: 6px; }
+  .control .assist { color: var(--muted); font-size: 12.5px; }
+
+  input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="password"], input[type="date"], select, textarea {
+    width: 100%; border: 1px solid var(--line); border-radius: 8px; background: #fff;
+    font: inherit; padding: 9px 11px; color: var(--ink);
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(15,118,110,0.12); }
+  textarea { resize: vertical; min-height: 84px; }
+  select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, #8b909c 50%), linear-gradient(135deg, #8b909c 50%, transparent 50%); background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 34px; }
+  .inline-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+
+  .avatar-row { display: flex; align-items: center; gap: 16px; }
+  .avatar-lg { width: 64px; height: 64px; border-radius: 999px; background: #ccfbf1; color: #0f766e; display: grid; place-items: center; font-size: 21px; font-weight: 650; flex: none; }
+  .avatar-actions { display: flex; gap: 8px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px; font: inherit; font-size: 13.5px; font-weight: 550; padding: 8px 14px; cursor: pointer; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-danger { color: var(--danger); border-color: #fecdca; }
+  .btn-sm { padding: 6px 11px; font-size: 13px; }
+
+  .checks { display: flex; flex-direction: column; gap: 12px; }
+  .check { display: flex; gap: 11px; align-items: flex-start; }
+  .check input { margin: 2px 0 0; width: 16px; height: 16px; flex: none; accent-color: var(--accent); }
+  .check .text strong { display: block; font-weight: 550; }
+  .check .text span { color: var(--muted); font-size: 12.5px; }
+
+  .radio-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .radio-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; gap: 9px; align-items: flex-start; cursor: pointer; }
+  .radio-card.on { border-color: var(--accent); background: var(--accent-soft); }
+  .radio-card input { margin: 2px 0 0; accent-color: var(--accent); flex: none; }
+  .radio-card strong { display: block; font-size: 13.5px; font-weight: 600; }
+  .radio-card span { color: var(--muted); font-size: 12px; }
+
+  .device { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .device:last-child { border-bottom: 0; padding-bottom: 0; }
+  .device .ic { width: 34px; height: 34px; border-radius: 8px; background: #f2f3f6; color: #4d5261; display: grid; place-items: center; flex: none; }
+  .device .meta { flex: 1; min-width: 0; }
+  .device .meta strong { font-weight: 600; }
+  .device .meta span { display: block; color: var(--muted); font-size: 12.5px; }
+  .badge-now { font-size: 11.5px; font-weight: 650; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 3px 9px; }
+
+  .danger-zone { border-color: #fecdca; }
+  .danger-zone > header h2 { color: var(--danger); }
+  .danger-row { display: flex; align-items: center; gap: 16px; }
+  .danger-row p { margin: 0; color: var(--muted); flex: 1; }
+
+  .savebar {
+    position: fixed; left: 0; right: 0; bottom: 0; height: var(--bar-h);
+    background: rgba(255,255,255,0.96); border-top: 1px solid var(--line);
+    display: flex; align-items: center; z-index: 20;
+  }
+  .savebar-inner { max-width: 1080px; margin: 0 auto; width: 100%; padding: 0 24px; display: flex; align-items: center; gap: 12px; }
+  .savebar .status { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 7px; }
+  .savebar .actions { margin-left: auto; display: flex; gap: 10px; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1>Settings</h1>
+    <p>Manage your profile, how you are notified, and how your account is secured.</p>
+    <nav class="tabs">
+      <a class="on" href="#">Account</a>
+      <a href="#">Workspace</a>
+      <a href="#">Billing</a>
+      <a href="#">API keys</a>
+      <a href="#">Audit log</a>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sectionnav">
+    <a class="on" href="#profile"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Profile</a>
+    <a href="#notifications"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg>Notifications</a>
+    <a href="#security"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>Security</a>
+    <a href="#sessions"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path></svg>Devices</a>
+    <hr>
+    <a href="#danger"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.6a2 2 0 0 1 3.4 0l7 12a2 2 0 0 1-1.7 3H5a2 2 0 0 1-1.7-3z"></path><path d="M12 9v4M12 17h.01"></path></svg>Danger zone</a>
+  </nav>
+
+  <form class="panel">
+    <section class="group" id="profile">
+      <header>
+        <h2>Profile</h2>
+        <p>This is how you appear to other people in the workspace.</p>
+      </header>
+      <div class="group-body">
+        <div class="row">
+          <div class="label"><label for="p-avatar">Photo</label><span class="hint">PNG or JPG, at least 256×256.</span></div>
+          <div class="control avatar-row">
+            <span class="avatar-lg">DK</span>
+            <span class="avatar-actions">
+              <button class="btn btn-sm" type="button" id="p-avatar">Upload new</button>
+              <button class="btn btn-sm btn-danger" type="button">Remove</button>
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><label for="p-name">Full name</label></div>
+          <div class="control"><input id="p-name" type="text" value="Dana Kowalski" autocomplete="name"></div>
+        </div>
+        <div class="row">
+          <div class="label"><label for="p-email">Email address</label><span class="hint">Used for sign-in and receipts.</span></div>
+          <div class="control">
+            <input id="p-email" type="email" value="dana@halcyon.dev" autocomplete="email">
+            <span class="assist">Verified on 4 February 2026.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><label for="p-title">Job title</label></div>
+          <div class="control inline-2">
+            <input id="p-title" type="text" value="Platform Engineer">
+            <input id="p-phone" type="tel" value="+44 20 7946 0912" aria-label="Phone">
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><label for="p-tz">Time zone</label></div>
+          <div class="control inline-2">
+            <select id="p-tz">
+              <option>(UTC+00:00) London</option>
+              <option>(UTC+01:00) Berlin</option>
+              <option>(UTC−05:00) New York</option>
+              <option>(UTC+09:00) Tokyo</option>
+            </select>
+            <select id="p-lang" aria-label="Language">
+              <option>English (UK)</option>
+              <option>English (US)</option>
+              <option>Deutsch</option>
+              <option>日本語</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><label for="p-bio">Bio</label><span class="hint">Shown on your profile card.</span></div>
+          <div class="control"><textarea id="p-bio">Platform engineer working on build infrastructure and developer tooling. Currently obsessed with cache hit rates.</textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" id="notifications">
+      <header>
+        <h2>Notifications</h2>
+        <p>Choose what reaches you, and where.</p>
+      </header>
+      <div class="group-body">
+        <div class="row">
+          <div class="label"><label>Email</label></div>
+          <div class="control checks">
+            <label class="check"><input type="checkbox" checked><span class="text"><strong>Incidents and alerts</strong><span>Anything that pages the on-call rotation.</span></span></label>
+            <label class="check"><input type="checkbox" checked><span class="text"><strong>Comments and mentions</strong><span>When someone replies to you or @-mentions you.</span></span></label>
+            <label class="check"><input type="checkbox"><span class="text"><strong>Weekly digest</strong><span>A Monday summary of the workspace.</span></span></label>
+            <label class="check"><input type="checkbox"><span class="text"><strong>Product announcements</strong><span>New features and changelog highlights.</span></span></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><label>Delivery cadence</label><span class="hint">Applies to non-urgent email.</span></div>
+          <div class="control radio-cards">
+            <label class="radio-card on"><input type="radio" name="cadence" checked><span><strong>Immediate</strong><span>As it happens</span></span></label>
+            <label class="radio-card"><input type="radio" name="cadence"><span><strong>Hourly</strong><span>Batched digest</span></span></label>
+            <label class="radio-card"><input type="radio" name="cadence"><span><strong>Daily</strong><span>Once at 09:00</span></span></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><label for="n-quiet-from">Quiet hours</label><span class="hint">No email or push in this window.</span></div>
+          <div class="control inline-2">
+            <input id="n-quiet-from" type="time" value="21:00">
+            <input id="n-quiet-to" type="time" value="07:30" aria-label="Quiet hours end">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" id="security">
+      <header>
+        <h2>Security</h2>
+        <p>Password, two-factor authentication and recovery.</p>
+      </header>
+      <div class="group-body">
+        <div class="row">
+          <div class="label"><label for="s-current">Change password</label><span class="hint">At least 12 characters.</span></div>
+          <div class="control">
+            <input id="s-current" type="password" value="............" autocomplete="current-password">
+            <div class="inline-2">
+              <input id="s-new" type="password" placeholder="New password" autocomplete="new-password">
+              <input id="s-confirm" type="password" placeholder="Confirm new password" autocomplete="new-password">
+            </div>
+            <span class="assist">Last changed 11 December 2025.</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><label>Two-factor authentication</label></div>
+          <div class="control checks">
+            <label class="check"><input type="checkbox" checked><span class="text"><strong>Authenticator app</strong><span>Configured with 1Password on 4 Feb 2026.</span></span></label>
+            <label class="check"><input type="checkbox"><span class="text"><strong>SMS backup codes</strong><span>Not recommended — SIM swap risk.</span></span></label>
+            <label class="check"><input type="checkbox" checked><span class="text"><strong>Hardware key</strong><span>YubiKey 5C registered.</span></span></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><label for="s-recovery">Recovery email</label></div>
+          <div class="control"><input id="s-recovery" type="email" value="dana.personal@fastmail.com"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" id="sessions">
+      <header>
+        <h2>Devices &amp; sessions</h2>
+        <p>Signing out of a device revokes its tokens immediately.</p>
+      </header>
+      <div class="group-body">
+        <div class="device">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path></svg></span>
+          <span class="meta"><strong>MacBook Pro · Chrome 153</strong><span>London, UK · 82.14.6.201</span></span>
+          <span class="badge-now">This device</span>
+        </div>
+        <div class="device">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"></rect><path d="M11 18h2"></path></svg></span>
+          <span class="meta"><strong>iPhone 16 · Halcyon iOS 4.2</strong><span>London, UK · last active 2 hours ago</span></span>
+          <button class="btn btn-sm" type="button">Sign out</button>
+        </div>
+        <div class="device">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path></svg></span>
+          <span class="meta"><strong>Linux workstation · Firefox 155</strong><span>Manchester, UK · last active 6 days ago</span></span>
+          <button class="btn btn-sm" type="button">Sign out</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="group danger-zone" id="danger">
+      <header>
+        <h2>Danger zone</h2>
+        <p>These actions cannot be undone.</p>
+      </header>
+      <div class="group-body">
+        <div class="danger-row">
+          <p>Transfer ownership of the Halcyon Labs workspace to another admin.</p>
+          <button class="btn" type="button">Transfer</button>
+        </div>
+        <div class="danger-row">
+          <p>Permanently delete your account and every personal API token attached to it.</p>
+          <button class="btn btn-danger" type="button">Delete account</button>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>
+
+<div class="savebar">
+  <div class="savebar-inner">
+    <span class="status">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5l3 2"></path></svg>
+      3 unsaved changes
+    </span>
+    <span class="actions">
+      <button class="btn" type="button">Discard</button>
+      <button class="btn btn-primary" type="submit">Save changes</button>
+    </span>
+  </div>
+</div>
+
+</body>
+</html>

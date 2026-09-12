@@ -1,0 +1,133 @@
+{
+  "corpusVersion": "m0-validation-v1",
+  "corpusHash": "af65b86fe407680906645c812ef8902900cd7726868a1de0fb17beb9f6f057c4",
+  "frozen": true,
+  "frozenAt": "2026-09-10T23:00:42.870Z",
+  "pageCount": 10,
+  "mix": {
+    "landing": 1,
+    "dashboard": 2,
+    "form": 2,
+    "pricing": 1,
+    "article": 1,
+    "table": 3
+  },
+  "provenance": {
+    "origin": "model-emitted",
+    "note": "Pages were written by a coding agent (Claude Opus 5, running as the Claude Code agent) from the brief text alone. The agent did not read m0/corpus/ while writing and did not attempt to reproduce the frozen pages; the idiom is whatever it produces by default. No hosted model API was called and nothing was paid for — the agent doing the study wrote the corpus as part of its own work, which is exactly the population the study is about. This set exists to test the M0 corpus's primary external-validity limitation.",
+    "generator": "none — the HTML in corpus/pages/ is the artifact, not a render of a spec",
+    "deterministic": "no Math.random, no Date, no timers, no animation, no network, no JavaScript at all",
+    "authoredBy": "claude-opus-5 (Claude Code agent)",
+    "writtenAgainst": "m0/corpus/SPECS.md brief text only"
+  },
+  "limitations": [
+    "The corpus is model-emitted, which is the point, but it is ONE model in ONE session. A different model, or the same model on a different day, would produce different markup. This measures whether the M0 result survives contact with real agent output; it does not establish a rate across \"AI-generated frontends\" in general.",
+    "The agent that wrote these pages is also the agent that ran the pipeline and wrote this note. It did not see any per-page result before freezing (the freeze is its own commit, before the first run), but it is not an independent party, and the M0 corpus author is not the labeller of record for this set either.",
+    "The ten briefs are a deliberately WEIGHTED subset of the thirty: table 3, dashboard 2, form 2, pricing 1, article 1, landing 1, chosen toward the categories where M0 found defects. A rate over these ten is therefore NOT comparable to M0's 53.3% over thirty. Compare against the same ten briefs in the M0 corpus (9 of those 10 pages carried a genuine defect), or against the pre-registered one-per-category subset.",
+    "Every page is a self-contained single file with its own <style> block and no shared stylesheet, where the M0 corpus split 17 linked / 13 inlined against one shared utility vocabulary. Two corpora therefore differ in stylesheet delivery as well as in authorship.",
+    "No page carries any JavaScript. Interactive-looking controls (sliders, checkboxes, tabs) are rendered in a fixed state, as in the M0 corpus."
+  ],
+  "assets": [],
+  "pages": [
+    {
+      "id": "v01-landing-saas-hero",
+      "file": "corpus/pages/v01-landing-saas-hero.html",
+      "kind": "landing",
+      "mode": "inline",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 15818,
+      "sha256": "4f12ba7de4983f363a8dffd83a3fc5966dfc7730f6b4846673dff7b94daf49bd",
+      "prompt": "Build a landing page for an observability SaaS called Meridian. Centered hero with a headline and two CTAs, a logo cloud, a six-card feature grid, testimonials, a dark call-to-action band, and a four-column footer. Modern, clean, lots of whitespace."
+    },
+    {
+      "id": "v02-dash-analytics",
+      "file": "corpus/pages/v02-dash-analytics.html",
+      "kind": "dashboard",
+      "mode": "inline",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 20655,
+      "sha256": "0becfa27c2a6f1a5c40a34e32da5dfecafdd5307ed42a350026c8ff34d22525d",
+      "prompt": "Analytics dashboard. Fixed left sidebar with nav, top bar with search and avatar, then four KPI cards, a big chart, and a recent-activity list in a two-column layout below."
+    },
+    {
+      "id": "v03-dash-billing",
+      "file": "corpus/pages/v03-dash-billing.html",
+      "kind": "dashboard",
+      "mode": "inline",
+      "fontStack": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "bytes": 17048,
+      "sha256": "acbd1b822be618c91d07ba8f372d9b5e9fc3c92bc7cfcd6d0ba8a8094dfd8f76",
+      "prompt": "Billing and usage dashboard inside an app shell. Show current plan card, usage meters with progress bars, an invoice table, and a payment-method section. Sidebar navigation."
+    },
+    {
+      "id": "v04-form-settings",
+      "file": "corpus/pages/v04-form-settings.html",
+      "kind": "form",
+      "mode": "inline",
+      "fontStack": "system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+      "bytes": 18298,
+      "sha256": "7c958f79ce60d85d8e51bf410b25266eb05e6205d0fd016c4f84577739fd637d",
+      "prompt": "Account settings page. Left nav for settings sections, main panel with grouped form sections — profile, notifications, security — using real input types. Sticky save bar at the bottom."
+    },
+    {
+      "id": "v05-form-wizard",
+      "file": "corpus/pages/v05-form-wizard.html",
+      "kind": "form",
+      "mode": "inline",
+      "fontStack": "system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+      "bytes": 13958,
+      "sha256": "a8ad48b7bfce16171684167fa3437d607fbe5f79926fef1430c7c22efac1020e",
+      "prompt": "Multi-step onboarding wizard, step 2 of 4. Progress indicator across the top, a centered card with the current step form, back/continue buttons, and a help panel to the side."
+    },
+    {
+      "id": "v06-pricing-calculator",
+      "file": "corpus/pages/v06-pricing-calculator.html",
+      "kind": "pricing",
+      "mode": "inline",
+      "fontStack": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "bytes": 18596,
+      "sha256": "6f5c28e7b44186f3b1e6d08c3ed7edd722dca293e87051f82dc4cfcc85d75123",
+      "prompt": "Usage-based pricing page with an interactive-looking calculator: sliders for volume, a live estimate card, and a breakdown table. Four plan cards laid out with flexbox below."
+    },
+    {
+      "id": "v07-article-docs",
+      "file": "corpus/pages/v07-article-docs.html",
+      "kind": "article",
+      "mode": "inline",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 16810,
+      "sha256": "a4369a5397ec0f066cfba339269b9d71c56ccd2676ed59692ce642dc4df1b7e2",
+      "prompt": "Documentation page with three columns: left sidebar navigation tree, main content, right-hand sticky table of contents. Include code blocks, callout boxes, a parameters table and prev/next links."
+    },
+    {
+      "id": "v08-table-users",
+      "file": "corpus/pages/v08-table-users.html",
+      "kind": "table",
+      "mode": "inline",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 23818,
+      "sha256": "6341d49d75ef8792ab0680d15ac695e8f21d90ee950d566eb3705589f1b1119d",
+      "prompt": "User management table. Toolbar with search, filter chips and bulk actions, a table with checkboxes, avatars, role badges and a row menu, then pagination. Everything inside an app shell with a sidebar."
+    },
+    {
+      "id": "v09-table-wide-scroll",
+      "file": "corpus/pages/v09-table-wide-scroll.html",
+      "kind": "table",
+      "mode": "inline",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 17034,
+      "sha256": "88498bcb3563929632652613046f6911d642b606ea350d5a8ebd30c536e4932b",
+      "prompt": "Wide financial data grid with 14 columns that must scroll horizontally, a frozen first column, right-aligned numeric cells in a monospace font, and a totals footer row."
+    },
+    {
+      "id": "v10-table-catalog",
+      "file": "corpus/pages/v10-table-catalog.html",
+      "kind": "table",
+      "mode": "inline",
+      "fontStack": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "bytes": 20213,
+      "sha256": "d215637a94ea9b9d24035c90be0e4f23ade04d105d702db45ddc35d1c5193cb5",
+      "prompt": "E-commerce product catalog: filter sidebar on the left with checkboxes and a price range, product cards in a responsive grid with badges and star ratings, sort dropdown and result count above."
+    }
+  ]
+}

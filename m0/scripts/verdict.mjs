@@ -1,20 +1,29 @@
 #!/usr/bin/env node
-// Compute m0/results/incidence-v0.1.json — the study's output.
+// Compute <set>/results/incidence-v0.1.json — the study's output.
 //
 // The decision rule is fixed here in code, ahead of the labels, so the verdict
 // is a function of the data rather than of how the data reads on the day.
+//
+//   node m0/scripts/verdict.mjs                  -> m0/results/incidence-v0.1.json
+//   node m0/scripts/verdict.mjs --set validation -> m0/validation/results/incidence-v0.1.json
+//
+// The rule is identical for every set. The GO threshold of "3 pages" was
+// pre-registered against n=30, so on a set of a different size it is a
+// different RATE — recorded in `thresholds.note`, not silently rescaled.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { verifyCorpus } from './verify-corpus.mjs';
+import { resolveSet } from './paths.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const RESULTS = path.join(ROOT, 'results');
-const manifest = verifyCorpus(ROOT, { quiet: true });
+const SET = resolveSet();
+const ROOT = SET.root;
+const RESULTS = SET.resultsDir;
+const setArg = SET.isDefault ? '' : ` --set ${path.basename(ROOT)}`;
+const manifest = verifyCorpus(ROOT, { quiet: true, setArg });
 
 const S = JSON.parse(fs.readFileSync(path.join(RESULTS, 'survivors.json'), 'utf8'));
 if (S.corpusHash !== manifest.corpusHash) {
-  console.error(`survivors.json was produced against corpus ${S.corpusHash.slice(0, 12)} but the corpus is now ${manifest.corpusHash.slice(0, 12)}. Re-run m0/scripts/run.mjs.`);
+  console.error(`survivors.json was produced against corpus ${S.corpusHash.slice(0, 12)} but the corpus is now ${manifest.corpusHash.slice(0, 12)}. Re-run m0/scripts/run.mjs${setArg}.`);
   process.exit(1);
 }
 
@@ -103,10 +112,16 @@ const out = {
   schema: 'browser-parity/m0-incidence/1',
   study: 'M0 base-rate measurement — do modern engines still diverge on AI-generated frontends?',
   verdict, rationale,
-  thresholds: { go: '>=3 of 30 pages with a genuine defect AND median survivors/page <=5', kill: '0 of 30 pages with a genuine defect', pivot: 'genuine defects exist but all are form-control or text-metric' },
+  thresholds: {
+    go: '>=3 of 30 pages with a genuine defect AND median survivors/page <=5',
+    kill: '0 of 30 pages with a genuine defect',
+    pivot: 'genuine defects exist but all are form-control or text-metric',
+    note: manifest.pageCount === 30 ? undefined
+      : `These thresholds were pre-registered against a 30-page corpus. This set has ${manifest.pageCount} pages, so "3 pages" is a rate of ${(100 * 3 / manifest.pageCount).toFixed(0)}% here rather than 10%. The counts below are computed unchanged; read the verdict word as a label on this set, not as a re-run of the M0 gate.`,
+  },
 
   corpus: {
-    version: manifest.corpusVersion, hash: manifest.corpusHash, frozenAt: manifest.frozenAt,
+    set: SET.rel, version: manifest.corpusVersion, hash: manifest.corpusHash, frozenAt: manifest.frozenAt,
     pages: manifest.pageCount, mix: manifest.mix, provenance: manifest.provenance,
   },
   environment: S.environment,
@@ -140,14 +155,19 @@ const out = {
   nondeterministicPages: S.totals.nondeterministicPages,
   perPage,
 
+  // Universal limitations + the ones specific to THIS corpus. Corpus-specific
+  // limitations are frozen into the manifest by freeze.mjs, so a second corpus
+  // cannot inherit the first one's caveats (or shed them).
   limitations: [
     "Playwright's WebKit is not Safari. It is a real WebKit layout engine, so a POSITIVE finding here is credible evidence of a genuine cross-engine divergence. But it is not Apple's shipping configuration, and iOS Safari is not covered at all — so the ABSENCE of a finding does not clear Safari, and a KILL verdict is a statement about Chromium/Gecko/Playwright-WebKit, not about the browser most teams actually worry about.",
-    'The corpus is hand-authored in an AI-typical idiom, not emitted by a model. No hosted model was called (no-paid-API constraint). The 30 briefs are recorded in m0/corpus/SPECS.md so the study can be repeated against real model output; until it is, the corpus reflects one author\'s model of what AI frontends look like.',
-    'All 30 pages share one base utility-CSS vocabulary and one component library. Real AI output would draw on more varied CSS. Layout variety comes from per-page stylesheets, but the shared base narrows the corpus.',
+    ...(manifest.limitations ?? [
+      'The corpus is hand-authored in an AI-typical idiom, not emitted by a model. No hosted model was called (no-paid-API constraint). The 30 briefs are recorded in m0/corpus/SPECS.md so the study can be repeated against real model output; until it is, the corpus reflects one author\'s model of what AI frontends look like.',
+      'All 30 pages share one base utility-CSS vocabulary and one component library. Real AI output would draw on more varied CSS. Layout variety comes from per-page stylesheets, but the shared base narrows the corpus.',
+    ]),
     'One machine, one OS, one font set. Font metrics and font availability are two of the three known noise classes, so results are conditioned on this environment (see environment.fontFingerprint).',
     'Pages are static and local: no network, no JS-driven layout, no hydration, no web fonts. This removes DOM-level engine divergence (correspondence failures), which is a real finding class the study therefore cannot observe.',
     'Measured with no normalization preset. Findings include the font/line-height/form-control noise classes that --normalize would suppress; that is deliberate, since it is what the tool would report on the page as written.',
-    'n=30 pages. See incidence.confidenceInterval95 — the interval is wide by construction.',
+    `n=${n} pages. See incidence.confidenceInterval95 — the interval is wide by construction.`,
   ],
 };
 fs.mkdirSync(RESULTS, { recursive: true });
@@ -161,7 +181,7 @@ console.log(`  defect rate/page     ${(100 * k / n).toFixed(1)}%  95% CI ${(100 
 console.log(`  survivors/page       median ${median}, max ${S.totals.maxSurvivorsPerPage}  (bound: <=5 ${median <= 5 ? 'MET' : 'NOT MET'})`);
 console.log(`  suppression          ${S.totals.rawFindings} raw -> ${S.totals.survivors} survivors`);
 console.log(`  labels               ${counts.genuine} genuine · ${counts.expected} expected · ${counts.artifact} artifact · ${counts.skip} skipped · ${unlabelled.length} unlabelled`);
-console.log(`\nwrote m0/results/incidence-v0.1.json`);
+console.log(`\nwrote ${SET.rel}/results/incidence-v0.1.json`);
 if (verdict === 'KILL') console.log('\nKILL -> fill in m0/NEGATIVE-RESULT-TEMPLATE.md and publish it. That is a real contribution.');
 console.log('\nA finding here is credible evidence of cross-engine divergence.');
 console.log('The absence of one does NOT clear Safari, and iOS is not covered at all.');

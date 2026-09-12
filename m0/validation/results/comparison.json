@@ -1,0 +1,584 @@
+{
+  "schema": "browser-parity/corpus-comparison/1",
+  "comparedAt": "2026-09-10T23:05:24.364Z",
+  "question": "Does the M0 incidence result survive on model-emitted pages, or was it an artifact of a hand-authored corpus?",
+  "sets": {
+    "a": "m0",
+    "b": "m0/validation"
+  },
+  "full": {
+    "a": {
+      "label": "A · full",
+      "corpus": {
+        "version": "m0-corpus-v1",
+        "hash": "b017b928a0c2d67ea07ee7c70487935265841499af6b1403c4fa0a74990c830e",
+        "origin": "hand-authored"
+      },
+      "pages": 30,
+      "kindMix": {
+        "landing": 5,
+        "dashboard": 5,
+        "form": 4,
+        "pricing": 3,
+        "article": 4,
+        "table": 4,
+        "modal": 3,
+        "nav": 2
+      },
+      "matchedNodes": 5530,
+      "rawFindings": 1722,
+      "survivors": 475,
+      "suppressionRatio": 0.7242,
+      "rawPerMatchedNode": 0.3114,
+      "survivorsPerPage": {
+        "median": 4,
+        "max": 173,
+        "all": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          3,
+          4,
+          4,
+          4,
+          5,
+          5,
+          8,
+          9,
+          10,
+          16,
+          18,
+          22,
+          36,
+          36,
+          42,
+          77,
+          173
+        ]
+      },
+      "pagesWithSurvivors": 19,
+      "rootCauseUnits": 138,
+      "funnelStages": {
+        "raw": 1722,
+        "svg-interior": 984,
+        "inline-text": 931,
+        "tolerance": 686,
+        "inherited-delta": 475
+      },
+      "nondeterministicPages": [],
+      "elementFamily": {
+        "table": 320,
+        "form-control": 82,
+        "other": 73
+      },
+      "tagDistribution": {
+        "TD": 286,
+        "BUTTON": 50,
+        "TH": 31,
+        "DIV": 30,
+        "INPUT": 22,
+        "SPAN": 16,
+        "A": 6,
+        "LABEL": 5,
+        "LI": 5,
+        "SECTION": 4,
+        "UL": 4,
+        "TABLE": 3,
+        "LEGEND": 3,
+        "DD": 3,
+        "NAV": 1,
+        "SELECT": 1,
+        "FIELDSET": 1,
+        "MAIN": 1,
+        "FOOTER": 1,
+        "H3": 1,
+        "FORM": 1
+      },
+      "propertyDistribution": {
+        "offset-x": 375,
+        "width": 370,
+        "height": 77,
+        "offset-y": 62
+      },
+      "oddEngineOut": {
+        "chromium": 77,
+        "firefox": 110,
+        "webkit": 288
+      },
+      "labelling": {
+        "labelled": 475,
+        "genuine": 180,
+        "pagesWithGenuineDefect": 16,
+        "defectRatePerPage": 0.5333
+      }
+    },
+    "b": {
+      "label": "B · full",
+      "corpus": {
+        "version": "m0-validation-v1",
+        "hash": "af65b86fe407680906645c812ef8902900cd7726868a1de0fb17beb9f6f057c4",
+        "origin": "model-emitted"
+      },
+      "pages": 10,
+      "kindMix": {
+        "landing": 1,
+        "dashboard": 2,
+        "form": 2,
+        "pricing": 1,
+        "article": 1,
+        "table": 3
+      },
+      "matchedNodes": 2452,
+      "rawFindings": 821,
+      "survivors": 106,
+      "suppressionRatio": 0.8709,
+      "rawPerMatchedNode": 0.3348,
+      "survivorsPerPage": {
+        "median": 1.5,
+        "max": 57,
+        "all": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          4,
+          6,
+          36,
+          57
+        ]
+      },
+      "pagesWithSurvivors": 6,
+      "rootCauseUnits": 37,
+      "funnelStages": {
+        "raw": 821,
+        "svg-interior": 634,
+        "inline-text": 482,
+        "tolerance": 207,
+        "inherited-delta": 106
+      },
+      "nondeterministicPages": [],
+      "elementFamily": {
+        "table": 81,
+        "form-control": 3,
+        "other": 22
+      },
+      "tagDistribution": {
+        "TD": 70,
+        "DIV": 8,
+        "TH": 7,
+        "P": 5,
+        "TR": 4,
+        "SPAN": 4,
+        "BUTTON": 3,
+        "H3": 2,
+        "H2": 1,
+        "OL": 1,
+        "NAV": 1
+      },
+      "propertyDistribution": {
+        "width": 87,
+        "offset-x": 65,
+        "height": 11,
+        "offset-y": 20
+      },
+      "oddEngineOut": {
+        "chromium": 5,
+        "firefox": 4,
+        "webkit": 97
+      },
+      "labelling": {
+        "labelled": 0,
+        "note": "NOT LABELLED — no labels.jsonl for this set. Survivor counts above are objective; there is no defect rate for this corpus yet."
+      }
+    }
+  },
+  "paired": {
+    "note": "Same briefs on both sides — the like-for-like comparison. Holds the brief mix constant, so any difference is authorship (plus stylesheet delivery; see the B corpus limitations).",
+    "briefs": [
+      {
+        "b": "v01-landing-saas-hero",
+        "a": "p01-landing-saas-hero"
+      },
+      {
+        "b": "v02-dash-analytics",
+        "a": "p06-dash-analytics"
+      },
+      {
+        "b": "v03-dash-billing",
+        "a": "p07-dash-billing"
+      },
+      {
+        "b": "v04-form-settings",
+        "a": "p11-form-settings"
+      },
+      {
+        "b": "v05-form-wizard",
+        "a": "p13-form-wizard"
+      },
+      {
+        "b": "v06-pricing-calculator",
+        "a": "p16-pricing-calculator"
+      },
+      {
+        "b": "v07-article-docs",
+        "a": "p19-article-docs"
+      },
+      {
+        "b": "v08-table-users",
+        "a": "p22-table-users"
+      },
+      {
+        "b": "v09-table-wide-scroll",
+        "a": "p23-table-wide-scroll"
+      },
+      {
+        "b": "v10-table-catalog",
+        "a": "p25-table-catalog"
+      }
+    ],
+    "a": {
+      "label": "A · paired",
+      "corpus": {
+        "version": "m0-corpus-v1",
+        "hash": "b017b928a0c2d67ea07ee7c70487935265841499af6b1403c4fa0a74990c830e",
+        "origin": "hand-authored"
+      },
+      "pages": 10,
+      "kindMix": {
+        "landing": 1,
+        "dashboard": 2,
+        "form": 2,
+        "pricing": 1,
+        "article": 1,
+        "table": 3
+      },
+      "matchedNodes": 2204,
+      "rawFindings": 1054,
+      "survivors": 428,
+      "suppressionRatio": 0.5939,
+      "rawPerMatchedNode": 0.4782,
+      "survivorsPerPage": {
+        "median": 29,
+        "max": 173,
+        "all": [
+          0,
+          8,
+          16,
+          18,
+          22,
+          36,
+          36,
+          42,
+          77,
+          173
+        ]
+      },
+      "pagesWithSurvivors": 9,
+      "rootCauseUnits": 101,
+      "funnelStages": {
+        "raw": 1054,
+        "svg-interior": 748,
+        "inline-text": 714,
+        "tolerance": 618,
+        "inherited-delta": 428
+      },
+      "nondeterministicPages": [],
+      "elementFamily": {
+        "table": 320,
+        "form-control": 59,
+        "other": 49
+      },
+      "tagDistribution": {
+        "TD": 286,
+        "BUTTON": 33,
+        "TH": 31,
+        "DIV": 25,
+        "INPUT": 19,
+        "SPAN": 8,
+        "LI": 5,
+        "SECTION": 4,
+        "LABEL": 4,
+        "UL": 4,
+        "TABLE": 3,
+        "LEGEND": 2,
+        "FIELDSET": 1,
+        "MAIN": 1,
+        "FOOTER": 1,
+        "H3": 1
+      },
+      "propertyDistribution": {
+        "offset-x": 344,
+        "width": 332,
+        "height": 69,
+        "offset-y": 52
+      },
+      "oddEngineOut": {
+        "chromium": 77,
+        "firefox": 85,
+        "webkit": 266
+      },
+      "labelling": {
+        "labelled": 428,
+        "genuine": 158,
+        "pagesWithGenuineDefect": 9,
+        "defectRatePerPage": 0.9
+      }
+    },
+    "b": {
+      "label": "B · paired",
+      "corpus": {
+        "version": "m0-validation-v1",
+        "hash": "af65b86fe407680906645c812ef8902900cd7726868a1de0fb17beb9f6f057c4",
+        "origin": "model-emitted"
+      },
+      "pages": 10,
+      "kindMix": {
+        "landing": 1,
+        "dashboard": 2,
+        "form": 2,
+        "pricing": 1,
+        "article": 1,
+        "table": 3
+      },
+      "matchedNodes": 2452,
+      "rawFindings": 821,
+      "survivors": 106,
+      "suppressionRatio": 0.8709,
+      "rawPerMatchedNode": 0.3348,
+      "survivorsPerPage": {
+        "median": 1.5,
+        "max": 57,
+        "all": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          4,
+          6,
+          36,
+          57
+        ]
+      },
+      "pagesWithSurvivors": 6,
+      "rootCauseUnits": 37,
+      "funnelStages": {
+        "raw": 821,
+        "svg-interior": 634,
+        "inline-text": 482,
+        "tolerance": 207,
+        "inherited-delta": 106
+      },
+      "nondeterministicPages": [],
+      "elementFamily": {
+        "table": 81,
+        "form-control": 3,
+        "other": 22
+      },
+      "tagDistribution": {
+        "TD": 70,
+        "DIV": 8,
+        "TH": 7,
+        "P": 5,
+        "TR": 4,
+        "SPAN": 4,
+        "BUTTON": 3,
+        "H3": 2,
+        "H2": 1,
+        "OL": 1,
+        "NAV": 1
+      },
+      "propertyDistribution": {
+        "width": 87,
+        "offset-x": 65,
+        "height": 11,
+        "offset-y": 20
+      },
+      "oddEngineOut": {
+        "chromium": 5,
+        "firefox": 4,
+        "webkit": 97
+      },
+      "labelling": {
+        "labelled": 0,
+        "note": "NOT LABELLED — no labels.jsonl for this set. Survivor counts above are objective; there is no defect rate for this corpus yet."
+      }
+    }
+  },
+  "unweighted": {
+    "note": "One page per category, pinned in B/specs.mjs before the run, so neither side is tilted toward the categories where M0 found its defects.",
+    "a": {
+      "label": "A · unweighted",
+      "corpus": {
+        "version": "m0-corpus-v1",
+        "hash": "b017b928a0c2d67ea07ee7c70487935265841499af6b1403c4fa0a74990c830e",
+        "origin": "hand-authored"
+      },
+      "pages": 6,
+      "kindMix": {
+        "landing": 1,
+        "dashboard": 1,
+        "form": 1,
+        "pricing": 1,
+        "article": 1,
+        "table": 1
+      },
+      "matchedNodes": 1304,
+      "rawFindings": 577,
+      "survivors": 175,
+      "suppressionRatio": 0.6967,
+      "rawPerMatchedNode": 0.4425,
+      "survivorsPerPage": {
+        "median": 27,
+        "max": 77,
+        "all": [
+          0,
+          8,
+          18,
+          36,
+          36,
+          77
+        ]
+      },
+      "pagesWithSurvivors": 5,
+      "rootCauseUnits": 50,
+      "funnelStages": {
+        "raw": 577,
+        "svg-interior": 405,
+        "inline-text": 371,
+        "tolerance": 295,
+        "inherited-delta": 175
+      },
+      "nondeterministicPages": [],
+      "elementFamily": {
+        "table": 110,
+        "form-control": 35,
+        "other": 30
+      },
+      "tagDistribution": {
+        "TD": 97,
+        "INPUT": 16,
+        "BUTTON": 16,
+        "DIV": 13,
+        "TH": 12,
+        "LI": 5,
+        "SECTION": 4,
+        "UL": 4,
+        "LABEL": 2,
+        "TABLE": 1,
+        "LEGEND": 1,
+        "MAIN": 1,
+        "FOOTER": 1,
+        "SPAN": 1,
+        "H3": 1
+      },
+      "propertyDistribution": {
+        "offset-x": 120,
+        "width": 129,
+        "offset-y": 40,
+        "height": 48
+      },
+      "oddEngineOut": {
+        "chromium": 36,
+        "firefox": 64,
+        "webkit": 75
+      },
+      "labelling": {
+        "labelled": 175,
+        "genuine": 73,
+        "pagesWithGenuineDefect": 5,
+        "defectRatePerPage": 0.8333
+      }
+    },
+    "b": {
+      "label": "B · unweighted",
+      "corpus": {
+        "version": "m0-validation-v1",
+        "hash": "af65b86fe407680906645c812ef8902900cd7726868a1de0fb17beb9f6f057c4",
+        "origin": "model-emitted"
+      },
+      "pages": 6,
+      "kindMix": {
+        "landing": 1,
+        "dashboard": 1,
+        "form": 1,
+        "pricing": 1,
+        "article": 1,
+        "table": 1
+      },
+      "matchedNodes": 1523,
+      "rawFindings": 432,
+      "survivors": 45,
+      "suppressionRatio": 0.8958,
+      "rawPerMatchedNode": 0.2837,
+      "survivorsPerPage": {
+        "median": 1.5,
+        "max": 36,
+        "all": [
+          0,
+          0,
+          1,
+          2,
+          6,
+          36
+        ]
+      },
+      "pagesWithSurvivors": 4,
+      "rootCauseUnits": 26,
+      "funnelStages": {
+        "raw": 432,
+        "svg-interior": 303,
+        "inline-text": 194,
+        "tolerance": 50,
+        "inherited-delta": 45
+      },
+      "nondeterministicPages": [],
+      "elementFamily": {
+        "table": 25,
+        "form-control": 3,
+        "other": 17
+      },
+      "tagDistribution": {
+        "TD": 18,
+        "P": 5,
+        "DIV": 4,
+        "TR": 4,
+        "TH": 3,
+        "SPAN": 3,
+        "BUTTON": 3,
+        "H3": 2,
+        "H2": 1,
+        "OL": 1,
+        "NAV": 1
+      },
+      "propertyDistribution": {
+        "width": 30,
+        "offset-x": 22,
+        "height": 11,
+        "offset-y": 16
+      },
+      "oddEngineOut": {
+        "chromium": 5,
+        "firefox": 0,
+        "webkit": 40
+      },
+      "labelling": {
+        "labelled": 0,
+        "note": "NOT LABELLED — no labels.jsonl for this set. Survivor counts above are objective; there is no defect rate for this corpus yet."
+      }
+    }
+  }
+}

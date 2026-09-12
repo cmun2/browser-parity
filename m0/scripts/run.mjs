@@ -5,14 +5,20 @@
 // The pipeline itself is imported from scripts/funnel.mjs — the same collection
 // snippet and the same four suppression rules that produced the published
 // 638->19 / 611->5 / 74->0 numbers. This file adds no detection logic of its own.
+//
+// `--set <dir>` selects which frozen corpus to run against (see paths.mjs).
+// Nothing else changes with the set: same engines, same viewport, same four
+// rules, same crop geometry — otherwise two corpora would not be comparable.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { pathToFileURL } from 'node:url';
 import { LAUNCHERS, E, VIEWPORT, settle, collectFromPage, computeDeltas, funnel, RULES } from '../../scripts/funnel.mjs';
 import { verifyCorpus } from './verify-corpus.mjs';
+import { resolveSet, REPO } from './paths.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const RESULTS = path.join(ROOT, 'results');
+const SET = resolveSet();
+const ROOT = SET.root;
+const RESULTS = SET.resultsDir;
 const SHOTS = path.join(RESULTS, 'shots');
 const EVIDENCE = path.join(RESULTS, 'evidence');
 // Crop geometry for the labelling evidence. MIN* guarantees surrounding context
@@ -21,7 +27,7 @@ const EVIDENCE = path.join(RESULTS, 'evidence');
 const PAD = 24, MAXW = 900, MAXH = 640, MINW = 380, MINH = 260;
 const SHOTS_ONLY = process.argv.includes('--shots-only');
 
-const manifest = verifyCorpus(ROOT);
+const manifest = verifyCorpus(ROOT, { setArg: SET.isDefault ? '' : ` --set ${path.basename(ROOT)}` });
 fs.mkdirSync(SHOTS, { recursive: true });
 fs.mkdirSync(EVIDENCE, { recursive: true });
 
@@ -158,7 +164,7 @@ const out = {
   corpusVersion: manifest.corpusVersion, corpusHash: manifest.corpusHash,
   ranAt: new Date().toISOString(),
   environment: {
-    playwrightVersion: JSON.parse(fs.readFileSync(path.resolve(ROOT, '../node_modules/playwright/package.json'), 'utf8')).version,
+    playwrightVersion: JSON.parse(fs.readFileSync(path.join(REPO, 'node_modules/playwright/package.json'), 'utf8')).version,
     engineVersions, os: `${process.platform} ${process.arch}`, node: process.version,
     viewport: VIEWPORT, deviceScaleFactor: 1, reducedMotion: 'reduce', fontFingerprint,
     normalizationPreset: 'none (pages measured exactly as generated)',
@@ -185,6 +191,6 @@ fs.writeFileSync(path.join(RESULTS, 'survivors.json'), JSON.stringify(out, null,
 console.log(`\nraw ${out.totals.rawFindings} -> survivors ${out.totals.survivors} across ${out.totals.pages} pages`);
 console.log(`survivors/page: median ${median}, max ${out.totals.maxSurvivorsPerPage}, ${out.totals.pagesWithZeroSurvivors} pages at zero`);
 if (out.totals.nondeterministicPages.length) console.log(`NONDETERMINISTIC pages: ${out.totals.nondeterministicPages.join(', ')}`);
-console.log(`${shotCount} crops -> m0/results/shots/`);
+console.log(`${shotCount} crops -> ${SET.rel}/results/shots/`);
 console.log(`collect ${(collectMs / 1000).toFixed(0)}s · screenshots ${(shotMs / 1000).toFixed(0)}s`);
-console.log('\nnext: node m0/scripts/label.mjs');
+console.log(`\nnext: node m0/scripts/label.mjs${SET.isDefault ? '' : ' --set ' + path.basename(ROOT)}`);

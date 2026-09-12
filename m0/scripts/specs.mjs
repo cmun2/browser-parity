@@ -1053,3 +1053,15 @@ kbd{border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:.35rem;paddin
 ];
 
 export const KIND_MIX = SPECS.reduce((a, s) => (a[s.kind] = (a[s.kind] || 0) + 1, a), {});
+
+export const CORPUS_VERSION = 'm0-corpus-v1';
+
+// Stated here rather than in freeze.mjs so that a second corpus with a different
+// provenance cannot inherit this one's claim by accident.
+export const PROVENANCE = {
+  origin: 'hand-authored',
+  note: "Pages are hand-authored in an AI-typical idiom, NOT emitted by a model. No hosted model was called (no-paid-API constraint). Each page records the brief it implements so the study can be repeated against real model output using the same 30 prompts. This is the study's primary external-validity limitation.",
+  generator: 'm0/scripts/gen-corpus.mjs + m0/scripts/specs.mjs',
+  deterministic: 'no Math.random, no Date, no timers, no animation, no network',
+};
+

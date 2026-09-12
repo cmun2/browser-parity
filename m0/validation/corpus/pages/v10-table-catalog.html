@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desks & chairs — Fieldnote Supply</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --soft: #f7f6f3;
+    --ink: #1c1b18;
+    --muted: #6d6a62;
+    --line: #e5e2dc;
+    --accent: #7c2d12;
+    --accent-soft: #fdf3ec;
+    --star: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .header { border-bottom: 1px solid var(--line); }
+  .header-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; height: 70px; display: flex; align-items: center; gap: 28px; }
+  .logo { font-weight: 700; letter-spacing: -0.02em; font-size: 18px; display: flex; align-items: center; gap: 9px; }
+  .logo .mk { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); color: #fff; display: grid; place-items: center; }
+  .header nav { display: flex; gap: 22px; font-size: 14.5px; color: var(--muted); }
+  .header .tools { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .icon-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 14px; }
+
+  .crumbs { max-width: 1280px; margin: 0 auto; padding: 18px 24px 0; font-size: 13px; color: var(--muted); }
+  .crumbs .sep { margin: 0 7px; color: #c6c1b8; }
+
+  .layout { max-width: 1280px; margin: 0 auto; padding: 14px 24px 64px; display: grid; grid-template-columns: 248px minmax(0, 1fr); gap: 34px; align-items: start; }
+
+  .filters { position: sticky; top: 20px; }
+  .filters h1 { font-size: 26px; letter-spacing: -0.025em; margin: 0 0 4px; }
+  .filters .total { color: var(--muted); font-size: 13.5px; margin: 0 0 20px; }
+  .fgroup { border-top: 1px solid var(--line); padding: 16px 0; }
+  .fgroup:first-of-type { border-top: 0; padding-top: 0; }
+  .fgroup h2 { margin: 0 0 10px; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: #8b877e; font-weight: 650; }
+  .fopt { display: flex; align-items: center; gap: 9px; padding: 4px 0; font-size: 14px; cursor: pointer; }
+  .fopt input { width: 15px; height: 15px; accent-color: var(--accent); margin: 0; flex: none; }
+  .fopt .n { margin-left: auto; color: #a5a099; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .price-range { display: flex; flex-direction: column; gap: 10px; }
+  .price-inputs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+  .price-inputs input { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font: inherit; font-size: 14px; }
+  .price-inputs span { color: var(--muted); }
+  .price-range input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
+  .swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+  .swatch { width: 28px; height: 28px; border-radius: 999px; border: 1px solid var(--line); display: block; }
+  .sw-oak { background: #d9b382; }
+  .sw-walnut { background: #6b4423; }
+  .sw-black { background: #1c1b18; }
+  .sw-white { background: #f4f3f0; }
+  .sw-sage { background: #9aa88b; }
+  .sw-clay { background: #b96f52; }
+  .clear-all { margin-top: 12px; font-size: 13.5px; color: var(--accent); font-weight: 600; }
+
+  .results-top { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+  .results-top .count { color: var(--muted); font-size: 14px; }
+  .active-filters { display: flex; gap: 7px; flex-wrap: wrap; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--soft); border-radius: 999px; padding: 4px 11px; font-size: 13px; }
+  .pill .x { color: #a5a099; }
+  .sort { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+  .sort select { height: 36px; border: 1px solid var(--line); border-radius: 8px; font: inherit; font-size: 14px; padding: 0 30px 0 10px; background: #fff; appearance: none; background-image: linear-gradient(45deg, transparent 50%, #8b877e 50%), linear-gradient(135deg, #8b877e 50%, transparent 50%); background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 24px; }
+  .product { display: flex; flex-direction: column; gap: 10px; }
+  .thumb { position: relative; aspect-ratio: 4 / 3; border-radius: 12px; background: var(--soft); border: 1px solid var(--line); display: grid; place-items: center; color: #c4bfb5; overflow: hidden; }
+  .thumb.t-oak { background: linear-gradient(140deg, #f0e2cd, #e2c9a4); }
+  .thumb.t-walnut { background: linear-gradient(140deg, #e6d7c9, #c4a68a); }
+  .thumb.t-slate { background: linear-gradient(140deg, #eceeef, #ccd2d6); }
+  .thumb.t-sage { background: linear-gradient(140deg, #e9eee4, #c3d0b6); }
+  .badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge { font-size: 11.5px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; border-radius: 6px; padding: 3px 8px; background: #fff; color: var(--ink); }
+  .badge.new { background: var(--accent); color: #fff; }
+  .badge.sale { background: #b91c1c; color: #fff; }
+  .badge.low { background: #fef3c7; color: #92400e; }
+  .wish { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; border-radius: 999px; background: rgba(255,255,255,0.9); border: 1px solid var(--line); display: grid; place-items: center; color: var(--muted); cursor: pointer; padding: 0; }
+
+  .product h3 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
+  .product .meta { color: var(--muted); font-size: 13px; }
+  .rating { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+  .stars { display: inline-flex; gap: 1px; color: var(--star); }
+  .stars .off { color: #ddd8d0; }
+  .price-row { display: flex; align-items: baseline; gap: 8px; margin-top: 2px; }
+  .price { font-weight: 650; font-size: 16px; font-variant-numeric: tabular-nums; }
+  .was { color: #a5a099; text-decoration: line-through; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .save { font-size: 12.5px; font-weight: 650; color: #b91c1c; }
+  .colorways { display: flex; gap: 5px; margin-top: 2px; }
+  .colorways i { width: 14px; height: 14px; border-radius: 999px; border: 1px solid var(--line); display: block; }
+
+  .loadmore { display: flex; justify-content: center; margin-top: 40px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 10px; font: inherit; font-size: 14.5px; font-weight: 550; padding: 11px 22px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a class="logo" href="#"><span class="mk"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M6 7v12M18 7v12M4 19h16"></path></svg></span>Fieldnote</a>
+    <nav>
+      <a href="#">Desks</a>
+      <a href="#">Seating</a>
+      <a href="#">Storage</a>
+      <a href="#">Lighting</a>
+      <a href="#">Accessories</a>
+    </nav>
+    <div class="tools">
+      <a class="icon-link" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>Search</a>
+      <a class="icon-link" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Account</a>
+      <a class="icon-link" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"></path><circle cx="9" cy="20" r="1.5"></circle><circle cx="18" cy="20" r="1.5"></circle><path d="M6 6 5 2H2"></path></svg>Bag (2)</a>
+    </div>
+  </div>
+</header>
+
+<p class="crumbs"><a href="#">Home</a><span class="sep">/</span><a href="#">Workspace</a><span class="sep">/</span>Desks &amp; chairs</p>
+
+<div class="layout">
+  <aside class="filters">
+    <h1>Desks &amp; chairs</h1>
+    <p class="total">184 products</p>
+
+    <div class="fgroup">
+      <h2>Category</h2>
+      <label class="fopt"><input type="checkbox" checked>Standing desks<span class="n">42</span></label>
+      <label class="fopt"><input type="checkbox" checked>Writing desks<span class="n">38</span></label>
+      <label class="fopt"><input type="checkbox">Task chairs<span class="n">54</span></label>
+      <label class="fopt"><input type="checkbox">Stools &amp; perches<span class="n">21</span></label>
+      <label class="fopt"><input type="checkbox">Desk risers<span class="n">29</span></label>
+    </div>
+
+    <div class="fgroup">
+      <h2>Price</h2>
+      <div class="price-range">
+        <div class="price-inputs">
+          <input type="number" value="120" aria-label="Minimum price">
+          <span>to</span>
+          <input type="number" value="1400" aria-label="Maximum price">
+        </div>
+        <input type="range" min="0" max="100" value="68" aria-label="Price range">
+      </div>
+    </div>
+
+    <div class="fgroup">
+      <h2>Material</h2>
+      <label class="fopt"><input type="checkbox">Solid oak<span class="n">31</span></label>
+      <label class="fopt"><input type="checkbox" checked>Walnut veneer<span class="n">24</span></label>
+      <label class="fopt"><input type="checkbox">Powder-coated steel<span class="n">47</span></label>
+      <label class="fopt"><input type="checkbox">Recycled composite<span class="n">18</span></label>
+    </div>
+
+    <div class="fgroup">
+      <h2>Finish</h2>
+      <div class="swatches">
+        <span class="swatch sw-oak"></span>
+        <span class="swatch sw-walnut"></span>
+        <span class="swatch sw-black"></span>
+        <span class="swatch sw-white"></span>
+        <span class="swatch sw-sage"></span>
+        <span class="swatch sw-clay"></span>
+      </div>
+    </div>
+
+    <div class="fgroup">
+      <h2>Availability</h2>
+      <label class="fopt"><input type="checkbox" checked>In stock<span class="n">151</span></label>
+      <label class="fopt"><input type="checkbox">Ships in 48 hours<span class="n">88</span></label>
+      <label class="fopt"><input type="checkbox">Made to order<span class="n">33</span></label>
+    </div>
+
+    <div class="fgroup">
+      <h2>Rating</h2>
+      <label class="fopt"><input type="checkbox">4 stars and up<span class="n">129</span></label>
+      <label class="fopt"><input type="checkbox">3 stars and up<span class="n">166</span></label>
+    </div>
+
+    <a class="clear-all" href="#">Clear all filters</a>
+  </aside>
+
+  <section>
+    <div class="results-top">
+      <span class="count">Showing 8 of 184</span>
+      <span class="active-filters">
+        <span class="pill">Standing desks <span class="x">×</span></span>
+        <span class="pill">Writing desks <span class="x">×</span></span>
+        <span class="pill">Walnut veneer <span class="x">×</span></span>
+        <span class="pill">In stock <span class="x">×</span></span>
+      </span>
+      <span class="sort">
+        <label for="sort-by">Sort</label>
+        <select id="sort-by">
+          <option>Most popular</option>
+          <option>Price, low to high</option>
+          <option>Price, high to low</option>
+          <option>Newest first</option>
+          <option>Highest rated</option>
+        </select>
+      </span>
+    </div>
+
+    <div class="grid">
+      <article class="product">
+        <div class="thumb t-oak">
+          <span class="badges"><span class="badge new">New</span></span>
+          <button class="wish" type="button" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"></path></svg></button>
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h18M5 8v11M19 8v11M3 19h18"></path></svg>
+        </div>
+        <h3>Alder Standing Desk 140</h3>
+        <p class="meta">Electric, dual motor · 140 × 70 cm</p>
+        <p class="rating"><span class="stars">★★★★<span class="off">★</span></span> 4.3 <span>(218)</span></p>
+        <p class="price-row"><span class="price">£849.00</span></p>
+        <span class="colorways"><i class="sw-oak"></i><i class="sw-walnut"></i><i class="sw-black"></i></span>
+      </article>
+
+      <article class="product">
+        <div class="thumb t-walnut">
+          <span class="badges"><span class="badge sale">−20%</span><span class="badge low">Low stock</span></span>
+          <button class="wish" type="button" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"></path></svg></button>
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 9h16M6 9v10M18 9v10M4 19h16M8 13h8"></path></svg>
+        </div>
+        <h3>Brackenhill Writing Desk</h3>
+        <p class="meta">Walnut veneer · two drawers</p>
+        <p class="rating"><span class="stars">★★★★★</span> 4.8 <span>(96)</span></p>
+        <p class="price-row"><span class="price">£512.00</span><span class="was">£640.00</span><span class="save">Save £128</span></p>
+        <span class="colorways"><i class="sw-walnut"></i><i class="sw-black"></i></span>
+      </article>
+
+      <article class="product">
+        <div class="thumb t-slate">
+          <span class="badges"></span>
+          <button class="wish" type="button" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"></path></svg></button>
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 20v-6h10v6M9 14V8a3 3 0 0 1 6 0v6M12 20v2"></path></svg>
+        </div>
+        <h3>Corvid Task Chair</h3>
+        <p class="meta">Mesh back · 4D armrests</p>
+        <p class="rating"><span class="stars">★★★★<span class="off">★</span></span> 4.1 <span>(1,204)</span></p>
+        <p class="price-row"><span class="price">£389.00</span></p>
+        <span class="colorways"><i class="sw-black"></i><i class="sw-sage"></i><i class="sw-white"></i></span>
+      </article>
+
+      <article class="product">
+        <div class="thumb t-sage">
+          <span class="badges"><span class="badge">Editor's pick</span></span>
+          <button class="wish" type="button" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"></path></svg></button>
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 10h18M5 10v9M19 10v9M9 10V5h6v5"></path></svg>
+        </div>
+        <h3>Dunlin Sit-Stand Riser</h3>
+        <p class="meta">Fits monitors up to 32" · gas spring</p>
+        <p class="rating"><span class="stars">★★★★<span class="off">★</span></span> 4.5 <span>(342)</span></p>
+        <p class="price-row"><span class="price">£179.00</span></p>
+        <span class="colorways"><i class="sw-black"></i><i class="sw-white"></i></span>
+      </article>
+
+      <article class="product">
+        <div class="thumb t-oak">
+          <span class="badges"><span class="badge low">Low stock</span></span>
+          <button class="wish" type="button" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"></path></svg></button>
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h18M5 8v11M19 8v11M3 19h18M8 12h8"></path></svg>
+        </div>
+        <h3>Everley Compact Desk 110</h3>
+        <p class="meta">Solid oak · cable channel</p>
+        <p class="rating"><span class="stars">★★★★<span class="off">★</span></span> 4.4 <span>(157)</span></p>
+        <p class="price-row"><span class="price">£629.00</span></p>
+        <span class="colorways"><i class="sw-oak"></i><i class="sw-white"></i></span>
+      </article>
+
+      <article class="product">
+        <div class="thumb t-slate">
+          <span class="badges"><span class="badge sale">−15%</span></span>
+          <button class="wish" type="button" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"></path></svg></button>
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 20v-5h10v5M10 15V9a2 2 0 0 1 4 0v6M12 20v2"></path></svg>
+        </div>
+        <h3>Fenwick Ergonomic Chair</h3>
+        <p class="meta">Lumbar support · 12-year warranty</p>
+        <p class="rating"><span class="stars">★★★★★</span> 4.7 <span>(2,881)</span></p>
+        <p class="price-row"><span class="price">£722.00</span><span class="was">£849.00</span><span class="save">Save £127</span></p>
+        <span class="colorways"><i class="sw-black"></i><i class="sw-clay"></i><i class="sw-sage"></i></span>
+      </article>
+
+      <article class="product">
+        <div class="thumb t-walnut">
+          <span class="badges"><span class="badge new">New</span></span>
+          <button class="wish" type="button" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"></path></svg></button>
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 9h16M6 9v10M18 9v10M4 19h16"></path></svg>
+        </div>
+        <h3>Garrow Executive Desk 180</h3>
+        <p class="meta">Walnut veneer · integrated power</p>
+        <p class="rating"><span class="stars">★★★★<span class="off">★</span></span> 4.2 <span>(41)</span></p>
+        <p class="price-row"><span class="price">£1,349.00</span></p>
+        <span class="colorways"><i class="sw-walnut"></i><i class="sw-black"></i></span>
+      </article>
+
+      <article class="product">
+        <div class="thumb t-sage">
+          <span class="badges"></span>
+          <button class="wish" type="button" aria-label="Save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"></path></svg></button>
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 19h8l-1-7H9z"></path><path d="M12 12V6M9 6h6"></path></svg>
+        </div>
+        <h3>Harlow Perch Stool</h3>
+        <p class="meta">Height adjustable · felt seat</p>
+        <p class="rating"><span class="stars">★★★<span class="off">★★</span></span> 3.6 <span>(74)</span></p>
+        <p class="price-row"><span class="price">£148.00</span></p>
+        <span class="colorways"><i class="sw-sage"></i><i class="sw-clay"></i><i class="sw-black"></i></span>
+      </article>
+    </div>
+
+    <div class="loadmore">
+      <button class="btn" type="button">Load 24 more</button>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

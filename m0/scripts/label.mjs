@@ -1,36 +1,48 @@
 #!/usr/bin/env node
 // Labelling pass. Serves a keyboard-driven local UI at http://localhost:8731.
 //
-//   node m0/scripts/label.mjs           label the real survivors
-//   node m0/scripts/label.mjs --demo    walk the flow on clearly-marked synthetic
-//                                       entries; writes labels.demo.jsonl, which
-//                                       verdict.mjs never reads
+//   node m0/scripts/label.mjs                  label the real survivors (m0/results)
+//   node m0/scripts/label.mjs --set validation label a second corpus's survivors
+//                                              (m0/validation/results) — same UI,
+//                                              same keys, its own labels file
+//   node m0/scripts/label.mjs --demo           walk the flow on clearly-marked
+//                                              synthetic entries; writes
+//                                              labels.demo.jsonl, which
+//                                              verdict.mjs never reads
 //
 // Every judgement is appended to disk before the UI advances, so killing the
 // process loses nothing and re-running resumes at the first unlabelled item.
 import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
-import { fileURLToPath, pathToFileURL } from 'node:url';
 import { verifyCorpus } from './verify-corpus.mjs';
+import { resolveSet, M0 } from './paths.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const RESULTS = path.join(ROOT, 'results');
+const SET = resolveSet();
+const ROOT = SET.root;
+const RESULTS = SET.resultsDir;
+const PAGESDIR = SET.pagesDir;
 const DEMO = process.argv.includes('--demo');
 const LABELS = path.join(RESULTS, DEMO ? 'labels.demo.jsonl' : 'labels.jsonl');
 const PORT = 8731;
 
 let items, meta;
 if (DEMO) {
-  const demo = JSON.parse(fs.readFileSync(path.join(ROOT, 'fixtures/demo-survivors.json'), 'utf8'));
+  const demo = JSON.parse(fs.readFileSync(path.join(M0, 'fixtures/demo-survivors.json'), 'utf8'));
   items = demo.findings; meta = { demo: true, corpusHash: 'SYNTHETIC-DEMO-NOT-REAL-DATA' };
 } else {
-  verifyCorpus(ROOT, { quiet: true });
+  const setArg = SET.isDefault ? '' : ` --set ${path.basename(ROOT)}`;
+  const manifest = verifyCorpus(ROOT, { quiet: true, setArg });
   const f = path.join(RESULTS, 'survivors.json');
-  if (!fs.existsSync(f)) { console.error('No m0/results/survivors.json — run: node m0/scripts/run.mjs'); process.exit(1); }
+  if (!fs.existsSync(f)) { console.error(`No ${SET.rel}/results/survivors.json — run: node m0/scripts/run.mjs${setArg}`); process.exit(1); }
   const s = JSON.parse(fs.readFileSync(f, 'utf8'));
   items = s.pages.flatMap(p => p.findings.map(x => ({ ...x, kind: p.kind, selfConsistent: p.selfConsistent })));
-  meta = { demo: false, corpusHash: s.corpusHash, ranAt: s.ranAt, pages: s.totals.pages, engineVersions: s.environment.engineVersions };
+  meta = { demo: false, corpusHash: s.corpusHash, corpusVersion: s.corpusVersion, ranAt: s.ranAt,
+    pages: s.totals.pages, engineVersions: s.environment.engineVersions,
+    setArg, setLabel: SET.isDefault ? 'M0' : `M0 · ${path.basename(ROOT)}`,
+    // Which corpus is on screen, stated in the UI rather than assumed: the two
+    // sets share the labelling flow and differ only in where the pages came from.
+    setBanner: SET.isDefault ? null : `${manifest.corpusVersion} — ${manifest.pageCount} pages · ${manifest.provenance?.origin || 'unknown origin'} · labels -> ${SET.rel}/results/labels.jsonl` };
 }
 
 // Root-cause grouping for the REVIEW pass only.
@@ -103,14 +115,14 @@ const server = http.createServer((req, res) => {
     });
   }
   if (u.pathname.startsWith('/shots/') || u.pathname.startsWith('/demoshots/')) {
-    const base = u.pathname.startsWith('/demoshots/') ? path.join(ROOT, 'fixtures/demoshots') : path.join(RESULTS, 'shots');
+    const base = u.pathname.startsWith('/demoshots/') ? path.join(M0, 'fixtures/demoshots') : path.join(RESULTS, 'shots');
     const f = path.join(base, path.basename(decodeURIComponent(u.pathname)));
     if (!f.startsWith(base) || !fs.existsSync(f)) return send(404, 'text/plain', 'no shot');
     return send(200, MIME[path.extname(f)] || 'application/octet-stream', fs.readFileSync(f));
   }
   if (u.pathname.startsWith('/page/')) {
-    const f = path.join(ROOT, 'corpus/pages', path.basename(decodeURIComponent(u.pathname)));
-    if (!f.startsWith(path.join(ROOT, 'corpus/pages')) || !fs.existsSync(f)) return send(404, 'text/plain', 'no page');
+    const f = path.join(PAGESDIR, path.basename(decodeURIComponent(u.pathname)));
+    if (!f.startsWith(PAGESDIR) || !fs.existsSync(f)) return send(404, 'text/plain', 'no page');
     return send(200, 'text/html; charset=utf-8', fs.readFileSync(f));
   }
   send(404, 'text/plain', 'not found');
@@ -154,7 +166,7 @@ a{color:#818cf8}
 </style></head><body>
 <div id="demoflag"></div>
 <header>
-  <strong>M0</strong>
+  <strong id="setname">M0</strong>
   <div class="bar"><i id="prog" style="width:0"></i></div>
   <span id="count" class="dim"></span>
   <span id="pace" class="dim"></span>
@@ -170,6 +182,8 @@ const firstOpen=()=>{const i=S.units.findIndex(u=>!labelled(u));return i<0?S.uni
 async function load(){
   S=await (await fetch('/api/state')).json();
   if(S.meta.demo) document.getElementById('demoflag').innerHTML='<div class="demo">DEMO MODE — synthetic entries, written to labels.demo.jsonl, excluded from the verdict</div>';
+  if(S.meta.setLabel) document.getElementById('setname').textContent=S.meta.setLabel;
+  if(S.meta.setBanner) document.getElementById('demoflag').innerHTML='<div class="demo" style="background:#1e3a8a;color:#bfdbfe">'+S.meta.setBanner+'</div>';
   idx=firstOpen();
   render();
 }
@@ -191,7 +205,7 @@ function render(){
     for(const u of S.units){const l=S.labels[u.rep.id]; if(l) counts[l.label]=(counts[l.label]||0)+u.count;}
     app.innerHTML='<div class="done"><h1>All '+n+' units labelled.</h1><p class="dim">'+
       Object.entries(counts).map(([k,v])=>v+' findings '+(LBL[k]||k)).join(' · ')+
-      '</p><p>Now run <code>node m0/scripts/verdict.mjs</code></p>'+
+      '</p><p>Now run <code>node m0/scripts/verdict.mjs'+(S.meta.setArg||'')+'</code></p>'+
       (counts.skip?'<p class="dim">You skipped some. Press <b>r</b> to revisit them.</p>':'')+'</div>';
     return;
   }
@@ -274,5 +288,5 @@ server.listen(PORT, () => {
   console.log(`\n${DEMO ? 'DEMO MODE — synthetic entries, writes labels.demo.jsonl' : `${items.length} survivors, grouped into ${units.length} root-cause units to review`}`);
   console.log(`open  http://localhost:${PORT}`);
   console.log(`keys  1 genuine · 2 expected engine difference · 3 tool artifact · s skip · u undo · n note`);
-  console.log(`saves to m0/results/${path.basename(LABELS)} after every judgement — safe to quit and resume\n`);
+  console.log(`saves to ${SET.rel}/results/${path.basename(LABELS)} after every judgement — safe to quit and resume\n`);
 });
