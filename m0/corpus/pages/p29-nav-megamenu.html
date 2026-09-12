@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p29-nav-megamenu</title>
+<!-- M0 corpus page. Spec: nav. See m0/corpus/SPECS.md for the brief. -->
+<link rel="stylesheet" href="../assets/util.css">
+<style>
+body{font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif}
+.mega{position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #e2e8f0;
+  box-shadow:0 24px 40px rgba(15,23,42,.08);z-index:50}
+.mega-inner{max-width:80rem;margin:0 auto;padding:2.5rem 1.5rem;display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr)) 300px;gap:2.5rem}
+.mega-link{display:flex;gap:.75rem;padding:.5rem;border-radius:.5rem}
+.promo{border-top:1px solid #e2e8f0;background:#f8fafc}
+.promo-inner{max-width:80rem;margin:0 auto;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+@media (max-width:1000px){.mega-inner{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="relative">
+  <header class="border-b bg-white relative" style="z-index:51">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center gap-8">
+      <a class="flex items-center gap-2 font-semibold shrink-0"><svg class="w-6 h-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg>Northwind</a>
+      <nav class="flex items-center gap-6 text-sm">
+        <button type="button" class="flex items-center gap-1 text-indigo-600 font-medium border-0 bg-transparent">Platform <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <a class="text-slate-600 whitespace-nowrap">Solutions</a><a class="text-slate-600 whitespace-nowrap">Developers</a><a class="text-slate-600 whitespace-nowrap">Pricing</a><a class="text-slate-600 whitespace-nowrap">Company</a>
+      </nav>
+      <div class="ml-auto flex items-center gap-3"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-transparent text-slate-600 text-sm">Sign in</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white text-sm">Get a demo</button></div>
+    </div>
+  </header>
+  <div class="mega">
+    <div class="mega-inner">
+      <div class="flex flex-col gap-1">
+        <span class="text-xs uppercase tracking-wide text-slate-400 px-2 mb-1">Build</span>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Pipelines</span><span class="block text-xs text-slate-500 line-clamp-2">Orchestration latency attribution retention provisioning segmentation latency allocation replication.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2"/><path d="M17 3.5a4 4 0 010 7"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Transforms</span><span class="block text-xs text-slate-500 line-clamp-2">Provisioning pipeline latency forecasting indexing ingestion normalization.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Schedules</span><span class="block text-xs text-slate-500 line-clamp-2">Observability entitlement latency entitlement indexing retention allocation pipeline replication segmentation.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Secrets</span><span class="block text-xs text-slate-500 line-clamp-2">Normalization throughput pipeline forecasting reconciliation reconciliation pipeline orchestration entitlement.</span></span></a>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="text-xs uppercase tracking-wide text-slate-400 px-2 mb-1">Observe</span>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Metrics</span><span class="block text-xs text-slate-500 line-clamp-2">Observability latency latency reconciliation allocation orchestration ingestion provisioning pipeline observability.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2"/><path d="M17 3.5a4 4 0 010 7"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Traces</span><span class="block text-xs text-slate-500 line-clamp-2">Ingestion forecasting latency indexing reconciliation observability normalization latency.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Alerting</span><span class="block text-xs text-slate-500 line-clamp-2">Latency indexing indexing replication federation pipeline latency latency attribution retention.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">SLOs</span><span class="block text-xs text-slate-500 line-clamp-2">Provisioning entitlement provisioning replication allocation indexing.</span></span></a>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="text-xs uppercase tracking-wide text-slate-400 px-2 mb-1">Govern</span>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Access control</span><span class="block text-xs text-slate-500 line-clamp-2">Federation allocation throughput reconciliation latency segmentation entitlement.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2"/><path d="M17 3.5a4 4 0 010 7"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Audit log</span><span class="block text-xs text-slate-500 line-clamp-2">Entitlement allocation forecasting orchestration throughput attribution attribution observability.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Data residency</span><span class="block text-xs text-slate-500 line-clamp-2">Reconciliation normalization entitlement throughput ingestion reconciliation reconciliation.</span></span></a>
+        <a class="mega-link"><span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="min-w-0"><span class="block text-sm font-medium">Retention</span><span class="block text-xs text-slate-500 line-clamp-2">Pipeline reconciliation forecasting normalization allocation provisioning orchestration pipeline.</span></span></a>
+      </div>
+      <div class="flex flex-col gap-3 bg-slate-50 rounded-xl p-5">
+        <div class="aspect-video rounded-lg overflow-hidden relative" style="background:linear-gradient(135deg,#0ea5e9,#0f172a)">
+      
+    </div>
+        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600">New</span>
+        <h3 class="font-semibold leading-tight">Provisioning attribution normalization reconciliation normalization entitlement.</h3>
+        <p class="text-sm text-slate-600 line-clamp-3">Attribution provisioning allocation allocation replication pipeline forecasting indexing retention forecasting replication forecasting retention attribution throughput provisioning orchestration provisioning.</p>
+        <a class="text-sm font-medium text-indigo-600 mt-auto">Read the announcement →</a>
+      </div>
+    </div>
+    <div class="promo"><div class="promo-inner">
+      <svg class="w-5 h-5 text-indigo-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg>
+      <span class="text-sm flex-1 min-w-0">Replication latency replication retention throughput attribution indexing attribution provisioning allocation provisioning retention provisioning.</span>
+      <a class="text-sm font-medium text-indigo-600 whitespace-nowrap">See what's new →</a>
+    </div></div>
+  </div>
+  <main class="max-w-4xl mx-auto px-6 text-center flex flex-col items-center gap-6" style="padding-top:6rem;padding-bottom:6rem">
+    <h1 class="text-5xl font-extrabold tracking-tight text-balance">One platform for every data path</h1>
+    <p class="text-xl text-slate-600">Reconciliation retention retention provisioning replication entitlement entitlement federation ingestion retention reconciliation observability provisioning indexing pipeline indexing forecasting federation.</p>
+    <div class="flex gap-3 flex-wrap justify-center"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white px-5 py-3">Start free</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border px-5 py-3">Talk to us</button></div>
+  </main>
+</div>
+</body>
+</html>

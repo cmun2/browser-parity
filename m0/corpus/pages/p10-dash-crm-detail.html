@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p10-dash-crm-detail</title>
+<!-- M0 corpus page. Spec: dashboard. See m0/corpus/SPECS.md for the brief. -->
+<link rel="stylesheet" href="../assets/util.css">
+<style>
+body{font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif}
+.detail{display:grid;grid-template-columns:280px minmax(0,1fr) 260px;gap:1.5rem;padding:1.5rem;align-items:start}
+@media (max-width:1200px){.detail{grid-template-columns:1fr}}
+.pagehead{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #e2e8f0}
+.field{display:flex;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid #f1f5f9;font-size:.875rem}
+.field dt{color:#64748b}.field dd{margin:0;text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="min-h-screen bg-slate-50">
+  <div class="pagehead px-6 py-4 flex flex-col gap-3">
+    <nav class="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
+    <a class=" whitespace-nowrap">Accounts</a><span class="text-slate-300">/</span><a class=" whitespace-nowrap">Enterprise</a><span class="text-slate-300">/</span><a class="text-slate-900 font-medium whitespace-nowrap">Everstack</a>
+  </nav>
+    <div class="flex items-center gap-4 flex-wrap">
+      <div class="w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">EI</div>
+      <div class="min-w-0"><h1 class="text-xl font-bold tracking-tight truncate">Everstack Inc.</h1><p class="text-sm text-slate-500 truncate">Nairobi · 1,200 employees · everstack.example</p></div>
+      <div class="ml-auto flex gap-2"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm">Log call</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm">Add note</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white text-sm">Create deal</button></div>
+    </div>
+  </div>
+  <div class="detail">
+    <div class="flex flex-col gap-6">
+      <div class="bg-white border rounded-xl p-5 flex flex-col gap-3"><h2 class="font-semibold">Details</h2>
+        <dl><div class="field"><dt>Owner</dt><dd>Priya Raghunathan</dd></div><div class="field"><dt>Stage</dt><dd>Negotiation</dd></div><div class="field"><dt>ARR</dt><dd>$248,000</dd></div><div class="field"><dt>Renewal</dt><dd>14 Mar 2027</dd></div><div class="field"><dt>Region</dt><dd>Toronto</dd></div><div class="field"><dt>Health</dt><dd>Good</dd></div></dl>
+      </div>
+      <div class="bg-white border rounded-xl p-5 flex flex-col gap-3"><h2 class="font-semibold">Contacts</h2>
+        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">RO</div><div class="min-w-0"><div class="text-sm font-medium truncate">Ruben Oyelaran</div><div class="text-xs text-slate-500 truncate">Staff Engineer</div></div></div>
+        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">TB</div><div class="min-w-0"><div class="text-sm font-medium truncate">Tobias Brandt</div><div class="text-xs text-slate-500 truncate">Product Lead</div></div></div>
+        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">EV</div><div class="min-w-0"><div class="text-sm font-medium truncate">Elena Volkova</div><div class="text-xs text-slate-500 truncate">Site Reliability Lead</div></div></div>
+        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">KB</div><div class="min-w-0"><div class="text-sm font-medium truncate">Kwame Boateng</div><div class="text-xs text-slate-500 truncate">Principal Designer</div></div></div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <div class="border-b"><div class="flex gap-6 overflow-x-auto">
+    <button type="button" class="py-3 text-sm whitespace-nowrap border-b-2 border-indigo-600 text-indigo-600 font-medium" style="">Activity</button>
+    <button type="button" class="py-3 text-sm whitespace-nowrap border-b-2 border-0 text-slate-500" style="border-bottom-color:transparent">Notes</button>
+    <button type="button" class="py-3 text-sm whitespace-nowrap border-b-2 border-0 text-slate-500" style="border-bottom-color:transparent">Files <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">3</span></button>
+    <button type="button" class="py-3 text-sm whitespace-nowrap border-b-2 border-0 text-slate-500" style="border-bottom-color:transparent">Emails</button>
+  </div></div>
+      <div class="bg-white border rounded-xl " >
+  <div class="px-5 py-4 border-b flex items-center justify-between"><h3 class="font-semibold">Recent activity</h3><a class="text-sm text-indigo-600">View all</a></div>
+  <ul class="divide-y">
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">AO</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Amara Osei</span> deployed <a class="text-indigo-600">Northwind/orchestration</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Normalization reconciliation pipeline forecasting reconciliation federation replication orchestration entitlement pipeline.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">1h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">JL</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Jonas Lindqvist</span> commented on <a class="text-indigo-600">Halyard/throughput</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Orchestration orchestration ingestion replication indexing observability indexing indexing orchestration replication.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">2h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#7c3aed">PR</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Priya Raghunathan</span> closed <a class="text-indigo-600">Cadence/latency</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Entitlement provisioning observability attribution retention observability federation segmentation orchestration provisioning indexing federation latency.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">3h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">DF</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Diego Fuentes</span> reopened <a class="text-indigo-600">Meridian/pipeline</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Attribution retention replication pipeline segmentation replication observability throughput allocation attribution retention.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">4h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">MC</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Mei-Ling Chen</span> assigned <a class="text-indigo-600">Kestrel/ingestion</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Pipeline entitlement segmentation forecasting observability reconciliation indexing federation segmentation segmentation observability segmentation.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">5h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">TB</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Tobias Brandt</span> merged <a class="text-indigo-600">Lumen/observability</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Orchestration replication attribution indexing federation throughput segmentation orchestration normalization latency.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">6h</span>
+    </li>
+    <li class="px-5 py-4 flex items-start gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#4f46e5">NH</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm"><span class="font-medium">Nadia Haddad</span> deployed <a class="text-indigo-600">Basalt/provisioning</a></p>
+        <p class="text-xs text-slate-500 mt-1 truncate">Forecasting attribution segmentation orchestration segmentation indexing throughput orchestration observability observability provisioning.</p>
+      </div>
+      <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">7h</span>
+    </li>
+  </ul>
+</div>
+      <div class="bg-white border rounded-xl p-5 flex flex-col gap-4">
+  <div class="flex items-center justify-between">
+    <div><h3 class="font-semibold">Product usage</h3><p class="text-xs text-slate-500">Last 24 hours</p></div>
+    <div class="flex gap-2"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border px-3 py-1 text-xs">Day</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-transparent text-slate-600 px-3 py-1 text-xs">Week</button></div>
+  </div>
+  <svg viewBox="0 0 576 130" class="w-full" style="height:160px" preserveAspectRatio="none" aria-hidden="true">
+    <rect x="8" y="102" width="30" height="18" rx="3" fill="#c7d2fe"/><rect x="56" y="95" width="30" height="25" rx="3" fill="#c7d2fe"/><rect x="104" y="88" width="30" height="32" rx="3" fill="#c7d2fe"/><rect x="152" y="81" width="30" height="39" rx="3" fill="#c7d2fe"/><rect x="200" y="74" width="30" height="46" rx="3" fill="#c7d2fe"/><rect x="248" y="67" width="30" height="53" rx="3" fill="#c7d2fe"/><rect x="296" y="60" width="30" height="60" rx="3" fill="#c7d2fe"/><rect x="344" y="53" width="30" height="67" rx="3" fill="#c7d2fe"/><rect x="392" y="46" width="30" height="74" rx="3" fill="#c7d2fe"/><rect x="440" y="39" width="30" height="81" rx="3" fill="#c7d2fe"/><rect x="488" y="32" width="30" height="88" rx="3" fill="#c7d2fe"/><rect x="536" y="25" width="30" height="95" rx="3" fill="#c7d2fe"/>
+    <polyline points="0,80 24,72 48,64 72,58 96,53 120,51 144,51 168,53 192,57 216,62 240,68 264,73 288,78 312,81 336,82 360,81 384,77 408,72 432,65 456,57 480,48 504,40 528,33 552,28 576,25" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linejoin="round"/>
+  </svg>
+  <div class="flex justify-between text-xs text-slate-400"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+</div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <div class="bg-white border rounded-xl p-5 flex flex-col gap-3"><h2 class="font-semibold text-sm">Open deals</h2>
+        <div class="flex flex-col gap-1 pb-3 border-b"><span class="text-sm font-medium truncate">Meridian expansion</span><span class="text-xs text-slate-500">$40k · closes Q1</span></div><div class="flex flex-col gap-1 pb-3 border-b"><span class="text-sm font-medium truncate">Slipstream expansion</span><span class="text-xs text-slate-500">$53k · closes Q2</span></div><div class="flex flex-col gap-1 pb-3 border-b"><span class="text-sm font-medium truncate">Anchorage expansion</span><span class="text-xs text-slate-500">$66k · closes Q3</span></div>
+      </div>
+      <div class="bg-white border rounded-xl p-5 flex flex-col gap-3"><h2 class="font-semibold text-sm">Tickets</h2>
+        <div class="flex items-start gap-2"><svg class="w-4 h-4 text-slate-400 shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="text-sm line-clamp-2">Allocation pipeline latency throughput retention latency forecasting segmentation entitlement retention normalization attribution replication pipeline allocation segmentation replication.</span></div><div class="flex items-start gap-2"><svg class="w-4 h-4 text-slate-400 shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="text-sm line-clamp-2">Pipeline latency retention orchestration observability ingestion ingestion federation latency observability.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

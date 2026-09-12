@@ -45,6 +45,12 @@ cherry-picking, every surviving finding labelled by hand.
 - **Pivot** to a cross-engine design-system linter if the findings are all form controls
   and text metrics
 
+The harness is built and the corpus is frozen — see **[`m0/README.md`](m0/README.md)**.
+The 30-page corpus was committed before it was measured, and every stage re-hashes
+it, so the base rate cannot be tuned after the fact. The measurement has been run
+(1722 raw findings → 475 survivors, median 4/page); the hand-labelling pass that
+produces the verdict has not.
+
 ## Known ceiling
 
 Playwright's WebKit is not Safari. A finding is credible; the absence of one does not clear

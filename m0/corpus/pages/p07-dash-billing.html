@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p07-dash-billing</title>
+<!-- M0 corpus page. Spec: dashboard. See m0/corpus/SPECS.md for the brief. -->
+<style>
+/* util.css — a hand-written subset of the Tailwind-style utility vocabulary.
+   Used by the utility-class half of the corpus. A local file rather than the
+   Tailwind CDN because the corpus must render with zero network access. */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;color:#0f172a;background:#fff;line-height:1.5}
+h1,h2,h3,h4,p,figure,blockquote,dl,dd{margin:0}
+ul[class],ol[class]{list-style:none;margin:0;padding:0}
+img,svg,video{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+table{border-collapse:collapse}
+
+.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.block{display:block}
+.inline-block{display:inline-block}.hidden{display:none}.contents{display:contents}
+.flex-col{flex-direction:column}.flex-row{flex-direction:row}.flex-wrap{flex-wrap:wrap}
+.items-center{align-items:center}.items-start{align-items:flex-start}.items-end{align-items:flex-end}
+.items-stretch{align-items:stretch}.items-baseline{align-items:baseline}
+.justify-between{justify-content:space-between}.justify-center{justify-content:center}
+.justify-end{justify-content:flex-end}.justify-start{justify-content:flex-start}
+.flex-1{flex:1 1 0%}.flex-auto{flex:1 1 auto}.flex-none{flex:none}.shrink-0{flex-shrink:0}.grow{flex-grow:1}
+.min-w-0{min-width:0}.min-h-0{min-height:0}
+.gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}
+.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-10{gap:2.5rem}.gap-12{gap:3rem}
+.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
+.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid-cols-6{grid-template-columns:repeat(6,minmax(0,1fr))}
+.grid-cols-12{grid-template-columns:repeat(12,minmax(0,1fr))}
+.auto-fit-240{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.auto-fit-280{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.auto-fit-320{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.col-span-2{grid-column:span 2/span 2}.col-span-3{grid-column:span 3/span 3}
+.col-span-4{grid-column:span 4/span 4}.col-span-8{grid-column:span 8/span 8}
+.col-span-full{grid-column:1/-1}.row-span-2{grid-row:span 2/span 2}
+
+.p-0{padding:0}.p-1{padding:.25rem}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}
+.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.p-10{padding:2.5rem}
+.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}
+.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}
+.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}
+.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}
+.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}
+.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-8{padding-top:2rem;padding-bottom:2rem}
+.py-12{padding-top:3rem;padding-bottom:3rem}.py-16{padding-top:4rem;padding-bottom:4rem}
+.py-20{padding-top:5rem;padding-bottom:5rem}.pt-4{padding-top:1rem}.pb-4{padding-bottom:1rem}
+.m-0{margin:0}.mx-auto{margin-left:auto;margin-right:auto}.ml-auto{margin-left:auto}
+.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}
+.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}
+.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}
+.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mb-12{margin-bottom:3rem}
+
+.w-full{width:100%}.w-auto{width:auto}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}
+.w-8{width:2rem}.w-9{width:2.25rem}.w-10{width:2.5rem}.w-12{width:3rem}.w-16{width:4rem}
+.w-20{width:5rem}.w-24{width:6rem}.w-32{width:8rem}.w-48{width:12rem}.w-56{width:14rem}
+.w-64{width:16rem}.w-72{width:18rem}.w-80{width:20rem}
+.h-full{height:100%}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-8{height:2rem}
+.h-9{height:2.25rem}.h-10{height:2.5rem}.h-12{height:3rem}.h-16{height:4rem}.h-20{height:5rem}
+.h-24{height:6rem}.h-32{height:8rem}.h-40{height:10rem}.h-48{height:12rem}.h-64{height:16rem}
+.h-2{height:.5rem}.h-1{height:.25rem}
+.max-w-xs{max-width:20rem}.max-w-sm{max-width:24rem}.max-w-md{max-width:28rem}
+.max-w-lg{max-width:32rem}.max-w-xl{max-width:36rem}.max-w-2xl{max-width:42rem}
+.max-w-3xl{max-width:48rem}.max-w-4xl{max-width:56rem}.max-w-5xl{max-width:64rem}
+.max-w-6xl{max-width:72rem}.max-w-7xl{max-width:80rem}.max-w-none{max-width:none}
+.min-h-screen{min-height:100vh}.h-screen{height:100vh}.min-h-dvh{min-height:100dvh}
+.aspect-video{aspect-ratio:16/9}.aspect-square{aspect-ratio:1/1}
+
+.text-xs{font-size:.75rem;line-height:1rem}.text-sm{font-size:.875rem;line-height:1.25rem}
+.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}
+.text-xl{font-size:1.25rem;line-height:1.75rem}.text-2xl{font-size:1.5rem;line-height:2rem}
+.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}
+.text-5xl{font-size:3rem;line-height:1}.text-6xl{font-size:3.75rem;line-height:1}
+.font-normal{font-weight:400}.font-medium{font-weight:500}.font-semibold{font-weight:600}
+.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.tracking-tight{letter-spacing:-.025em}.tracking-wide{letter-spacing:.025em}
+.leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}
+.text-center{text-align:center}.text-left{text-align:left}.text-right{text-align:right}
+.uppercase{text-transform:uppercase}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.whitespace-nowrap{white-space:nowrap}.break-words{overflow-wrap:break-word}
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.text-balance{text-wrap:balance}
+
+.text-slate-400{color:#94a3b8}.text-slate-500{color:#64748b}.text-slate-600{color:#475569}
+.text-slate-700{color:#334155}.text-slate-900{color:#0f172a}.text-white{color:#fff}
+.text-indigo-600{color:#4f46e5}.text-emerald-600{color:#059669}.text-rose-600{color:#e11d48}
+.text-amber-600{color:#d97706}
+.bg-white{background:#fff}.bg-slate-50{background:#f8fafc}.bg-slate-100{background:#f1f5f9}
+.bg-slate-200{background:#e2e8f0}.bg-slate-800{background:#1e293b}.bg-slate-900{background:#0f172a}
+.bg-indigo-50{background:#eef2ff}.bg-indigo-600{background:#4f46e5}.bg-emerald-50{background:#ecfdf5}
+.bg-emerald-500{background:#10b981}.bg-rose-50{background:#fff1f2}.bg-amber-50{background:#fffbeb}
+.bg-transparent{background:transparent}
+
+.border{border:1px solid #e2e8f0}.border-0{border:0}.border-t{border-top:1px solid #e2e8f0}
+.border-b{border-bottom:1px solid #e2e8f0}.border-r{border-right:1px solid #e2e8f0}
+.border-l{border-left:1px solid #e2e8f0}.border-l-4{border-left:4px solid #4f46e5}
+.border-indigo-600{border-color:#4f46e5}.border-slate-300{border-color:#cbd5e1}
+.rounded{border-radius:.25rem}.rounded-md{border-radius:.375rem}.rounded-lg{border-radius:.5rem}
+.rounded-xl{border-radius:.75rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}
+.shadow-sm{box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}
+.shadow{box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1)}
+.shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1)}
+.shadow-lg{box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+.shadow-xl{box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.ring-1{box-shadow:0 0 0 1px rgba(15,23,42,.08)}
+
+.relative{position:relative}.absolute{position:absolute}.fixed{position:fixed}
+.sticky{position:sticky}.static{position:static}
+.top-0{top:0}.left-0{left:0}.right-0{right:0}.bottom-0{bottom:0}.inset-0{inset:0}
+.top-4{top:1rem}.right-4{right:1rem}.bottom-6{bottom:1.5rem}.right-6{right:1.5rem}
+.-top-2{top:-.5rem}.-right-2{right:-.5rem}
+.z-10{z-index:10}.z-20{z-index:20}.z-30{z-index:30}.z-50{z-index:50}
+.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}
+.overflow-auto{overflow:auto}.overflow-clip{overflow:clip}
+.opacity-60{opacity:.6}.opacity-80{opacity:.8}
+.select-none{user-select:none}.cursor-pointer{cursor:pointer}.pointer-events-none{pointer-events:none}
+.list-disc{list-style:disc;padding-left:1.25rem}
+.divide-y>*+*{border-top:1px solid #e2e8f0}
+.backdrop-blur{backdrop-filter:blur(8px)}
+.transform-center{transform:translate(-50%,-50%)}
+
+/* second pass — utilities referenced by the corpus pages that the first draft
+   of this sheet was missing (caught by the undefined-class check in smoke.mjs) */
+.w-2{width:.5rem}.w-3{width:.75rem}.w-11{width:2.75rem}.w-14{width:3.5rem}
+.h-3{height:.75rem}.h-11{height:2.75rem}.h-14{height:3.5rem}
+.max-w-full{max-width:100%}
+.grid-cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.mt-auto{margin-top:auto}.ml-1{margin-left:.25rem}.mb-10{margin-bottom:2.5rem}
+.gap-0{gap:0}.gap-16{gap:4rem}
+.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\.5{padding-left:.375rem;padding-right:.375rem}
+.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}
+.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}
+.py-10{padding-top:2.5rem;padding-bottom:2.5rem}
+.pt-2{padding-top:.5rem}.pt-3{padding-top:.75rem}.pt-6{padding-top:1.5rem}
+.pt-8{padding-top:2rem}.pt-10{padding-top:2.5rem}
+.pb-1{padding-bottom:.25rem}.pb-3{padding-bottom:.75rem}
+.pl-4{padding-left:1rem}.pl-5{padding-left:1.25rem}
+.top-1{top:.25rem}.top-2{top:.5rem}.right-1{right:.25rem}.left-2{left:.5rem}.left-8{left:2rem}
+.h-14{height:3.5rem}
+.border-b-2{border-bottom:2px solid #e2e8f0}
+.text-slate-300{color:#cbd5e1}.text-emerald-400{color:#34d399}
+.italic{font-style:italic}
+.opacity-90{opacity:.9}
+.line-clamp-1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+
+</style>
+<style>
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif}
+.shell{display:flex;min-height:100vh;background:#f8fafc}
+.main{flex:1;min-width:0}
+.grid2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:1.5rem;align-items:start}
+@media (max-width:1000px){.grid2{grid-template-columns:1fr}}
+.meter-row{display:flex;flex-direction:column;gap:.5rem}
+.meter-row progress{width:100%;height:8px}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="w-56 shrink-0 border-r bg-white flex flex-col">
+  <div class="h-16 flex items-center gap-2 px-5 border-b font-semibold"><svg class="w-6 h-6 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg><span class="truncate">Basalt</span></div>
+  <nav class="flex-1 p-3 flex flex-col gap-1 overflow-y-auto">
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span class="truncate">Home</span>
+      
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm bg-indigo-50 text-indigo-600 font-medium">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2"/><path d="M17 3.5a4 4 0 010 7"/></svg><span class="truncate">Billing</span>
+      
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg><span class="truncate">Team</span>
+      
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="truncate">Usage</span>
+      <span class="ml-auto"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">12</span></span>
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg><span class="truncate">Audit log</span>
+      
+    </a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="truncate">Settings</span>
+      
+    </a>
+  </nav>
+  <div class="p-3 border-t flex items-center gap-3">
+    <div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#7c3aed">JL</div>
+    <div class="min-w-0 flex-1"><div class="text-sm font-medium truncate">Hiroshi Tanaka</div><div class="text-xs text-slate-500 truncate">Site Reliability Lead</div></div>
+    <svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+</aside>
+  <div class="main p-6 flex flex-col gap-6">
+    <nav class="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
+    <a class=" whitespace-nowrap">Settings</a><span class="text-slate-300">/</span><a class="text-slate-900 font-medium whitespace-nowrap">Billing</a>
+  </nav>
+    <h1 class="text-2xl font-bold tracking-tight">Billing &amp; usage</h1>
+    <div class="grid2">
+      <div class="flex flex-col gap-6">
+        <div class="bg-white border rounded-xl p-6 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-col gap-1"><div class="flex items-center gap-2"><h2 class="font-semibold">Business plan</h2><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600">Annual</span></div><p class="text-sm text-slate-500">Renews 14 March 2027 · 25 seats</p></div>
+          <div class="flex gap-2"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm">Change plan</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-transparent text-slate-600 text-sm">Cancel</button></div>
+        </div>
+        <div class="bg-white border rounded-xl p-6 flex flex-col gap-5">
+          <h2 class="font-semibold">Usage this cycle</h2>
+          <div class="meter-row"><div class="flex justify-between text-sm"><span>Events ingested</span><span class="text-slate-500 font-mono">62%</span></div><progress value="62" max="100"></progress></div>
+          <div class="meter-row"><div class="flex justify-between text-sm"><span>Storage</span><span class="text-slate-500 font-mono">88%</span></div><progress value="88" max="100"></progress></div>
+          <div class="meter-row"><div class="flex justify-between text-sm"><span>Seats</span><span class="text-slate-500 font-mono">24%</span></div><progress value="24" max="100"></progress></div>
+          <div class="meter-row"><div class="flex justify-between text-sm"><span>API calls</span><span class="text-slate-500 font-mono">41%</span></div><progress value="41" max="100"></progress></div>
+        </div>
+        <div class="border rounded-xl overflow-hidden bg-white"><div class="overflow-x-auto"><table class="w-full text-sm text-left">
+    <thead class=" bg-slate-50 border-b">
+      <tr><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Name</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Owner</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Region</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Status</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap text-right">Requests</th><th class="px-4 py-3 font-medium text-slate-500 whitespace-nowrap ">Updated</th></tr>
+    </thead>
+    <tbody><tr class="border-b">
+      <td class="px-3 py-2 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Northwind-orchestration</span></div></td>
+      <td class="px-3 py-2"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">AO</div><span class="truncate">Amara Osei</span></div></td>
+      <td class="px-3 py-2 text-slate-600 whitespace-nowrap">Lisbon</td>
+      <td class="px-3 py-2"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600">Healthy</span></td>
+      <td class="px-3 py-2 text-right font-mono text-sm">903</td>
+      <td class="px-3 py-2 text-slate-500 text-sm whitespace-nowrap">1 day ago</td>
+    </tr><tr class="border-b">
+      <td class="px-3 py-2 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Halyard-throughput</span></div></td>
+      <td class="px-3 py-2"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#4f46e5">JL</div><span class="truncate">Jonas Lindqvist</span></div></td>
+      <td class="px-3 py-2 text-slate-600 whitespace-nowrap">Toronto</td>
+      <td class="px-3 py-2"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600">Degraded</span></td>
+      <td class="px-3 py-2 text-right font-mono text-sm">2,390</td>
+      <td class="px-3 py-2 text-slate-500 text-sm whitespace-nowrap">2 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-3 py-2 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Cadence-latency</span></div></td>
+      <td class="px-3 py-2"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">PR</div><span class="truncate">Priya Raghunathan</span></div></td>
+      <td class="px-3 py-2 text-slate-600 whitespace-nowrap">Osaka</td>
+      <td class="px-3 py-2"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Paused</span></td>
+      <td class="px-3 py-2 text-right font-mono text-sm">3,877</td>
+      <td class="px-3 py-2 text-slate-500 text-sm whitespace-nowrap">3 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-3 py-2 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Meridian-pipeline</span></div></td>
+      <td class="px-3 py-2"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">DF</div><span class="truncate">Diego Fuentes</span></div></td>
+      <td class="px-3 py-2 text-slate-600 whitespace-nowrap">Nairobi</td>
+      <td class="px-3 py-2"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600">Healthy</span></td>
+      <td class="px-3 py-2 text-right font-mono text-sm">5,364</td>
+      <td class="px-3 py-2 text-slate-500 text-sm whitespace-nowrap">4 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-3 py-2 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Kestrel-ingestion</span></div></td>
+      <td class="px-3 py-2"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#059669">MC</div><span class="truncate">Mei-Ling Chen</span></div></td>
+      <td class="px-3 py-2 text-slate-600 whitespace-nowrap">Rotterdam</td>
+      <td class="px-3 py-2"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600">Degraded</span></td>
+      <td class="px-3 py-2 text-right font-mono text-sm">6,851</td>
+      <td class="px-3 py-2 text-slate-500 text-sm whitespace-nowrap">5 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-3 py-2 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Lumen-observability</span></div></td>
+      <td class="px-3 py-2"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">TB</div><span class="truncate">Tobias Brandt</span></div></td>
+      <td class="px-3 py-2 text-slate-600 whitespace-nowrap">Austin</td>
+      <td class="px-3 py-2"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Paused</span></td>
+      <td class="px-3 py-2 text-right font-mono text-sm">8,338</td>
+      <td class="px-3 py-2 text-slate-500 text-sm whitespace-nowrap">6 days ago</td>
+    </tr><tr class="border-b">
+      <td class="px-3 py-2 font-medium"><div class="flex items-center gap-2 min-w-0"><svg class="w-4 h-4 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><span class="truncate">Basalt-provisioning</span></div></td>
+      <td class="px-3 py-2"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">NH</div><span class="truncate">Nadia Haddad</span></div></td>
+      <td class="px-3 py-2 text-slate-600 whitespace-nowrap">Tallinn</td>
+      <td class="px-3 py-2"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600">Healthy</span></td>
+      <td class="px-3 py-2 text-right font-mono text-sm">9,825</td>
+      <td class="px-3 py-2 text-slate-500 text-sm whitespace-nowrap">7 days ago</td>
+    </tr></tbody>
+  </table></div></div>
+      </div>
+      <div class="flex flex-col gap-6">
+        <div class="bg-white border rounded-xl p-6 flex flex-col gap-4">
+          <h2 class="font-semibold">Payment method</h2>
+          <div class="flex items-center gap-3 p-3 border rounded-lg"><div class="w-10 h-6 rounded bg-slate-900 shrink-0"></div><div class="min-w-0"><div class="text-sm font-medium">•••• 4242</div><div class="text-xs text-slate-500">Expires 09/2029</div></div></div>
+          <button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border w-full text-sm">Update card</button>
+        </div>
+        <div class="bg-white border rounded-xl p-6 flex flex-col gap-4">
+          <h2 class="font-semibold">Billing contact</h2>
+          <div class="flex flex-col gap-5"><label class="flex flex-col gap-2"><span class="text-sm font-medium">Billing email</span><input type="email" id="f-email-0" class="w-full px-3 py-2 border rounded-lg" placeholder="you@company.com"></label>
+    <label class="flex flex-col gap-2"><span class="text-sm font-medium">Primary region</span><select id="f-select-1" class="w-full px-3 py-2 border rounded-lg"><option>Lisbon</option><option>Toronto</option><option>Osaka</option><option>Nairobi</option><option>Rotterdam</option><option>Austin</option><option>Tallinn</option><option>Medellín</option></select></label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

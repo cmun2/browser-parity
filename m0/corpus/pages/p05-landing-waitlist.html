@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p05-landing-waitlist</title>
+<!-- M0 corpus page. Spec: landing. See m0/corpus/SPECS.md for the brief. -->
+<link rel="stylesheet" href="../assets/util.css">
+<style>
+body{font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif}
+.screen{min-height:100vh;display:grid;place-items:center;padding:3rem 1.5rem;
+  background:linear-gradient(180deg,#fff 0%,#f8fafc 100%)}
+.waitlist{display:flex;gap:.75rem;flex-wrap:wrap}
+.waitlist input{flex:1 1 260px;padding:.875rem 1rem;border:1px solid #cbd5e1;border-radius:.75rem}
+.props{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;margin-top:3rem}
+@media (max-width:760px){.props{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="screen"><div class="max-w-2xl w-full flex flex-col items-center text-center gap-6">
+  <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg></div>
+  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600">Private beta · 2,140 on the list</span>
+  <h1 class="text-5xl font-extrabold tracking-tight text-balance">Lumen turns your logs into answers</h1>
+  <p class="text-lg text-slate-600 leading-relaxed">Attribution normalization allocation indexing pipeline observability ingestion retention replication segmentation retention pipeline throughput allocation indexing ingestion indexing.</p>
+  <form class="waitlist w-full max-w-md"><input type="email" placeholder="you@company.com" aria-label="Email"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white px-5 py-3 shrink-0">Join waitlist</button></form>
+  <div class="flex items-center gap-3 mt-2">
+    <div class="flex"><span style="margin-left:0"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#d97706">HT</div></span><span style="margin-left:-10px"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">MC</div></span><span style="margin-left:-10px"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#4f46e5">SM</div></span><span style="margin-left:-10px"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#be123c">NH</div></span><span style="margin-left:-10px"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shrink-0" style="background:#0891b2">EV</div></span></div>
+    <span class="text-sm text-slate-500">Joined this week</span>
+  </div>
+  <div class="props w-full"><div class="flex flex-col items-center gap-2"><svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg><h3 class="font-semibold text-sm">Indexing</h3><p class="text-sm text-slate-500">Ingestion allocation forecasting orchestration provisioning normalization indexing.</p></div><div class="flex flex-col items-center gap-2"><svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg><h3 class="font-semibold text-sm">Indexing</h3><p class="text-sm text-slate-500">Segmentation latency reconciliation pipeline attribution provisioning normalization segmentation entitlement pipeline.</p></div><div class="flex flex-col items-center gap-2"><svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg><h3 class="font-semibold text-sm">Observability</h3><p class="text-sm text-slate-500">Federation attribution observability forecasting replication ingestion throughput retention orchestration federation.</p></div></div>
+</div></main>
+</body>
+</html>

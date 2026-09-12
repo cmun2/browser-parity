@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p24-table-inbox</title>
+<!-- M0 corpus page. Spec: table. See m0/corpus/SPECS.md for the brief. -->
+<link rel="stylesheet" href="../assets/util.css">
+<style>
+body{font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif}
+.inbox{display:grid;grid-template-columns:220px 340px minmax(0,1fr);height:100vh;overflow:hidden}
+.pane{overflow-y:auto;border-right:1px solid #e2e8f0}
+.pane:last-child{border-right:0}
+.msg{padding:.9rem 1rem;border-bottom:1px solid #f1f5f9;display:flex;flex-direction:column;gap:.25rem;cursor:pointer}
+.msg.unread{background:#fff}.msg.on{background:#eef2ff}
+@media (max-width:1000px){.inbox{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="inbox">
+  <nav class="pane bg-slate-50 p-3 flex flex-col gap-1">
+    <div class="px-2 py-3 font-semibold flex items-center gap-2"><svg class="w-5 h-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg>Inbox</div>
+    <button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white w-full text-sm mb-2">Compose</button>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm bg-white font-medium"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span class="truncate flex-1">Inbox</span><span class="text-xs text-slate-500">24</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2"/><path d="M17 3.5a4 4 0 010 7"/></svg><span class="truncate flex-1">Starred</span><span class="text-xs text-slate-500">3</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13H11l-1 9 8.5-11H12z"/></svg><span class="truncate flex-1">Snoozed</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="truncate flex-1">Sent</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg><span class="truncate flex-1">Drafts</span><span class="text-xs text-slate-500">2</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="truncate flex-1">Archive</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span class="truncate flex-1">Spam</span><span class="text-xs text-slate-500">11</span></a>
+    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600"><svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span class="truncate flex-1">Trash</span></a>
+  </nav>
+  <div class="pane">
+    <div class="sticky top-0 bg-white border-b px-4 py-3 flex items-center gap-2 z-10">
+      <input type="checkbox"><span class="text-sm font-medium">Inbox</span><span class="ml-auto text-xs text-slate-500">24 unread</span>
+    </div>
+    <article class="msg unread">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
+        <span class="text-sm font-semibold truncate flex-1">Amara Osei</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">1:00 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Normalization forecasting pipeline pipeline federation indexing.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Reconciliation orchestration attribution latency latency indexing throughput segmentation allocation entitlement entitlement forecasting latency indexing indexing reconciliation normalization federation replication throughput retention replication.</span>
+    </article>
+    <article class="msg unread">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
+        <span class="text-sm font-semibold truncate flex-1">Jonas Lindqvist</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">2:01 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Forecasting latency observability allocation observability ingestion.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Ingestion orchestration orchestration provisioning retention ingestion federation segmentation federation reconciliation latency normalization replication reconciliation.</span>
+    </article>
+    <article class="msg on">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
+        <span class="text-sm font-semibold truncate flex-1">Priya Raghunathan</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">3:02 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Ingestion ingestion segmentation observability forecasting attribution forecasting.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Ingestion federation replication replication latency provisioning attribution ingestion throughput orchestration provisioning attribution entitlement observability throughput provisioning retention indexing.</span>
+    </article>
+    <article class="msg unread">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
+        <span class="text-sm font-semibold truncate flex-1">Diego Fuentes</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">4:03 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Attribution reconciliation orchestration attribution ingestion forecasting reconciliation pipeline.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Throughput normalization retention segmentation replication normalization orchestration federation normalization entitlement ingestion segmentation throughput forecasting normalization.</span>
+    </article>
+    <article class="msg unread">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
+        <span class="text-sm font-semibold truncate flex-1">Mei-Ling Chen</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">5:04 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Normalization pipeline allocation entitlement latency.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Indexing observability indexing pipeline segmentation normalization indexing observability indexing observability latency reconciliation segmentation forecasting ingestion latency replication.</span>
+    </article>
+    <article class="msg unread">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-indigo-600 shrink-0"></span>
+        <span class="text-sm font-semibold truncate flex-1">Tobias Brandt</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">6:05 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Attribution entitlement pipeline allocation latency.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Orchestration latency observability provisioning attribution pipeline allocation latency federation replication ingestion observability observability provisioning normalization normalization.</span>
+    </article>
+    <article class="msg ">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 shrink-0"></span>
+        <span class="text-sm  truncate flex-1">Nadia Haddad</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">7:00 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Normalization replication allocation throughput allocation throughput.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Forecasting observability pipeline latency entitlement segmentation retention pipeline segmentation pipeline federation segmentation latency allocation reconciliation.</span>
+    </article>
+    <article class="msg ">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 shrink-0"></span>
+        <span class="text-sm  truncate flex-1">Ruben Oyelaran</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">8:01 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Latency pipeline forecasting retention provisioning ingestion provisioning.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Retention attribution pipeline segmentation indexing observability normalization provisioning reconciliation indexing ingestion indexing replication observability pipeline allocation entitlement federation attribution entitlement retention entitlement allocation.</span>
+    </article>
+    <article class="msg ">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 shrink-0"></span>
+        <span class="text-sm  truncate flex-1">Sofia Marchetti</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">9:02 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Federation forecasting allocation indexing latency.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Orchestration indexing observability normalization reconciliation entitlement observability normalization entitlement reconciliation pipeline replication replication provisioning normalization.</span>
+    </article>
+    <article class="msg ">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 shrink-0"></span>
+        <span class="text-sm  truncate flex-1">Hiroshi Tanaka</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">10:03 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Retention normalization orchestration observability ingestion attribution.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Provisioning replication observability forecasting entitlement entitlement ingestion normalization orchestration segmentation replication provisioning ingestion indexing observability pipeline replication.</span>
+    </article>
+    <article class="msg ">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 shrink-0"></span>
+        <span class="text-sm  truncate flex-1">Elena Volkova</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">11:04 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Federation forecasting forecasting indexing entitlement.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Replication replication federation latency throughput provisioning indexing entitlement replication segmentation entitlement forecasting retention throughput.</span>
+    </article>
+    <article class="msg ">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 shrink-0"></span>
+        <span class="text-sm  truncate flex-1">Kwame Boateng</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">12:05 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Reconciliation reconciliation reconciliation provisioning segmentation attribution allocation segmentation.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Federation attribution segmentation provisioning federation replication indexing segmentation federation entitlement attribution segmentation retention orchestration forecasting latency federation replication reconciliation normalization allocation throughput.</span>
+    </article>
+    <article class="msg ">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 shrink-0"></span>
+        <span class="text-sm  truncate flex-1">Amara Osei</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">13:00 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Replication federation attribution forecasting allocation indexing replication.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Segmentation provisioning allocation federation replication provisioning ingestion attribution provisioning allocation observability normalization retention throughput retention retention ingestion observability forecasting.</span>
+    </article>
+    <article class="msg ">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 shrink-0"></span>
+        <span class="text-sm  truncate flex-1">Jonas Lindqvist</span>
+        <span class="text-xs text-slate-400 whitespace-nowrap shrink-0">14:01 PM</span>
+      </div>
+      <span class="text-sm truncate pl-4">Attribution throughput pipeline allocation orchestration federation reconciliation.</span>
+      <span class="text-xs text-slate-500 line-clamp-2 pl-4">Observability segmentation provisioning indexing retention entitlement entitlement provisioning observability normalization pipeline reconciliation reconciliation reconciliation provisioning observability federation orchestration orchestration federation orchestration.</span>
+    </article>
+  </div>
+  <div class="pane">
+    <div class="sticky top-0 bg-white border-b px-6 py-4 flex items-start gap-4 z-10">
+      <div class="min-w-0 flex-1"><h1 class="text-lg font-semibold truncate">Ingestion allocation ingestion normalization entitlement orchestration provisioning.</h1><p class="text-sm text-slate-500 truncate">Jonas Lindqvist to me, Nadia Haddad · 2:04 PM</p></div>
+      <div class="flex gap-1 text-slate-400 shrink-0"><button type="button" class="p-2"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg></button><button type="button" class="p-2"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><button type="button" class="p-2"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></button><button type="button" class="p-2"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></button></div>
+    </div>
+    <div class="px-6 py-6 flex flex-col gap-4 leading-relaxed text-slate-700" style="max-width:44rem">
+      <p>Entitlement forecasting replication pipeline forecasting federation forecasting latency. Forecasting pipeline entitlement replication replication allocation retention provisioning entitlement allocation forecasting throughput attribution attribution observability retention observability. Observability forecasting federation reconciliation indexing retention pipeline orchestration entitlement.</p>
+      <p>Reconciliation replication provisioning reconciliation attribution pipeline throughput allocation normalization normalization. Indexing forecasting latency ingestion reconciliation forecasting provisioning attribution normalization. Normalization replication allocation throughput orchestration federation observability allocation replication ingestion pipeline orchestration pipeline attribution.</p>
+      <p>Entitlement normalization ingestion indexing attribution federation normalization attribution observability normalization forecasting. Provisioning federation replication observability segmentation forecasting attribution latency throughput allocation pipeline. Ingestion segmentation segmentation replication throughput provisioning observability observability.</p>
+      <p>Indexing entitlement forecasting forecasting pipeline attribution ingestion observability observability indexing observability normalization observability latency replication normalization retention. Normalization forecasting allocation reconciliation retention entitlement provisioning latency entitlement federation normalization attribution. Replication orchestration ingestion orchestration retention reconciliation entitlement throughput pipeline segmentation.</p>
+      <p>Federation orchestration ingestion forecasting forecasting allocation throughput normalization indexing provisioning federation attribution orchestration entitlement. Retention orchestration observability pipeline forecasting orchestration provisioning indexing allocation federation provisioning. Retention replication federation reconciliation indexing indexing indexing allocation indexing forecasting federation attribution orchestration provisioning.</p>
+      <div class="border rounded-xl p-4 flex items-center gap-3"><svg class="w-8 h-8 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg><div class="min-w-0"><div class="text-sm font-medium truncate">Q1-forecast-consolidated-final-v3.xlsx</div><div class="text-xs text-slate-500">248 KB</div></div><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border text-sm ml-auto shrink-0">Download</button></div>
+      <div class="flex gap-2 pt-2"><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white ">Reply</button><button type="button" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-white text-slate-700 border ">Forward</button></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
