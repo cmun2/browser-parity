@@ -8,7 +8,8 @@
     "coverage": "node --experimental-strip-types ai/coverage.ts",
     "investigate": "node --experimental-strip-types ai/cli.ts",
     "m0": "node m0/scripts/run.mjs",
-    "verdict": "node m0/scripts/verdict.mjs"
+    "verdict": "node m0/scripts/verdict.mjs",
+    "test": "node --test test/*.test.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0"
