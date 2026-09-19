@@ -1,17 +1,49 @@
 {
   "name": "browser-parity",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "private": false,
   "type": "module",
   "scripts": {
     "test:ai": "node --experimental-strip-types --test \"ai/test/*.test.ts\"",
     "coverage": "node --experimental-strip-types ai/coverage.ts",
-    "investigate": "node --experimental-strip-types ai/cli.ts"
+    "investigate": "node --experimental-strip-types ai/cli.ts",
+    "m0": "node m0/scripts/run.mjs",
+    "verdict": "node m0/scripts/verdict.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0"
   },
   "optionalDependencies": {
     "js-tiktoken": "^1.0.21"
+  },
+  "description": "Baseline-free cross-engine UI verification. Chromium, Firefox and WebKit as each other’s oracle — no golden images, no service.",
+  "bin": {
+    "browser-parity": "bin/browser-parity.mjs"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "README.md",
+    "ROADMAP.md",
+    "ARCHITECTURE.md",
+    "RESEARCH.md"
+  ],
+  "keywords": [
+    "visual-regression",
+    "cross-browser",
+    "playwright",
+    "chromium",
+    "firefox",
+    "webkit",
+    "testing",
+    "ui"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmun2/browser-parity.git"
+  },
+  "peerDependencies": {
+    "playwright": ">=1.40"
   }
 }

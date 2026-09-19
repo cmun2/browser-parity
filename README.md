@@ -14,7 +14,25 @@ no service.
 npx browser-parity http://localhost:3000
 ```
 
-## Status: pre-M0. Do not use this yet.
+## Status: M0 passed. Usable, and narrow on purpose.
+
+The first milestone was a measurement with a pre-registered kill condition, and it
+returned **GO**: on 30 AI-generated pages, none cherry-picked, **16 pages carried a
+human-confirmed genuine defect** — 180 of them — at a median of 4 reviewable findings
+per page. The threshold written before the data existed was 3 pages and a median of 5.
+
+```
+1,722 raw  ->  475 survivors  ->  180 genuine defects on 16/30 pages
+labels: 180 genuine · 295 expected engine difference · 0 unlabelled
+```
+
+`npm run verdict` re-derives that from the committed labels; the rule lives in
+`m0/scripts/verdict.mjs` and was written before any label existed. The corpus was
+frozen and hashed before it was measured, so the base rate cannot be tuned after
+the fact.
+
+What exists today is the deterministic core and a CLI over it. The rest of M1 —
+exit-code presets, per-rule toggles, `--viewport`, a benchmark corpus — is not built.
 
 The detector is not the hard part; suppression is. On real sites, naive cross-engine
 geometry diffing produces unusable noise, and four deterministic rules take it to something
@@ -29,27 +47,27 @@ a person can read:
 Zero AI calls. Dropping SVG interiors and `display:inline` nodes alone removes 92–98%.
 That tolerance model is the project.
 
-## The open question
+## What M0 asked, and what it found
 
 Modern engines have converged. On current Chromium / Firefox / WebKit, nested-flex
 `min-width:auto`, grid `minmax(min-content,1fr)`, sticky, viewport units, subgrid,
 container-query units and `overflow:clip` all agree to **under 0.5px** once fonts and UA
-styles are normalized. So the risk is not false positives. It is that there may be nothing
-left to find.
+styles are normalized. So the risk was never false positives. It was that there might be
+nothing left to find.
 
-**M0 answers that before anything else gets built:** 30 AI-generated pages, no
+M0 answered that before anything else got built: 30 AI-generated pages, no
 cherry-picking, every surviving finding labelled by hand.
 
-- **Go** at 3+ genuine defects out of 30
-- **Kill** at 0 — and publish the negative result
-- **Pivot** to a cross-engine design-system linter if the findings are all form controls
-  and text metrics
+| outcome | threshold | result |
+|---|---|---|
+| **Go** | ≥3 of 30 pages with a genuine defect, median ≤5 survivors | **16 of 30, median 4** |
+| Kill | 0 of 30 | not reached |
+| Pivot | defects real but all form controls / text metrics | not reached — text-metric 48, layout 43, other 81, form-control 8 |
 
-The harness is built and the corpus is frozen — see **[`m0/README.md`](m0/README.md)**.
-The 30-page corpus was committed before it was measured, and every stage re-hashes
-it, so the base rate cannot be tuned after the fact. The measurement has been run
-(1722 raw findings → 475 survivors, median 4/page); the hand-labelling pass that
-produces the verdict has not.
+Where the defects were: **text-metric 48 · layout 43 · other 81 · form-control 8**. Had they
+all been the last two rows, this would have become a design-system linter instead.
+
+See **[`m0/README.md`](m0/README.md)** for the corpus, the labels and the run.
 
 ## Known ceiling
 
@@ -74,6 +92,31 @@ worth switching on at all. None contradicted a rule that was right; two of them
 caught rules that were wrong. **[`ai/MODEL-COMPARISON.md`](ai/MODEL-COMPARISON.md)**
 
 `ai/` can be deleted; there is a test that deletes it and runs the core anyway.
+
+## Using it
+
+```sh
+npx playwright install            # once — the three engines
+npx browser-parity https://example.com
+```
+
+```
+https://example.com
+  274 elements matched in all three engines
+  0. raw: any parent-relative or size delta >0.5px   134
+  1. + drop SVG-internal nodes                       116
+  2. + drop display:inline (text metrics)             48
+  3. + tolerance 2px OR 1% of box                     10
+  4. + collapse inherited (parent has same delta)      8
+  findings                                             8
+```
+
+`--json <file>` writes every finding instead of the top ten. `--max <n>` exits 1 when a
+page goes over, which is the form you want in CI. `--quiet` prints one line per URL.
+Multiple URLs in one run share the three browser launches.
+
+There is no configuration file and nothing is stored between runs. That is the point:
+with no baseline there is nothing to approve, drift or check in.
 
 ## Research
 
