@@ -14,6 +14,12 @@ no service.
 npx browser-parity http://localhost:3000
 ```
 
+![Same page, same moment, three engines. A <legend> inside a <fieldset> is 621.5px wider in WebKit than in Chromium and Firefox.](docs/img/hero-legend.png)
+
+One of the 180 defects M0 confirmed by hand: a `<legend>` that WebKit lays out **621.5px**
+wider than Chromium and Firefox. Nobody approved a golden image to catch it — the engines
+disagreed with each other, which is the whole mechanism.
+
 ## Status: M0 passed. Usable, and narrow on purpose.
 
 The first milestone was a measurement with a pre-registered kill condition, and it

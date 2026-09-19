@@ -13,7 +13,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 
 const HERE = path.dirname(new URL(import.meta.url).pathname);
-const { collectAll, computeDeltas, funnel, E, VIEWPORT } =
+const { LAUNCHERS, settle, collectFromPage, computeDeltas, funnel, RULES, E, VIEWPORT } =
   await import(pathToFileURL(path.join(HERE, '..', 'scripts', 'funnel.mjs')).href);
 
 const HELP = `browser-parity — baseline-free cross-engine UI verification
@@ -21,6 +21,11 @@ const HELP = `browser-parity — baseline-free cross-engine UI verification
   npx browser-parity <url> [<url>...]
 
 Options
+  --viewport <WxH>  viewport for all three engines (default: 1280x900)
+  --rules <list>    comma-separated suppression rules to apply, in order.
+                    default: svg-interior,inline-text,tolerance,inherited-delta
+                    'none' keeps every raw difference. Use this to see what a
+                    rule is actually removing before trusting it.
   --json <file>     write findings as JSON instead of printing a table
   --max <n>         exit 1 when a page has more than n findings (default: off)
   --quiet           only print the per-URL finding count
@@ -51,18 +56,68 @@ const opt = (name, fallback = undefined) => {
 const jsonOut = opt('--json');
 const max = opt('--max') === undefined ? null : Number(opt('--max'));
 const quiet = argv.includes('--quiet');
+
+// --viewport WxH. Engines must share one viewport or the comparison is void.
+let viewport = VIEWPORT;
+const vp = opt('--viewport');
+if (vp !== undefined) {
+  const m = /^(\d+)x(\d+)$/.exec(vp.trim());
+  if (!m) { process.stderr.write(`--viewport wants WxH, e.g. 1280x900 (got ${vp})\n`); process.exit(2); }
+  viewport = { width: Number(m[1]), height: Number(m[2]) };
+}
+
+// --rules. 'raw' is the floor and is always applied; the other four are opt-out,
+// because a rule you cannot switch off is a rule you cannot check.
+const OPTIONAL = RULES.filter(r => r.id !== 'raw').map(r => r.id);
+let activeRules = RULES;
+const rulesArg = opt('--rules');
+if (rulesArg !== undefined) {
+  const want = rulesArg.trim() === 'none' ? [] : rulesArg.split(',').map(x => x.trim()).filter(Boolean);
+  const bad = want.filter(x => !OPTIONAL.includes(x));
+  if (bad.length) {
+    process.stderr.write(`unknown rule(s): ${bad.join(', ')}\nknown: ${OPTIONAL.join(', ')} (or 'none')\n`);
+    process.exit(2);
+  }
+  activeRules = [RULES[0], ...want.map(id => RULES.find(r => r.id === id))];
+}
+
+/** Launch the three engines once and collect every URL through them. */
+async function collectAllWith(url, pagesByEngine) {
+  const data = {};
+  for (const e of E) { await settle(pagesByEngine[e], url); data[e] = await collectFromPage(pagesByEngine[e]); }
+  return data;
+}
+
+/** funnel() with only the selected rules. */
+function funnelWith(common, delta, rules) {
+  let keys = common; const stages = [];
+  for (const rule of rules) {
+    keys = keys.filter(k => rule.keep(k, delta[k], delta));
+    stages.push({ id: rule.id, label: rule.label, count: keys.length });
+  }
+  return { stages, survivors: keys };
+}
 const urls = argv.filter((a, i) =>
   !a.startsWith('--') && argv[i - 1] !== '--json' && argv[i - 1] !== '--max');
 
 if (!urls.length) { process.stderr.write('no URL given\n\n' + HELP); process.exit(2); }
 
-const report = { tool: 'browser-parity', engines: E, viewport: VIEWPORT, pages: [] };
+const report = { tool: 'browser-parity', engines: E, viewport,
+                 rules: activeRules.map(r => r.id), pages: [] };
 let exceeded = false, failed = false;
+
+// One launch per engine for the whole run, not one per URL.
+const browsers = {}, pagesByEngine = {};
+for (const e of E) {
+  browsers[e] = await LAUNCHERS[e].launch();
+  pagesByEngine[e] = await (await browsers[e].newContext(
+    { viewport, deviceScaleFactor: 1, reducedMotion: 'reduce' })).newPage();
+}
 
 for (const url of urls) {
   let data;
   try {
-    data = await collectAll(url);
+    data = await collectAllWith(url, pagesByEngine);
   } catch (err) {
     failed = true;
     process.stderr.write(`\n${url}\n  could not load in all three engines: ${err.message}\n`);
@@ -70,7 +125,7 @@ for (const url of urls) {
     continue;
   }
   const { common, delta } = computeDeltas(data);
-  const { stages, survivors } = funnel(common, delta);
+  const { stages, survivors } = funnelWith(common, delta, activeRules);
   if (max !== null && survivors.length > max) exceeded = true;
 
   const findings = survivors.map(k => ({
@@ -95,6 +150,8 @@ for (const url of urls) {
     if (findings.length > 10) console.log(`    … ${findings.length - 10} more (use --json for all)`);
   }
 }
+
+for (const e of E) await browsers[e].close();
 
 if (jsonOut) {
   fs.writeFileSync(jsonOut, JSON.stringify(report, null, 2));
